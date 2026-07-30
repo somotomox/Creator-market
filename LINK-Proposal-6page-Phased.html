@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LINK: Pilot MVP Proposal (Phase 1 of 2)</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --good:#15803d; --good-bg:#e4f7ea; --warn:#b45309; --warn-bg:#fdf0d5; --crit:#b91c1c; --crit-bg:#fbe4e4;
+    --font-display:"Charter","Cambria","Georgia",serif;
+    --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+  body{font-size:13px;line-height:1.52;-webkit-font-smoothing:antialiased}
+  main{max-width:920px;margin:0 auto;padding:24px 30px 60px}
+  p{margin:0 0 8px}
+  strong{font-weight:650;color:var(--ink)}
+  h1,h2,h3,h4{color:var(--ink);margin:0;text-wrap:balance;line-height:1.22}
+  .eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+  h2{font-size:18px;letter-spacing:-.01em;font-weight:700;margin:0 0 4px}
+  h3{font-size:12.5px;font-weight:700;margin:12px 0 6px;color:var(--ink)}
+  .lede{font-size:13px;color:var(--ink-soft);line-height:1.5}
+  .sec{padding-top:16px;border-top:1px solid var(--line);margin-top:16px}
+  .titleblock{margin-bottom:6px}
+
+  .cover .kicker{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:11px}
+  .cover h1{font-size:36px;line-height:1.03;letter-spacing:-.025em;font-weight:750;margin:0 0 11px;max-width:16ch}
+  .cover h1 em{font-family:var(--font-display);font-style:italic;font-weight:600;color:var(--accent)}
+  .cover .sub{font-size:14px;color:var(--ink-soft);max-width:64ch;line-height:1.5}
+  .facts{display:flex;flex-wrap:wrap;margin-top:18px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+  .facts > div{flex:1;padding:13px 18px;border-right:1px solid var(--line);text-align:center}
+  .facts > div:last-child{border-right:none}
+  .facts .l{font-size:8px;color:var(--muted);font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+  .facts .v{font-size:14.5px;color:var(--ink);font-weight:700;margin-top:7px;line-height:1.2;white-space:nowrap}
+  .facts .v.accent{color:var(--accent)}
+  .facts .v.small{font-size:12px}
+
+  .grid{display:grid;gap:11px}
+  .g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:1fr 1fr 1fr} .g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .stat .k{font-size:22px;font-weight:750;letter-spacing:-.02em;line-height:1.05;font-variant-numeric:tabular-nums}
+  .stat .k .u{font-size:12px;color:var(--muted);font-weight:600}
+  .stat .k.accent{color:var(--accent)}
+  .stat .l{font-size:10px;color:var(--muted);margin-top:5px;font-weight:600}
+
+  ul.clean{margin:5px 0 3px;padding-left:16px} ul.clean li{margin:3px 0}
+  ul.check{list-style:none;padding:0;margin:5px 0}
+  ul.check li{position:relative;padding-left:20px;margin:5px 0}
+  ul.check li::before{content:"";position:absolute;left:2px;top:5px;width:10px;height:5px;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+
+  table{border-collapse:collapse;width:100%;font-size:11.5px}
+  .twrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:9px 0}
+  th,td{text-align:left;padding:7px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--surface-2);font-size:9.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);font-weight:700}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  tr.total td{font-weight:700;background:var(--surface-2)}
+  .tick{color:var(--good);font-weight:700}.cross{color:var(--crit);font-weight:700}.part{color:var(--warn);font-weight:700}
+
+  /* depth table: phase 1 vs phase 2 */
+  thead th.h1c{color:var(--accent);border-bottom:2px solid var(--accent)}
+  thead th.h2c{color:var(--accent-deep);border-bottom:2px solid var(--line-strong)}
+  td.c1{background:color-mix(in srgb,var(--accent-soft) 40%,transparent)}
+  td.c2{background:var(--surface)}
+  td.cap{font-weight:650;width:22%}
+
+  .pill{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:999px}
+  .pill.keep{background:var(--good-bg);color:var(--good)} .pill.fix{background:var(--warn-bg);color:var(--warn)} .pill.build{background:var(--accent-soft);color:var(--accent-deep)}
+  .pill.p0{background:var(--crit-bg);color:var(--crit)} .pill.p1{background:var(--warn-bg);color:var(--warn)}
+
+  .callout{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--surface);border-radius:10px;padding:11px 14px;margin:11px 0}
+  .callout .tag{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px}
+  .callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+  /* ---- two-phase ladder ---- */
+  .ladder{display:grid;grid-template-columns:1fr 30px 1fr;gap:8px;align-items:stretch;margin:11px 0 9px}
+  .pcard{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface);border-top:3px solid var(--accent)}
+  .pcard.two{border-top-color:var(--line-strong);background:var(--bg)}
+  .pcard .pn{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+  .pcard.two .pn{color:var(--muted)}
+  .pcard .pt{font-size:15px;font-weight:750;letter-spacing:-.015em;margin:3px 0 1px;line-height:1.15}
+  .pcard .pmeta{font-size:11px;color:var(--muted);font-weight:650;margin-bottom:7px}
+  .pcard .pmeta b{color:var(--ink);font-weight:750}
+  .pcard .pgoal{font-size:11px;color:var(--ink-soft);border-left:2px solid var(--accent);padding-left:8px;margin:0 0 8px;line-height:1.35}
+  .pcard.two .pgoal{border-left-color:var(--line-strong)}
+  .pcard ul{margin:0;padding-left:15px;font-size:10.5px} .pcard li{margin:2.5px 0;color:var(--ink-soft)}
+  .ladder-arrow{display:flex;align-items:center;justify-content:center;color:var(--line-strong);font-size:15px;font-weight:700}
+
+  .gate{border:1px dashed var(--line-strong);background:var(--surface-2);border-radius:10px;padding:10px 13px;margin:9px 0}
+  .gate .gt{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+  .gmetrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:2px}
+  .gm{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 9px;text-align:center}
+  .gm .gv{font-size:13px;font-weight:750;color:var(--accent);line-height:1.1;font-variant-numeric:tabular-nums}
+  .gm .gl{font-size:8.5px;color:var(--muted);font-weight:600;margin-top:4px;line-height:1.25}
+
+  .money{display:flex;align-items:stretch;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:9px 0}
+  .money > div{padding:10px 14px;flex:none}
+  .money .m1{background:var(--accent-soft);flex:1}
+  .money .mop{display:grid;place-items:center;background:var(--surface);color:var(--muted);font-weight:750;font-size:14px;width:34px;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  .money .m2{background:var(--surface);flex:1}
+  .money .m3{background:var(--navy);color:#fff;flex:1;border-left:1px solid var(--line)}
+  .money .ml{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+  .money .mv{font-size:15px;font-weight:750;margin-top:5px;line-height:1.1;white-space:nowrap}
+  .money .m1 .ml{color:var(--accent-deep)} .money .m1 .mv{color:var(--accent-deep)}
+
+  .weeks{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin:10px 0}
+  .wk{border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:8px;padding:8px 9px;background:var(--surface)}
+  .wk .wn{font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+  .wk .wt{font-size:11px;font-weight:650;margin-top:2px;color:var(--ink);line-height:1.2}
+  .wk .wd{font-size:9.5px;color:var(--muted);margin-top:3px;line-height:1.3}
+
+  .pm{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .pm .ph{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+  .pm .av{width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:750;font-size:13px;flex:none}
+  .pm .nm{font-weight:700;font-size:12px} .pm .rl{font-size:9.5px;color:var(--muted)}
+  .pm .q{font-family:var(--font-display);font-style:italic;font-size:11px;color:var(--ink-soft);border-left:2px solid var(--accent);padding-left:8px;margin:4px 0 6px;line-height:1.35}
+  .pm ul{margin:0;padding-left:14px;font-size:10px} .pm li{margin:2px 0;color:var(--ink-soft)}
+
+  .tier{border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--surface);margin-bottom:8px}
+  .tier-l{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:10.5px;font-weight:600;padding:4px 9px;border-radius:7px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink)}
+  .chip .s{color:var(--muted);font-weight:400}
+
+  .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin:8px 0 2px}
+  .flow .fstep{flex:1;min-width:104px;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:9px 11px}
+  .flow .fstep .fn{display:inline-flex;width:17px;height:17px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;font-weight:700;align-items:center;justify-content:center}
+  .flow .fstep b{display:block;color:var(--ink);font-size:11px;font-weight:650;margin:5px 0 2px;line-height:1.2}
+  .flow .fstep .sub{display:block;color:var(--muted);font-size:9.5px;line-height:1.3}
+  .flow .farrow{align-self:center;color:var(--line-strong);font-weight:700;flex:none;font-size:13px}
+  .flow .fstep.hero{border-color:var(--accent);background:var(--accent-soft)}
+  .flow .fstep.hero b{color:var(--accent-deep)} .flow .fstep.hero .sub{color:var(--accent-deep);opacity:.85}
+
+  .foot{font-size:9.5px;color:var(--muted);margin-top:5px;line-height:1.4}
+  .printbtn{position:fixed;right:18px;bottom:18px;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 15px;font-size:12px;font-weight:650;cursor:pointer;font-family:var(--font-sans);box-shadow:0 10px 30px rgba(11,31,58,.2)}
+
+  @page{ size:A4; margin:14mm 14mm; }
+  @media print{
+    .printbtn{display:none}
+    main{max-width:none;padding:0}
+    .card,.twrap,.callout,.wk,.facts,.pm,.tier,.grid,.pcard,.gate,.money{break-inside:avoid}
+    .eyebrow{break-after:avoid}
+    .titleblock{break-inside:avoid;break-after:avoid}
+    h2,h3{break-after:avoid}
+    table{break-inside:auto} thead{display:table-header-group} tr{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- ============ COVER ============ -->
+  <header class="cover">
+    <div class="kicker">Phase 1 of 2 &middot; Pilot MVP &middot; LINK</div>
+    <h1>LINK: launch-ready in <em>six weeks</em>.</h1>
+    <p class="sub">A two-phase plan for LINK, a marketplace where any creator sells paid one-to-one video calls to the audience that already follows them. <strong>Phase 1</strong> hardens the existing prototype into a live, revenue-generating pilot in six weeks. <strong>Phase 2</strong> scales that pilot into the full platform, on the same codebase, once the numbers prove it. Together the two phases are the same <strong>$55,000 to $75,000</strong> program, staged around a proof point.</p>
+    <div class="facts">
+      <div><div class="l">Phase 1 &middot; Pilot</div><div class="v">Six weeks</div></div>
+      <div><div class="l">Phase 1 investment</div><div class="v accent">$8,000&ndash;$10,000</div></div>
+      <div><div class="l">Phase 2 &middot; Scale</div><div class="v small">14 weeks &middot; $47k&ndash;$65k</div></div>
+      <div><div class="l">Full program</div><div class="v small">20 weeks &middot; $55k&ndash;$75k</div></div>
+    </div>
+  </header>
+
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">Executive summary</div>
+      <h2>Prove it in six weeks, then scale it</h2>
+    </div>
+    <p class="lede">LINK already has a working prototype, a real booking flow, creator profiles, and Stripe-ready settings. Rather than rebuild from scratch, <strong>Phase 1 hardens what exists</strong> into a launchable pilot: we fix the trust-breaking gaps, wire real payments and social verification, and give creators a proper onboarding and dashboard. A small senior team, managed services, and the existing codebase keep it fast and affordable, live in <strong>six weeks for $8,000 to $10,000</strong>. Phase 1 is deliberately narrow, it is built to answer one question: <strong>do people actually book and pay?</strong> When the pilot's numbers clear the gate, <strong>Phase 2</strong> extends the same codebase into the full platform. Phase 1 is the first instalment of a <strong>$55,000 to $75,000</strong> program, not an extra cost on top of it. This document condenses our full discovery, market, audit, design, architecture, roadmap, and budget into one plan.</p>
+    <div class="grid g4" style="margin-top:11px">
+      <div class="card stat"><div class="k accent">Six weeks</div><div class="l">Kickoff to live pilot</div></div>
+      <div class="card stat"><div class="k accent" style="font-size:16px">$8,000&ndash;$10,000</div><div class="l">Phase 1 investment</div></div>
+      <div class="card stat"><div class="k" style="font-size:16px">$55k&ndash;$75k</div><div class="l">Full two-phase program</div></div>
+      <div class="card stat"><div class="k">85<span class="u">%</span></div><div class="l">Creator take</div></div>
+    </div>
+  </section>
+
+  <!-- ============ THE TWO-PHASE PLAN ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">How the engagement is structured</div>
+      <h2>One program, two phases, one gate between them</h2>
+    </div>
+    <p class="lede">Phase 1 is not a discounted version of Phase 2, it is the evidence that Phase 2 is worth funding. Both phases are built on the same stack, so the pilot codebase becomes the foundation of the platform rather than a prototype you throw away.</p>
+
+    <div class="ladder">
+      <div class="pcard">
+        <div class="pn">Phase 1 &middot; now</div>
+        <div class="pt">Pilot MVP</div>
+        <div class="pmeta">Six weeks &middot; <b>$8,000&ndash;$10,000</b> &middot; 2 seniors + PM</div>
+        <div class="pgoal">Prove that real creators onboard, and real customers book and pay.</div>
+        <ul>
+          <li>One niche, twenty-five to fifty hand-recruited creators</li>
+          <li>Every core loop working end to end, at pilot depth</li>
+          <li>Live payments, real payouts, real calls</li>
+          <li>United States only, single currency</li>
+        </ul>
+      </div>
+      <div class="ladder-arrow">&rarr;</div>
+      <div class="pcard two">
+        <div class="pn">Phase 2 &middot; after the gate</div>
+        <div class="pt">Scale Platform</div>
+        <div class="pmeta">14 weeks &middot; <b>$47,000&ndash;$65,000</b> &middot; 5-person pod</div>
+        <div class="pgoal">Turn proven demand into a durable, defensible business.</div>
+        <ul>
+          <li>Full research, design system, and usability testing</li>
+          <li>Every capability deepened (see the table below)</li>
+          <li>Trust, safety, disputes, and fraud tooling</li>
+          <li>Multi-niche growth, scale hardening, analytics</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="gate">
+      <div class="gt">The gate &middot; what unlocks Phase 2</div>
+      <p style="margin:0 0 7px;font-size:11px;color:var(--ink-soft)">Phase 2 is not an upsell, it is what happens when the pilot clears four agreed thresholds. If the pilot misses them, we have learned that cheaply, and we fix the pilot instead of funding a platform.</p>
+      <div class="gmetrics">
+        <div class="gm"><div class="gv">Trending up</div><div class="gl">Completed paid calls, week over week</div></div>
+        <div class="gm"><div class="gv">over 55%</div><div class="gl">Creators who become bookable</div></div>
+        <div class="gm"><div class="gv">over 80%</div><div class="gl">Booked calls that happen</div></div>
+        <div class="gm"><div class="gv">over 4.6&#9733;</div><div class="gl">Average rating</div></div>
+      </div>
+    </div>
+
+    <div class="money">
+      <div class="m1"><div class="ml">Phase 1 &middot; Pilot</div><div class="mv">$8,000&ndash;$10,000</div></div>
+      <div class="mop">+</div>
+      <div class="m2"><div class="ml">Phase 2 &middot; Scale</div><div class="mv">$47,000&ndash;$65,000</div></div>
+      <div class="m3"><div class="ml">Full program</div><div class="mv">$55,000&ndash;$75,000</div></div>
+    </div>
+    <p class="foot"><strong>The pilot is the first slice of the same budget, not an addition to it.</strong> The two phases together land at the same $55,000 to $75,000 as a single-phase build, staged so the larger commitment is only made once the pilot has proved demand. Only Phase 1 is being committed to today; Phase 2 is quoted and signed separately at the gate, when scope is informed by real pilot data rather than assumptions.</p>
+  </section>
+
+  <!-- ============ OPPORTUNITY ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">The opportunity</div>
+      <h2>Own the long tail the big players ignore</h2>
+    </div>
+    <p>The paid-access category is proven at the top by curated networks, but the <strong>everyday creator</strong>, the coach, trainer, tutor, musician, barber, or gamer with a real but modest following, has no clean, trustworthy way to charge for their time. They stitch together a scheduling link, a payment app, and a video tool. LINK replaces all of it with one link.</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th style="width:20%">Product</th><th>Model</th><th style="width:15%">Self-serve for small creators</th><th style="width:15%">Book, pay, and call in one place</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Intro.co</strong></td><td>Curated expert calls</td><td class="cross">No</td><td class="tick">Yes</td></tr>
+          <tr><td><strong>Cameo</strong></td><td>Personalized shout-outs</td><td class="cross">No</td><td class="tick">Yes</td></tr>
+          <tr><td><strong>Calendly / Linktree</strong></td><td>Scheduling and link-in-bio</td><td class="tick">Yes</td><td class="cross">No</td></tr>
+          <tr><td><strong>Patreon / Ko-fi</strong></td><td>Memberships and tips</td><td class="tick">Yes</td><td class="cross">No</td></tr>
+          <tr style="background:var(--accent-soft)"><td><strong>LINK</strong></td><td>Open marketplace, paid one-to-one calls</td><td class="tick">Yes</td><td class="tick">Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-top:0">What makes it different</h3>
+        <p style="margin:0;font-size:11.5px">The only marketplace where <strong>any</strong> creator sells live one-to-one access in a single link, with booking, payment, video, and payout built in. Not curated, not a shout-out, not a subscription, not a toolkit you assemble yourself.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where Phase 1 starts</h3>
+        <div class="chips" style="margin-top:2px">
+          <span class="chip">Coaches and consultants</span><span class="chip">Skill teachers</span><span class="chip">Creators and talent</span><span class="chip">Beauty and personal care</span>
+        </div>
+        <p class="foot" style="margin-top:8px">The pilot launches narrow (fitness and wellness coaches) and proves that bookings happen. Phase 2 repeats the playbook in the next niches.</p>
+      </div>
+    </div>
+    <h3>How we measure success, and what unlocks Phase 2</h3>
+    <div class="grid g4">
+      <div class="card stat"><div class="k accent" style="font-size:14px">Completed calls each week</div><div class="l">The number that matters most</div></div>
+      <div class="card stat"><div class="k">over 55<span class="u">%</span></div><div class="l">Creators who become bookable</div></div>
+      <div class="card stat"><div class="k">over 80<span class="u">%</span></div><div class="l">Booked calls that happen</div></div>
+      <div class="card stat"><div class="k">over 4.6<span class="u">&#9733;</span></div><div class="l">Average rating</div></div>
+    </div>
+    <p class="foot">These same four numbers are the Phase 2 gate. We instrument them from day one of the pilot and report them weekly, so the decision to scale is made on evidence, not opinion.</p>
+  </section>
+
+  <!-- ============ AUDIT ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">What we found</div>
+      <h2>What we found in the prototype</h2>
+    </div>
+    <p>We reviewed the live build across roughly twenty-one screens (marketing, sign-in, browse, the creator profile and booking panel, settings, and the signed-in app). The verdict: <strong>stronger than a typical throwaway prototype</strong>, with a working booking surface, but four structural gaps stand between it and a trustworthy, revenue-generating product.</p>
+    <div class="grid g2" style="margin-top:8px">
+      <div class="card">
+        <h3 style="margin-top:0">Already works well</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li>Creator profile and booking panel (tiered offers, availability, trust footer)</li>
+          <li>Thorough settings, including Stripe payout configuration</li>
+          <li>Browse, categories, and solid content pages</li>
+          <li>A coherent coral visual identity</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Four structural gaps</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li><span class="pill p0">Critical</span> No social sign-in or verified followers, the core concept</li>
+          <li><span class="pill p0">Critical</span> Creator and fan experiences are mixed together</li>
+          <li><span class="pill p0">Critical</span> Invented, inconsistent numbers (a legal risk)</li>
+          <li><span class="pill p1">High</span> No creator onboarding or real dashboard; payments look unfinished</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Our Phase 1 plan: keep, fix, and build</h3>
+    <div class="grid g3">
+      <div class="card"><span class="pill keep">Keep</span><ul class="clean" style="margin-top:7px;font-size:11px;margin-bottom:0"><li>Booking flow and creator profile</li><li>Stripe-ready settings and payouts</li><li>Browse, categories, content pages</li><li>The coral visual identity</li></ul></div>
+      <div class="card"><span class="pill fix">Fix</span><ul class="clean" style="margin-top:7px;font-size:11px;margin-bottom:0"><li>Remove the invented numbers and claims</li><li>Separate the creator and fan experiences</li><li>One landing page, one design system</li><li>Layout bugs and accessibility</li></ul></div>
+      <div class="card"><span class="pill build">Build</span><ul class="clean" style="margin-top:7px;font-size:11px;margin-bottom:0"><li>Social sign-in and verified followers</li><li>Live checkout with protected payments</li><li>Creator onboarding and dashboard</li><li>Reviews, reminders, and basic admin tools</li></ul></div>
+    </div>
+    <div class="callout good"><span class="tag">Why Phase 1 is affordable</span>Because we build on the working prototype rather than starting from zero, the budget goes into a short list of high-value fixes and additions, not a rebuild. That is what makes six weeks and $8,000 to $10,000 realistic, and it is why the pilot codebase carries straight into Phase 2 instead of being replaced.</div>
+  </section>
+
+  <!-- ============ PERSONAS ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">Who we design for</div>
+      <h2>Three people decide if LINK works</h2>
+    </div>
+    <div class="grid g3" style="margin-top:8px">
+      <div class="pm">
+        <div class="ph"><div class="av">M</div><div><div class="nm">Maya, 29</div><div class="rl">Creator &middot; fitness coach</div></div></div>
+        <div class="q">&ldquo;I just want to charge for a call without looking sketchy.&rdquo;</div>
+        <ul><li>Wants income and credibility</li><li>Hates chasing payments and no-shows</li><li>Needs a five-minute setup, one link</li></ul>
+      </div>
+      <div class="pm">
+        <div class="ph"><div class="av" style="background:var(--accent-deep)">D</div><div><div class="nm">Devon, 34</div><div class="rl">Customer &middot; the fan</div></div></div>
+        <div class="q">&ldquo;I would pay for twenty minutes with someone who actually knows.&rdquo;</div>
+        <ul><li>Needs proof the creator is real</li><li>Fears paying and getting ghosted</li><li>Wants to join in one tap, no downloads</li></ul>
+      </div>
+      <div class="pm">
+        <div class="ph"><div class="av" style="background:#0e7490">A</div><div><div class="nm">Alex, 41</div><div class="rl">Administrator &middot; platform operations</div></div></div>
+        <div class="q">&ldquo;I need to see problems before creators complain about them.&rdquo;</div>
+        <ul><li>Keeps the marketplace trustworthy</li><li>Resolves disputes and payout issues</li><li>Needs dashboards and one-click actions</li></ul>
+      </div>
+    </div>
+    <div class="callout"><span class="tag">What the journeys tell us</span>Every side has one emotional low point, the visitor&rsquo;s skepticism, the customer&rsquo;s no-show anxiety, the creator&rsquo;s pricing doubt, and the administrator&rsquo;s alarm. The pilot&rsquo;s job is to turn each one into confidence with verification, reminders, clear refunds, and proactive alerts.</div>
+  </section>
+
+  <!-- ============ USER FLOW ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">User flow</div>
+      <h2>How people move through LINK</h2>
+    </div>
+    <p class="lede" style="margin-bottom:4px">The person selling calls is the creator, the influencer, anyone with an audience. Their journey begins by connecting that audience, which fills their profile and verifies their following.</p>
+    <h3 style="margin-top:10px">Creator or influencer: from sign-up to a shareable link</h3>
+    <div class="flow">
+      <div class="fstep hero"><span class="fn">1</span><b>Connect their main social account</b><span class="sub">Imports the profile and verifies the follower count</span></div>
+      <div class="farrow">&rarr;</div>
+      <div class="fstep"><span class="fn">2</span><b>Set the offer</b><span class="sub">Call length and price</span></div>
+      <div class="farrow">&rarr;</div>
+      <div class="fstep"><span class="fn">3</span><b>Add availability</b><span class="sub">Times, in their own time zone</span></div>
+      <div class="farrow">&rarr;</div>
+      <div class="fstep"><span class="fn">4</span><b>Connect payouts</b><span class="sub">Can wait until the first booking</span></div>
+      <div class="farrow">&rarr;</div>
+      <div class="fstep"><span class="fn">5</span><b>Share the link</b><span class="sub">The profile goes live right away</span></div>
+    </div>
+    <h3>Customer: from discovery to a completed call</h3>
+    <div class="flow">
+      <div class="fstep"><span class="fn">1</span><b>Discover a creator</b><span class="sub">Through their link or a search</span></div>
+      <div class="farrow">&rarr;</div>
+      <div class="fstep"><span class="fn">2</span><b>Pick a time</b><span class="sub">Shown in their own time zone</span></div>
+      <div class="farrow">&rarr;</div>
+      <div class="fstep"><span class="fn">3</span><b>Pay securely</b><span class="sub">Funds are held until the call</span></div>
+      <div class="farrow">&rarr;</div>
+      <div class="fstep"><span class="fn">4</span><b>Join the call</b><span class="sub">One tap in the browser, with reminders</span></div>
+      <div class="farrow">&rarr;</div>
+      <div class="fstep"><span class="fn">5</span><b>Leave a review</b><span class="sub">Then rebook or tip</span></div>
+    </div>
+  </section>
+
+  <!-- ============ ARCHITECTURE ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">How we build it</div>
+      <h2>Buy the hard parts, build the parts that set LINK apart</h2>
+    </div>
+    <div class="tier"><div class="tier-l">What people see</div><div class="chips"><span class="chip">Next.js and React <span class="s">fast public profiles</span></span><span class="chip">TypeScript</span><span class="chip">Progressive Web App <span class="s">app-like, no app store</span></span></div></div>
+    <div class="tier"><div class="tier-l">Behind the scenes</div><div class="chips"><span class="chip">Node.js</span><span class="chip">PostgreSQL <span class="s">reliable for money</span></span><span class="chip">Supabase <span class="s">accounts and storage</span></span></div></div>
+    <div class="tier"><div class="tier-l">Money, video, and hosting</div><div class="chips"><span class="chip">Stripe Connect <span class="s">payouts and identity checks</span></span><span class="chip">Daily or LiveKit <span class="s">managed video calls</span></span><span class="chip">Vercel and Cloudflare</span></div></div>
+    <div class="callout"><span class="tag">One stack across both phases</span>This is the same architecture the Phase 2 platform is built on. Phase 2 adds to it (queues, caching, observability, analytics) rather than replacing it, so <strong>every hour of Phase 1 engineering carries forward</strong>. Our thinking: LINK&rsquo;s advantage is the experience and the audience, not the plumbing. We buy payment, video, and accounts as managed services and spend the hours on the onboarding and booking that actually win creators.</div>
+  </section>
+
+  <!-- ============ SCOPE: DEPTH TABLE ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">Scope of work</div>
+      <h2>Same capabilities, two depths</h2>
+    </div>
+    <p class="lede">Phase 1 does not cut features, it builds each one to pilot depth: enough to take real money from real customers in one niche, and nothing more. Phase 2 takes the same list and hardens it for scale. This is the honest difference between the two numbers.</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th class="cap">Capability</th><th class="h1c" style="width:39%">Phase 1 &middot; Pilot (6 weeks)</th><th class="h2c" style="width:39%">Phase 2 &middot; Scale (16 weeks)</th></tr></thead>
+        <tbody>
+          <tr><td class="cap">Social sign-in</td><td class="c1"><strong>One platform</strong> plus a manual verification fallback</td><td class="c2">All three platforms, automated follower refresh, Meta and TikTok app review</td></tr>
+          <tr><td class="cap">Creator onboarding</td><td class="c1">A working setup flow, offers, pricing, availability, payout</td><td class="c2">Usability-tested and optimised for activation, validated on an interactive prototype</td></tr>
+          <tr><td class="cap">Creator dashboard</td><td class="c1">Earnings-first single screen</td><td class="c2">Full analytics, funnels, and activation nudges</td></tr>
+          <tr><td class="cap">Payments and payouts</td><td class="c1">Stripe Connect checkout and payouts, <strong>United States and US dollars only</strong></td><td class="c2">Escrow release logic, fraud screening, dispute tooling, tax-reporting edge cases</td></tr>
+          <tr><td class="cap">Video calls</td><td class="c1">Managed provider, prebuilt call interface</td><td class="c2">Pre-call device check, lobby, dial-in fallback, call-quality monitoring</td></tr>
+          <tr><td class="cap">Reminders</td><td class="c1"><strong>Email only</strong></td><td class="c2">Email, web push, and text messages for critical reminders, on a scheduled queue</td></tr>
+          <tr><td class="cap">Reviews and ratings</td><td class="c1">Rating plus written review</td><td class="c2">Review prompts, trust-flywheel mechanics, and moderation</td></tr>
+          <tr><td class="cap">Messaging</td><td class="c1">Simple gated messaging</td><td class="c2">Full gated messaging with off-platform leakage controls</td></tr>
+          <tr><td class="cap">Admin tools</td><td class="c1">Essentials, members, payments, disputes</td><td class="c2">Trust and safety, moderation hooks, suspend and refund tooling, audit logs</td></tr>
+          <tr><td class="cap">Discovery</td><td class="c1">Browse and categories, already built</td><td class="c2">Real search with ranking and relevance</td></tr>
+          <tr><td class="cap">Design</td><td class="c1">Polish plus a light token set</td><td class="c2">A full design system in Figma and code, across every screen</td></tr>
+          <tr><td class="cap">Quality assurance</td><td class="c1">Cross-device testing and an accessibility pass</td><td class="c2">Full test plans, payment edge cases, WCAG 2.2 AA, user-acceptance testing</td></tr>
+          <tr><td class="cap">Reach</td><td class="c1">One niche, twenty-five to fifty creators</td><td class="c2">Multi-niche growth, scale hardening, growth experiments</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid g2" style="margin-top:9px">
+      <div class="card">
+        <h3 style="margin-top:0">Included in Phase 1, end to end</h3>
+        <ul class="check" style="font-size:11px;margin-bottom:0">
+          <li>Social sign-in with a verified follower count</li>
+          <li>Creator onboarding: offers, pricing, availability, payout</li>
+          <li>An earnings-first creator dashboard</li>
+          <li>Live checkout, protected payments, and payouts</li>
+          <li>Booking, confirmation, and reminders</li>
+          <li>Reviews and ratings; simple gated messaging</li>
+          <li>Essential admin: members, payments, disputes</li>
+          <li>Design polish, a token set, and an accessibility pass</li>
+          <li>Testing, deployment, and pilot launch support</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Beyond both phases</h3>
+        <ul class="clean" style="font-size:11px">
+          <li>Native mobile apps (a web app in both phases)</li>
+          <li>Group calls, packages, and subscriptions</li>
+          <li>Paid written questions, tips, and gifting</li>
+          <li>Creator pro tier and advanced analytics</li>
+          <li>Call recording and automatic summaries</li>
+          <li>Multiple currencies and international payouts</li>
+        </ul>
+        <p class="foot" style="margin-top:6px">These are sequenced after Phase 2, against what the live product actually shows us.</p>
+      </div>
+    </div>
+    <div class="callout"><span class="tag">One long-lead item, handled</span>Meta and TikTok app review can take several weeks, longer than the pilot itself. Phase 1 therefore ships with <strong>one platform plus manual verification</strong> as the deliberate design, and we submit the platform reviews in Week 1 so approvals land during Phase 2 rather than blocking launch.</div>
+  </section>
+
+  <!-- ============ ROADMAP ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">Phase 1 delivery</div>
+      <h2>The six-week plan</h2>
+    </div>
+    <div class="weeks">
+      <div class="wk"><div class="wn">Week 1</div><div class="wt">Discovery and fix plan</div><div class="wd">Audit sign-off, locked scope, and a design and build plan.</div></div>
+      <div class="wk"><div class="wn">Week 2</div><div class="wt">Design polish</div><div class="wd">Token set, key screens, and layout and trust fixes.</div></div>
+      <div class="wk"><div class="wn">Week 3</div><div class="wt">Identity and onboarding</div><div class="wd">Social sign-in, verified followers, and creator setup.</div></div>
+      <div class="wk"><div class="wn">Week 4</div><div class="wt">Payments and calls</div><div class="wd">Live checkout, protected payments, payouts, booking.</div></div>
+      <div class="wk"><div class="wn">Week 5</div><div class="wt">Trust and admin</div><div class="wd">Reviews, reminders, admin, and dashboard polish.</div></div>
+      <div class="wk"><div class="wn">Week 6</div><div class="wt">Testing and launch</div><div class="wd">Cross-device testing, accessibility, and go-live.</div></div>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th style="width:24%">Milestone</th><th>Deliverable</th><th style="width:14%">When</th></tr></thead>
+        <tbody>
+          <tr><td>Milestone 1 &middot; Scope locked</td><td>Validated fix and build list, design plan, success measures instrumented</td><td>Week 1</td></tr>
+          <tr><td>Milestone 2 &middot; Design ready</td><td>Token set and key screens, trust and layout fixes applied</td><td>Week 2</td></tr>
+          <tr><td>Milestone 3 &middot; Core built</td><td>Social sign-in, onboarding, dashboard, live payments</td><td>Week 4</td></tr>
+          <tr><td>Milestone 4 &middot; Pilot live</td><td>Reviews, admin, testing, accessibility, production launch</td><td>Week 6</td></tr>
+          <tr class="total"><td>Gate review</td><td>Four weeks of live pilot data against the gate; Phase 2 scoped and quoted</td><td>Week 10</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="foot">Week 1 doubles as the discovery gate for the whole program. There is no separate paid discovery phase to buy first, the pilot's first week locks scope and instruments the metrics that later decide Phase 2.</p>
+  </section>
+
+  <!-- ============ DELIVERABLES ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">Deliverables</div>
+      <h2>What you receive from Phase 1</h2>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th style="width:22%">Area</th><th>What you get</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Strategy</strong></td><td>Condensed discovery, a validated scope, and the way we will measure success.</td></tr>
+          <tr><td><strong>User experience</strong></td><td>Information architecture, the core user journeys, and key interactive screens.</td></tr>
+          <tr><td><strong>Interface design</strong></td><td>A token set and component base, high-fidelity pilot screens, and an accessibility pass.</td></tr>
+          <tr><td><strong>Development</strong></td><td>A hardened pilot: social sign-in, creator onboarding, dashboard, live payments, video, reviews, and admin tools, deployed and documented.</td></tr>
+          <tr><td><strong>Quality</strong></td><td>A test plan, cross-device and payment testing, plus monitoring and error tracking.</td></tr>
+          <tr><td><strong>Launch</strong></td><td>Production deployment, a runbook, and two weeks of post-launch pilot support.</td></tr>
+          <tr><td><strong>Evidence</strong></td><td>Weekly metric reporting against the four gate numbers, and a Phase 2 scope and quote informed by it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ TEAM ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">Team and ways of working</div>
+      <h2>A small, senior team</h2>
+    </div>
+    <div class="grid g2" style="margin-top:6px">
+      <div class="card">
+        <h3 style="margin-top:0">The Phase 1 team</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li><strong>Product designer</strong>, journeys, token set, and screens</li>
+          <li><strong>Full-stack developer</strong>, payments, video, onboarding, and admin</li>
+          <li><strong>Part-time project manager</strong>, delivery, testing, and launch</li>
+        </ul>
+        <p class="foot" style="margin-top:6px">Phase 2 expands the same team to a five-person pod: a second engineer, a dedicated designer, and fractional QA.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">How we work with you</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li><strong>A weekly demo</strong> and a shared channel, with one point of contact</li>
+          <li><strong>A visible task list</strong> with agreed changes to scope</li>
+          <li><strong>Quality checks on every feature</strong>, including payment edge cases and accessibility</li>
+          <li><strong>Managed deployment</strong> with monitoring and runbooks</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRACTION ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">Getting started</div>
+      <h2>How the pilot earns its first bookings</h2>
+    </div>
+    <div class="grid g3" style="margin-top:6px">
+      <div class="card"><h3 style="margin-top:0">Hands-on onboarding</h3><p style="margin:0;font-size:11px">We hand-recruit the first twenty-five to fifty creators in one niche and personally guide them to their first paid call. Momentum is built, not hoped for.</p></div>
+      <div class="card"><h3 style="margin-top:0">Creators bring the demand</h3><p style="margin:0;font-size:11px">Each creator brings their own audience. We make sharing effortless with a beautiful profile link and ready-made social posts.</p></div>
+      <div class="card"><h3 style="margin-top:0">Trust builds on itself</h3><p style="margin:0;font-size:11px">Completed calls produce reviews, reviews lift bookings, and more bookings attract more creators. We seed it with a guarantee and easy refunds.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ REVENUE ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">Making money and growing</div>
+      <h2>How LINK earns, and how it grows</h2>
+    </div>
+    <div class="grid g2" style="margin-top:6px">
+      <div class="card">
+        <h3 style="margin-top:0">How LINK earns</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li><strong>Commission</strong>, fifteen percent of every completed booking</li>
+          <li><strong>Service fee</strong>, a small charge to the customer that covers processing so creators keep their full 85 percent</li>
+          <li><strong>Later on</strong>, a creator pro plan, featured placement, and tips</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where it goes next</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li>Paid written questions and packages</li>
+          <li>Group sessions and subscriptions</li>
+          <li>Creator analytics and native apps</li>
+          <li>Multiple currencies and global payouts</li>
+        </ul>
+        <p class="foot" style="margin-top:6px">Sequenced by what the live pilot actually shows us.</p>
+      </div>
+    </div>
+    <div class="callout"><span class="tag">Our commitment</span>We build the pilot to be the start of the relationship, not the end. Phase 2 is already scoped and costed, so the moment the pilot proves demand, there is no re-pitch, no re-procurement, and no restart, we continue on the same codebase as your product partner.</div>
+  </section>
+
+  <!-- ============ PHASE 2 DETAIL ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">Phase 2 &middot; Scale Platform</div>
+      <h2>What the platform build contains</h2>
+    </div>
+    <p class="lede">Set out in full so you can see what the second commitment buys before you make the first one. Phase 2 is <strong>quoted at the gate</strong>, when four weeks of real pilot data replace the assumptions below, but the shape does not change: fourteen weeks, about 1,479 hours, a five-person pod, and $47,000 to $65,000, completing the $55,000 to $75,000 program.</p>
+
+    <div class="grid g4" style="margin:11px 0">
+      <div class="card stat"><div class="k accent">14<span class="u">wks</span></div><div class="l">Gate to platform launch</div></div>
+      <div class="card stat"><div class="k">~1,479<span class="u">hrs</span></div><div class="l">Design, build and QA</div></div>
+      <div class="card stat"><div class="k">5</div><div class="l">Person pod</div></div>
+      <div class="card stat"><div class="k accent" style="font-size:16px">$47k&ndash;$65k</div><div class="l">Phase 2 investment</div></div>
+    </div>
+
+    <h3>Scope of work, time and cost</h3>
+    <div class="twrap">
+      <table>
+        <thead><tr><th style="width:17%">Stage</th><th style="width:9%">When</th><th>What it builds</th><th class="num" style="width:10%">Effort</th><th class="num" style="width:15%">Investment</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>1 &middot; Pilot review and validated scope</strong></td><td>W1&ndash;2</td>
+            <td>Read the four gate metrics and the funnel behind them; interview creators and customers from the live cohort; re-cut the feature list against observed behaviour rather than assumption; confirm the Phase 2 scope and fix the quote.</td>
+            <td class="num">60 hrs</td><td class="num">$1,900&ndash;$2,600</td>
+          </tr>
+          <tr>
+            <td><strong>2 &middot; User experience</strong></td><td>W2&ndash;4</td>
+            <td>Full information architecture across creator, customer and administrator; every core flow mapped; an interactive prototype; usability testing with real users and the findings applied.</td>
+            <td class="num">150 hrs</td><td class="num">$4,800&ndash;$6,600</td>
+          </tr>
+          <tr>
+            <td><strong>3 &middot; Design system and screens</strong></td><td>W3&ndash;6</td>
+            <td>A documented design system, tokens and components, in Figma and in code; high-fidelity designs for every screen in both roles; responsive specifications. Replaces the Phase 1 token set with a system the team can build against.</td>
+            <td class="num">180 hrs</td><td class="num">$5,700&ndash;$7,900</td>
+          </tr>
+          <tr>
+            <td><strong>4 &middot; Identity and social at scale</strong></td><td>W5&ndash;7</td>
+            <td>The remaining two platform connections; automated follower refresh; completion of the Meta and TikTok app reviews submitted back in Phase 1; verification states, re-verification and revoked-access handling.</td>
+            <td class="num">140 hrs</td><td class="num">$4,400&ndash;$6,100</td>
+          </tr>
+          <tr>
+            <td><strong>5 &middot; Booking engine</strong></td><td>W6&ndash;9</td>
+            <td>Availability rules, buffers, blackout dates and recurring slots; time-zone and daylight-saving correctness; rescheduling and cancellation flows; calendar synchronisation; double-booking prevention under concurrency.</td>
+            <td class="num">175 hrs</td><td class="num">$5,600&ndash;$7,700</td>
+          </tr>
+          <tr>
+            <td><strong>6 &middot; Payments and money operations</strong></td><td>W7&ndash;10</td>
+            <td>Escrow release logic and payout scheduling; dispute and chargeback tooling; fraud screening; automated refunds against policy; tax-reporting edge cases; reconciliation and ledger views for operations.</td>
+            <td class="num">175 hrs</td><td class="num">$5,600&ndash;$7,700</td>
+          </tr>
+          <tr>
+            <td><strong>7 &middot; Video reliability</strong></td><td>W8&ndash;10</td>
+            <td>Pre-call device and network check; lobby and waiting room; dial-in fallback; call-quality monitoring and alerting; no-show detection wired back into the payment state machine.</td>
+            <td class="num">140 hrs</td><td class="num">$4,400&ndash;$6,100</td>
+          </tr>
+          <tr>
+            <td><strong>8 &middot; Notifications</strong></td><td>W9&ndash;11</td>
+            <td>Web and mobile push; text messages for time-critical reminders; a scheduling queue so reminders survive restarts and retries; per-user preferences and unsubscribe handling.</td>
+            <td class="num">70 hrs</td><td class="num">$2,200&ndash;$3,100</td>
+          </tr>
+          <tr>
+            <td><strong>9 &middot; Reviews, search and messaging</strong></td><td>W9&ndash;11</td>
+            <td>Review prompts and the trust-flywheel mechanics that lift booking conversion; review moderation; real search with ranking, relevance, filters and categories; full gated messaging with off-platform leakage controls.</td>
+            <td class="num">125 hrs</td><td class="num">$4,000&ndash;$5,500</td>
+          </tr>
+          <tr>
+            <td><strong>10 &middot; Admin, trust and safety</strong></td><td>W10&ndash;12</td>
+            <td>Reporting queue and moderation hooks; suspend, ban, refund and manual-payout tooling; identity-check status visibility; audit logs; operational dashboards so problems surface before creators complain.</td>
+            <td class="num">135 hrs</td><td class="num">$4,300&ndash;$5,900</td>
+          </tr>
+          <tr>
+            <td><strong>11 &middot; QA, hardening, accessibility and launch</strong></td><td>W12&ndash;14</td>
+            <td>Test plans per feature; payment edge-case coverage; the full cross-device matrix; WCAG 2.2 AA conformance; load and scale hardening; user-acceptance testing; production deployment, runbooks and thirty days of post-launch iteration.</td>
+            <td class="num">129 hrs</td><td class="num">$4,100&ndash;$5,800</td>
+          </tr>
+          <tr class="total"><td>Phase 2 total</td><td>14 weeks</td><td>Five-person pod: delivery lead, designer, lead engineer, engineer, quality assurance</td><td class="num">about 1,479 hours</td><td class="num">$47,000&ndash;$65,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="foot">Fractional delivery management and a ten to fifteen percent contingency are blended into the stage figures above. Excludes third-party running costs, which rise to roughly $150 to $600 a month at platform scale. Stage ranges reflect scope depth, and the low end assumes the leaner reading confirmed at the gate.</p>
+
+    <h3>Phase 2 milestones</h3>
+    <div class="twrap">
+      <table>
+        <thead><tr><th style="width:26%">Milestone</th><th>Deliverable</th><th style="width:12%">When</th></tr></thead>
+        <tbody>
+          <tr><td>P2 &middot; M1 &middot; Scope validated</td><td>Pilot data read, users interviewed, feature list re-cut, quote fixed</td><td>Week 2</td></tr>
+          <tr><td>P2 &middot; M2 &middot; Experience approved</td><td>Information architecture, all flows, interactive prototype, usability findings</td><td>Week 4</td></tr>
+          <tr><td>P2 &middot; M3 &middot; Design system ready</td><td>Tokens, components, and high-fidelity screens for every role</td><td>Week 6</td></tr>
+          <tr><td>P2 &middot; M4 &middot; Platform core</td><td>Multi-platform identity, booking engine at scale, calendar sync</td><td>Week 9</td></tr>
+          <tr><td>P2 &middot; M5 &middot; Money, video and trust</td><td>Escrow and disputes, video reliability, notifications, reviews, search, admin</td><td>Week 12</td></tr>
+          <tr><td>P2 &middot; M6 &middot; Platform live</td><td>Full QA, accessibility, user-acceptance testing, production launch</td><td>Week 14</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g2" style="margin-top:9px">
+      <div class="card">
+        <h3 style="margin-top:0">The Phase 2 team</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li><strong>Delivery lead</strong>, fractional, scope, priorities and client communication</li>
+          <li><strong>Product designer</strong>, full-time and front-loaded</li>
+          <li><strong>Lead full-stack engineer</strong>, architecture, payments and video</li>
+          <li><strong>Full-stack engineer</strong>, frontend, dashboards and integrations</li>
+          <li><strong>Quality assurance</strong>, fractional and back-loaded</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Phase 2 commercial terms</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li><strong>Fee:</strong> $47,000 to $65,000, fixed at the gate review</li>
+          <li><strong>Schedule:</strong> 30 percent at kickoff, then milestone-based, invoiced net fifteen</li>
+          <li><strong>Structures:</strong> milestone fixed-price or monthly time and materials</li>
+          <li><strong>After launch:</strong> thirty days of support, then an optional retainer</li>
+          <li><strong>Obligation:</strong> none, Phase 2 is signed separately or not at all</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><span class="tag">Why the numbers are trustworthy</span>Every hour above is inherited from our full discovery estimate, less the 156 hours Phase 1 already spends. Nothing is double-counted and nothing is rebuilt, which is why the two phases together cost the same as a single-phase build rather than more.</div>
+  </section>
+
+  <!-- ============ RISKS + INVESTMENT ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow">Risks and investment</div>
+      <h2>The main risks, and the budget</h2>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th style="width:28%">Risk</th><th>How we handle it</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Too few creators or customers early</strong></td><td>Start in one niche and personally guide the first creators to their first paid call. This is exactly what Phase 1 exists to test.</td></tr>
+          <tr><td><strong>Calls moving off the platform</strong></td><td>Make staying on the platform the easy, protected choice: payments, reminders, reviews, and gated messaging.</td></tr>
+          <tr><td><strong>Payment and identity compliance</strong></td><td>Stripe Connect handles identity checks, payouts, card security, and tax reporting; funds are held safely until the call is complete.</td></tr>
+          <tr><td><strong>Social platform approvals</strong></td><td>Phase 1 ships one platform plus manual verification by design; reviews are submitted in Week 1 so approvals land during Phase 2.</td></tr>
+          <tr><td><strong>Safety and bad actors</strong></td><td>Verification, reviews, reporting, and admin tools to suspend, refund, and resolve issues; deepened in Phase 2.</td></tr>
+          <tr><td><strong>Pilot misses the gate</strong></td><td>We have learned it for $8,000 to $10,000 instead of $75,000. We diagnose from real data and either re-cut the pilot or stop, before the platform spend.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Phase 1: time and cost breakdown</h3>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Stage</th><th style="width:15%">When</th><th class="num" style="width:14%">Effort</th><th class="num" style="width:22%">Investment</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Discovery and fix plan</strong></td><td>Week 1</td><td class="num">16 hours</td><td class="num">$800&ndash;$1,000</td></tr>
+          <tr><td><strong>Design polish and token set</strong></td><td>Week 2</td><td class="num">36 hours</td><td class="num">$1,800&ndash;$2,200</td></tr>
+          <tr><td><strong>Identity, onboarding, payments and calls</strong></td><td>Weeks 3&ndash;4</td><td class="num">60 hours</td><td class="num">$3,000&ndash;$3,800</td></tr>
+          <tr><td><strong>Reviews, reminders, admin and polish</strong></td><td>Week 5</td><td class="num">26 hours</td><td class="num">$1,400&ndash;$1,800</td></tr>
+          <tr><td><strong>Testing, accessibility and pilot launch</strong></td><td>Week 6</td><td class="num">18 hours</td><td class="num">$1,000&ndash;$1,200</td></tr>
+          <tr class="total"><td>Phase 1 total</td><td>Six weeks</td><td class="num">about 156 hours</td><td class="num">$8,000&ndash;$10,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="foot" style="margin-bottom:10px">Part-time project management and a small contingency are included in the figures above. This excludes ongoing third-party costs (Stripe fees, video minutes, email and text messages, and hosting, roughly $60 to $250 a month at pilot scale). Ranges are confirmed at scope sign-off in Week 1. This is not a binding quote.</p>
+
+    <h3>The full program: the same budget, staged</h3>
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Phase</th><th style="width:16%">Duration</th><th class="num" style="width:16%">Effort</th><th class="num" style="width:24%">Investment</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Phase 1 &middot; Pilot MVP</strong>, committed today</td><td>Six weeks</td><td class="num">about 156 hours</td><td class="num">$8,000&ndash;$10,000</td></tr>
+          <tr><td><strong>Phase 2 &middot; Scale Platform</strong>, quoted at the gate</td><td>14 weeks</td><td class="num">about 1,479 hours</td><td class="num">$47,000&ndash;$65,000</td></tr>
+          <tr class="total"><td>Full program</td><td>20 weeks</td><td class="num">about 1,635 hours</td><td class="num">$55,000&ndash;$75,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="foot" style="margin-bottom:10px">The full program totals the same <strong>1,635 hours and $55,000 to $75,000</strong> as a single-phase build, because the pilot's work carries into the platform rather than being repeated. Phase 2 figures are directional and are re-confirmed at the gate against real pilot data. Committing to Phase 1 does not commit you to Phase 2.</p>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-top:0">Commercial terms &middot; Phase 1</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li><strong>Fee:</strong> fixed at $8,000 to $10,000, set at Milestone 1</li>
+          <li><strong>Schedule:</strong> 40 percent to start, 30 percent at Milestone 3, 30 percent at launch</li>
+          <li><strong>Ownership:</strong> all code and designs transfer to you on final payment</li>
+          <li><strong>After launch:</strong> two weeks of pilot support are included</li>
+          <li><strong>Phase 2:</strong> scoped and quoted separately at the gate review, no obligation</li>
+        </ul>
+      </div>
+      <div class="card" style="background:var(--accent-soft);border-color:var(--accent-soft)">
+        <h3 style="margin-top:0;color:var(--accent-deep)">The next step</h3>
+        <p style="margin:0;font-size:11.5px;color:var(--accent-deep)">Approve <strong>Phase 1</strong> to begin Week 1. We lock scope in the first few days, then move straight into design and hardening, so LINK is taking real bookings within six weeks, and you reach the Phase 2 decision holding evidence instead of assumptions. A short kickoff call is all we need to begin.</p>
+      </div>
+    </div>
+    <p class="foot" style="margin-top:10px">Prepared for the LINK founder team. &ldquo;LINK&rdquo; is the client&rsquo;s working product name. All figures are directional and are finalized in a mutually signed statement of work.</p>
+  </section>
+
+</main>
+<button class="printbtn" onclick="window.print()">&#8595; Save as PDF</button>
+</body>
+</html>

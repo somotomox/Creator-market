@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LINK &middot; Milestone 1: Scope Locked</title>
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --good:#15803d; --good-bg:#e4f7ea; --warn:#b45309; --warn-bg:#fdf0d5; --crit:#b91c1c; --crit-bg:#fbe4e4;
+    --font-display:"Charter","Cambria","Georgia",serif;
+    --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --font-mono:"SFMono-Regular",ui-monospace,"Consolas","Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans)}
+  body{font-size:13px;line-height:1.52;-webkit-font-smoothing:antialiased}
+  main{max-width:920px;margin:0 auto;padding:24px 30px 60px}
+  p{margin:0 0 8px}
+  strong{font-weight:650;color:var(--ink)}
+  h1,h2,h3,h4{color:var(--ink);margin:0;text-wrap:balance;line-height:1.22}
+  .eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+  h2{font-size:18px;letter-spacing:-.01em;font-weight:700;margin:0 0 4px}
+  h3{font-size:12.5px;font-weight:700;margin:13px 0 6px;color:var(--ink)}
+  .lede{font-size:13px;color:var(--ink-soft);line-height:1.5}
+  .sec{padding-top:16px;border-top:1px solid var(--line);margin-top:16px}
+  .titleblock{margin-bottom:6px}
+  .num-badge{display:inline-block;font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--accent);margin-right:6px}
+
+  /* ---- document header ---- */
+  .dochead{border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:12px;padding:18px 20px;background:var(--surface)}
+  .dochead .kicker{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+  .dochead h1{font-size:27px;line-height:1.06;letter-spacing:-.025em;font-weight:750;margin:0 0 7px}
+  .dochead h1 em{font-family:var(--font-display);font-style:italic;font-weight:600;color:var(--accent)}
+  .dochead .sub{font-size:12.5px;color:var(--ink-soft);max-width:70ch;line-height:1.5;margin:0}
+  .metagrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:14px}
+  .metagrid > div{background:var(--bg);padding:9px 12px}
+  .metagrid .l{font-size:8px;color:var(--muted);font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+  .metagrid .v{font-size:12px;color:var(--ink);font-weight:700;margin-top:5px;line-height:1.25}
+  .metagrid .v.accent{color:var(--accent)}
+
+  .grid{display:grid;gap:11px}
+  .g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:1fr 1fr 1fr} .g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+
+  ul.clean{margin:5px 0 3px;padding-left:16px} ul.clean li{margin:3px 0}
+  ul.check{list-style:none;padding:0;margin:5px 0}
+  ul.check li{position:relative;padding-left:20px;margin:5px 0}
+  ul.check li::before{content:"";position:absolute;left:2px;top:5px;width:10px;height:5px;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+
+  table{border-collapse:collapse;width:100%;font-size:11.5px}
+  .twrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:9px 0}
+  th,td{text-align:left;padding:7px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--surface-2);font-size:9.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);font-weight:700}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  td.cap{font-weight:700;width:19%}
+  tr.total td{font-weight:700;background:var(--surface-2)}
+  .tick{color:var(--good);font-weight:700}.cross{color:var(--crit);font-weight:700}
+
+  .pill{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+  .pill.in{background:var(--good-bg);color:var(--good)}
+  .pill.out{background:var(--surface-2);color:var(--muted)}
+  .pill.p2{background:var(--accent-soft);color:var(--accent-deep)}
+  .pill.open{background:var(--warn-bg);color:var(--warn)}
+
+  /* to-confirm token */
+  .tc{display:inline-block;background:var(--warn-bg);color:var(--warn);border:1px dashed var(--warn);border-radius:5px;
+    padding:0 7px;font-size:10px;font-weight:700;letter-spacing:.03em;white-space:nowrap}
+
+  .callout{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--surface);border-radius:10px;padding:11px 14px;margin:11px 0}
+  .callout .tag{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px}
+  .callout.warn{border-left-color:var(--warn);background:var(--warn-bg)} .callout.warn .tag{color:var(--warn)}
+  .callout.good{border-left-color:var(--good)} .callout.good .tag{color:var(--good)}
+
+  /* open-decision rows */
+  .dec{border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:9px;padding:10px 13px;margin:7px 0;background:var(--bg)}
+  .dec .dh{display:flex;align-items:baseline;gap:8px;margin-bottom:3px}
+  .dec .dn{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--warn);flex:none}
+  .dec .dt{font-size:12px;font-weight:700;color:var(--ink);line-height:1.25}
+  .dec .dd{font-size:10.5px;color:var(--ink-soft);line-height:1.4;margin:0 0 7px}
+  .dec .opts{font-size:10.5px;color:var(--muted);margin-bottom:7px}
+  .dec .opts b{color:var(--ink-soft);font-weight:650}
+  .fill{border-bottom:1px solid var(--line-strong);min-height:17px;display:block;margin-top:3px}
+  .fill-l{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+  /* dependency checklist */
+  .dep{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+  .dep:last-child{border-bottom:none}
+  .box{width:13px;height:13px;border:1.5px solid var(--line-strong);border-radius:3px;flex:none;margin-top:2px}
+  .dep .dtx{flex:1;font-size:11.5px;line-height:1.4}
+  .dep .dtx b{display:block;color:var(--ink);font-weight:700}
+  .dep .dtx span{color:var(--muted);font-size:10.5px}
+  .dep .dwhen{font-size:9.5px;font-weight:700;color:var(--accent);white-space:nowrap;flex:none;margin-top:2px}
+
+  /* sign-off */
+  .sign{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:14px}
+  .sigbox .sl{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+  .sigrule{border-bottom:1px solid var(--ink);height:30px}
+  .sigcap{font-size:9.5px;color:var(--muted);margin-top:4px}
+
+  .foot{font-size:9.5px;color:var(--muted);margin-top:5px;line-height:1.4}
+  code{font-family:var(--font-mono);font-size:10.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;color:var(--ink-soft)}
+  .printbtn{position:fixed;right:18px;bottom:18px;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 15px;font-size:12px;font-weight:650;cursor:pointer;font-family:var(--font-sans);box-shadow:0 10px 30px rgba(11,31,58,.2)}
+
+  @page{ size:A4; margin:14mm 14mm; }
+  @media print{
+    .printbtn{display:none}
+    main{max-width:none;padding:0}
+    .card,.twrap,.callout,.dochead,.metagrid,.dec,.grid,.sign{break-inside:avoid}
+    .eyebrow{break-after:avoid}
+    .titleblock{break-inside:avoid;break-after:avoid}
+    h2,h3{break-after:avoid}
+    table{break-inside:auto} thead{display:table-header-group} tr{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- ============ HEADER ============ -->
+  <header class="dochead">
+    <div class="kicker">Phase 1 &middot; Milestone 1 &middot; Week 1 deliverable</div>
+    <h1>Scope <em>locked</em>.</h1>
+    <p class="sub">This document is the Milestone 1 deliverable for the LINK Pilot MVP. It records what Phase 1 will and will not build, the decisions taken in Week 1, how success will be measured, and what we need from you. Once both parties sign it, this is the definitive scope for the six-week pilot, and anything not written here is out of Phase 1 by default.</p>
+    <div class="metagrid">
+      <div><div class="l">Project</div><div class="v">LINK &middot; Pilot MVP</div></div>
+      <div><div class="l">Milestone</div><div class="v accent">M1 &middot; Scope locked</div></div>
+      <div><div class="l">Version</div><div class="v">1.0 &middot; for sign-off</div></div>
+      <div><div class="l">Issued</div><div class="v"><span class="tc">date</span></div></div>
+      <div><div class="l">Phase duration</div><div class="v">Six weeks</div></div>
+      <div><div class="l">Phase 1 fee</div><div class="v"><span class="tc">$8,000&ndash;$10,000</span></div></div>
+      <div><div class="l">Prepared by</div><div class="v">Oyolloo</div></div>
+      <div><div class="l">Sign-off by</div><div class="v"><span class="tc">client name</span></div></div>
+    </div>
+  </header>
+
+  <!-- ============ 1. PURPOSE ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">01</span>Purpose</div>
+      <h2>What this document does</h2>
+    </div>
+    <div class="grid g3" style="margin-top:8px">
+      <div class="card">
+        <h3 style="margin-top:0">It freezes the build list</h3>
+        <p style="margin:0;font-size:11px">Every capability in Phase 1 is listed below with a written acceptance test. If it is not in Section 4, it is not being built in the six weeks.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">It records the decisions</h3>
+        <p style="margin:0;font-size:11px">Week 1 exists to close the open questions the proposal deliberately left open. Section 3 is the list; each one must be answered before Week 2 begins.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">It sets the measuring stick</h3>
+        <p style="margin:0;font-size:11px">The four numbers that decide whether Phase 2 goes ahead are defined and instrumented here, in Week 1, not discovered later.</p>
+      </div>
+    </div>
+    <div class="callout"><span class="tag">Reading the markers</span>Anything shown as <span class="tc">to confirm</span> is an open item awaiting a decision or a value from you. Every one of them appears in Section 3 with the options and the consequence of each. When all are closed and both signatures are on Section 12, this document becomes version 1.1 &ldquo;locked&rdquo; and Week 2 starts.</div>
+  </section>
+
+  <!-- ============ 2. WHAT PHASE 1 IS FOR ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">02</span>The objective</div>
+      <h2>Phase 1 answers one question</h2>
+    </div>
+    <p class="lede"><strong>Do real creators onboard, and do real customers book and pay?</strong> Every scope decision in this document is settled by that question. A capability is in Phase 1 if the pilot cannot produce a completed, paid call without it, and out of Phase 1 if the pilot can run without it for six weeks in one niche.</p>
+    <div class="callout good"><span class="tag">The rule we applied</span>Phase 1 does not cut features, it builds each one to <strong>pilot depth</strong>: enough to take real money from real customers in one niche, in one country, and nothing more. Phase 2 takes the same list and hardens it for scale. This is why the scope table below reads as narrow versions of familiar capabilities rather than a shorter list.</div>
+  </section>
+
+  <!-- ============ 3. OPEN DECISIONS ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">03</span>Decisions to close this week</div>
+      <h2>Twelve open items</h2>
+    </div>
+    <p class="lede">These are the questions the proposal left open by design. Each one changes what gets built, so each must be answered before Week 2. Decisions taken here are written back into Section 4 and this document is reissued as the locked version.</p>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D1</span><span class="dt">Which social platform does Phase 1 connect?</span></div>
+      <p class="dd">Phase 1 builds <strong>one</strong> platform connection plus a manual verification fallback. Platform app review takes longer than the pilot itself, so we submit all reviews in Week 1 and ship with whichever integration is most valuable to the launch niche.</p>
+      <div class="opts"><b>Options:</b> Instagram &middot; TikTok &middot; YouTube. <b>Consequence:</b> determines the onboarding import, the verification badge, and which creator cohort onboards most smoothly.</div>
+      <span class="fill-l">Decision</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D2</span><span class="dt">Which niche is the beachhead?</span></div>
+      <p class="dd">The pilot recruits twenty-five to fifty creators in a single niche. Narrower is better, liquidity in one category beats thin coverage across many.</p>
+      <div class="opts"><b>Proposal recommendation:</b> fitness and wellness coaches. <b>Consequence:</b> sets the recruiting list, the category copy, and the seed content.</div>
+      <span class="fill-l">Decision</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D3</span><span class="dt">The Phase 1 fee, within the agreed range</span></div>
+      <p class="dd">The proposal fixes Phase 1 at $8,000 to $10,000, with the exact figure set at this milestone once scope depth is confirmed.</p>
+      <div class="opts"><b>Consequence:</b> the low end assumes the leanest reading of every row in Section 4; the high end assumes the fuller reading of the design and admin rows.</div>
+      <span class="fill-l">Agreed fee</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D4</span><span class="dt">Call durations and the price band creators may set</span></div>
+      <p class="dd">Creators need bounded options rather than a free-text price field, both for trust and to keep the checkout simple.</p>
+      <div class="opts"><b>Suggested:</b> 15, 30 and 60 minutes; price band from a floor to a ceiling per call. <b>Consequence:</b> affects the offer editor, the profile, and payment minimums.</div>
+      <span class="fill-l">Durations / band</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D5</span><span class="dt">Refund, no-show and cancellation policy</span></div>
+      <p class="dd">Funds are held until the call completes. We need the exact rules before checkout is built, because they drive the payment state machine.</p>
+      <div class="opts"><b>To specify:</b> customer cancellation window &middot; creator cancellation handling &middot; no-show grace period &middot; who is refunded and how fast &middot; what happens to the platform fee on a refund.</div>
+      <span class="fill-l">Policy</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D6</span><span class="dt">The customer service fee</span></div>
+      <p class="dd">The proposal recommends charging card-processing costs to the customer as a small service fee, so creators genuinely net the full 85 percent of their sticker price.</p>
+      <div class="opts"><b>To specify:</b> the percentage and any fixed component, and how it is labelled at checkout. <b>Consequence:</b> if declined, creators net roughly 82 percent rather than 85, and the &ldquo;you keep 85%&rdquo; promise must be reworded everywhere.</div>
+      <span class="fill-l">Decision</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D7</span><span class="dt">Video provider</span></div>
+      <p class="dd">Phase 1 uses a managed provider with its prebuilt call interface. Both candidates are equivalent for pilot purposes; the choice is commercial.</p>
+      <div class="opts"><b>Options:</b> Daily &middot; LiveKit. <b>Consequence:</b> per-minute cost and which account you open in Section 9.</div>
+      <span class="fill-l">Decision</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D8</span><span class="dt">Product name and domain</span></div>
+      <p class="dd">&ldquo;LINK&rdquo; is the working prototype name. If it is changing, it must change before Week 2 design begins, not after.</p>
+      <div class="opts"><b>To specify:</b> final product name, primary domain, and whether a rename is in Phase 1 scope at all.</div>
+      <span class="fill-l">Name / domain</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D9</span><span class="dt">Creator cohort size and who recruits them</span></div>
+      <p class="dd">The pilot depends on hand-recruited creators. The proposal assumes twenty-five to fifty, personally guided to their first paid call.</p>
+      <div class="opts"><b>To specify:</b> target number, who owns outreach, and whether a founder-led list already exists. <b>Consequence:</b> this is the single largest risk to the gate metrics.</div>
+      <span class="fill-l">Cohort / owner</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D10</span><span class="dt">Who owns the Stripe and third-party accounts?</span></div>
+      <p class="dd">Payment and video accounts should be in the client's name from day one so nothing needs migrating later.</p>
+      <div class="opts"><b>To specify:</b> the legal entity for Stripe Connect, and whether third-party costs are billed to your accounts directly or passed through at cost.</div>
+      <span class="fill-l">Account owner</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D11</span><span class="dt">Launch date and the gate review date</span></div>
+      <p class="dd">Week 6 is go-live. The gate review sits four weeks after launch, so there is real pilot data to read.</p>
+      <div class="opts"><b>To specify:</b> kickoff date, and therefore the Week 6 launch date and the Week 10 gate review date.</div>
+      <span class="fill-l">Kickoff / launch / gate</span><span class="fill"></span>
+    </div>
+
+    <div class="dec">
+      <div class="dh"><span class="dn">D12</span><span class="dt">Named decision-maker and review cadence</span></div>
+      <p class="dd">A fixed-fee six-week build needs one person who can approve within a working day. Weekly demos are the default cadence.</p>
+      <div class="opts"><b>To specify:</b> the single point of contact, the demo day, and the shared channel.</div>
+      <span class="fill-l">Contact / cadence</span><span class="fill"></span>
+    </div>
+  </section>
+
+  <!-- ============ 4. LOCKED SCOPE ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">04</span>The locked build list</div>
+      <h2>What Phase 1 delivers, and how it will be judged</h2>
+    </div>
+    <p class="lede">Each row is a capability at pilot depth with the test that proves it is done. Acceptance is binary: the test passes or the row is not complete. Nothing outside this table is in Phase 1.</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th class="cap">Capability</th><th style="width:34%">Built in Phase 1</th><th>Acceptance test</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cap">Social sign-in</td>
+            <td>One platform <span class="tc">D1</span>, plus manual verification fallback</td>
+            <td>A creator connects the account and the profile shows an imported follower count with a verified marker. A creator whose connection fails can still be verified manually by an administrator.</td>
+          </tr>
+          <tr>
+            <td class="cap">Creator onboarding</td>
+            <td>Offer, price, availability, payout; payout deferrable</td>
+            <td>A new creator reaches <em>bookable</em> (offer + price + availability saved, profile live) in under five minutes on a phone, without instructions. Payout connection may be completed later, before first payout.</td>
+          </tr>
+          <tr>
+            <td class="cap">Creator dashboard</td>
+            <td>Earnings-first single screen</td>
+            <td>On sign-in the creator sees pending earnings, paid earnings, the next upcoming call, and a prompt to complete anything missing from the profile.</td>
+          </tr>
+          <tr>
+            <td class="cap">Public profile &amp; booking</td>
+            <td>Existing surface, hardened; invented data removed</td>
+            <td>The profile shows only real, sourced values. Availability renders in the viewer's own time zone. A visitor can reach checkout in under ninety seconds.</td>
+          </tr>
+          <tr>
+            <td class="cap">Checkout &amp; payments</td>
+            <td>Stripe Connect, card payment, held funds, payout release. <strong>United States and US dollars only</strong></td>
+            <td>A customer pays by card; the funds are held; the creator sees a pending payout immediately; the payout releases after completion per policy <span class="tc">D5</span>. A refund can be issued and reaches the customer.</td>
+          </tr>
+          <tr>
+            <td class="cap">Booking &amp; reminders</td>
+            <td>Confirmation and reminders by <strong>email only</strong></td>
+            <td>Both parties receive a confirmation within sixty seconds of payment, and reminders at twenty-four hours and one hour before the call, each carrying the join link.</td>
+          </tr>
+          <tr>
+            <td class="cap">Video calls</td>
+            <td>Managed provider <span class="tc">D7</span>, prebuilt call interface</td>
+            <td>Both parties join from a browser link, on desktop and on mobile, with no downloads and no account required for the customer.</td>
+          </tr>
+          <tr>
+            <td class="cap">Reviews &amp; ratings</td>
+            <td>Star rating plus written review after completion</td>
+            <td>A customer can rate one to five stars and leave text after a completed call. The rating and review appear on the creator profile.</td>
+          </tr>
+          <tr>
+            <td class="cap">Messaging</td>
+            <td>Simple gated messaging</td>
+            <td>A message thread exists only between a customer and a creator with a confirmed booking, and is unavailable before payment.</td>
+          </tr>
+          <tr>
+            <td class="cap">Admin tools</td>
+            <td>Essentials: members, payments, disputes</td>
+            <td>An administrator can list members, list payments, issue a refund, verify a creator manually, and suspend an account.</td>
+          </tr>
+          <tr>
+            <td class="cap">Design</td>
+            <td>Polish plus a token set across pilot screens</td>
+            <td>Every pilot screen uses the token set. The creator and fan experiences are visually and structurally separate. No invented statistic remains anywhere in the product.</td>
+          </tr>
+          <tr>
+            <td class="cap">Quality &amp; access</td>
+            <td>Cross-device testing and an accessibility pass</td>
+            <td>Tested on iOS Safari, Android Chrome, and desktop Chrome and Safari. Booking and checkout are fully keyboard navigable with visible focus.</td>
+          </tr>
+          <tr>
+            <td class="cap">Launch</td>
+            <td>Production deployment, runbook, two weeks of support</td>
+            <td>The pilot is live on the production domain with monitoring and error tracking active, and a written runbook is handed over.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout good"><span class="tag">Definition of done for Phase 1</span>Phase 1 is complete when a creator recruited from the launch niche has onboarded unaided, a real customer has paid, the call has happened, the review has been left, and the payout has landed in the creator's bank account, end to end, in production, without our intervention.</div>
+  </section>
+
+  <!-- ============ 5. OUT OF SCOPE ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">05</span>Explicit exclusions</div>
+      <h2>What Phase 1 is not building</h2>
+    </div>
+    <p class="lede">Listed so there is no ambiguity later. Each item shows where it goes instead. Requesting any of these during the six weeks is a change request under Section 11.</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th style="width:34%">Excluded from Phase 1</th><th style="width:14%">Goes to</th><th>Why not now</th></tr></thead>
+        <tbody>
+          <tr><td>Second and third social platforms, automated follower refresh</td><td><span class="pill p2">Phase 2</span></td><td>Platform app review outlasts the pilot; one connection plus manual fallback proves the concept.</td></tr>
+          <tr><td>Usability testing and interactive prototyping</td><td><span class="pill p2">Phase 2</span></td><td>The pilot itself is the test; real booking behaviour beats simulated behaviour.</td></tr>
+          <tr><td>Full design system in Figma and code</td><td><span class="pill p2">Phase 2</span></td><td>A token set is enough to make six weeks of screens coherent.</td></tr>
+          <tr><td>Escrow release logic, fraud screening, dispute tooling</td><td><span class="pill p2">Phase 2</span></td><td>Held funds plus manual refunds are sufficient at twenty-five to fifty creators.</td></tr>
+          <tr><td>Pre-call device check, lobby, dial-in fallback, quality monitoring</td><td><span class="pill p2">Phase 2</span></td><td>The provider's prebuilt interface is reliable enough for pilot volume.</td></tr>
+          <tr><td>Push notifications and text-message reminders</td><td><span class="pill p2">Phase 2</span></td><td>Email covers the reminder need at pilot scale.</td></tr>
+          <tr><td>Search with ranking and relevance</td><td><span class="pill p2">Phase 2</span></td><td>Creators arrive through their own shared links; browse and categories already exist.</td></tr>
+          <tr><td>Trust and safety tooling, moderation hooks, audit logs</td><td><span class="pill p2">Phase 2</span></td><td>A hand-recruited cohort in one niche is managed directly.</td></tr>
+          <tr><td>Multiple currencies and international payouts</td><td><span class="pill p2">Phase 2</span></td><td>United States first; Stripe Connect handles US tax reporting out of the box.</td></tr>
+          <tr><td>Native mobile applications</td><td><span class="pill out">Beyond</span></td><td>A progressive web app serves both phases.</td></tr>
+          <tr><td>Group calls, packages, subscriptions, paid written questions</td><td><span class="pill out">Beyond</span></td><td>Sequenced against what the live product shows.</td></tr>
+          <tr><td>Tips and gifting, creator pro tier, advanced analytics</td><td><span class="pill out">Beyond</span></td><td>Revenue extensions, only worth building once liquidity exists.</td></tr>
+          <tr><td>Call recording and automatic summaries</td><td><span class="pill out">Beyond</span></td><td>Adds consent, storage and legal surface disproportionate to a pilot.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 6. DESIGN PLAN ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">06</span>Design plan</div>
+      <h2>What Week 2 produces</h2>
+    </div>
+    <div class="grid g2" style="margin-top:6px">
+      <div class="card">
+        <h3 style="margin-top:0">The token set</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li>Colour, type, spacing and radius tokens, derived from the existing coral identity</li>
+          <li>Core components: buttons, fields, cards, tables, pills, modals</li>
+          <li>One landing page and one navigation model, replacing the current split</li>
+          <li>Applied to every pilot screen, not documented as a separate artefact</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Screens designed in Week 2</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li>Creator onboarding, all steps</li>
+          <li>Creator dashboard, earnings-first</li>
+          <li>Public profile and booking panel, hardened</li>
+          <li>Checkout and confirmation</li>
+          <li>Call join and post-call review</li>
+          <li>Administrator essentials</li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot">Design is approved at Milestone 2, end of Week 2. Approval is by named decision-maker <span class="tc">D12</span> within one working day of the demo, so build can start on schedule.</p>
+  </section>
+
+  <!-- ============ 7. SUCCESS MEASURES ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">07</span>Success measures</div>
+      <h2>The four numbers, and how they are captured</h2>
+    </div>
+    <p class="lede">These are the Phase 2 gate criteria. They are instrumented during Phase 1 build rather than added afterwards, so the gate review reads real data from launch day onward.</p>
+    <div class="twrap">
+      <table>
+        <thead><tr><th style="width:22%">Metric</th><th style="width:30%">Definition</th><th style="width:16%">Gate target</th><th>Captured by</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Completed paid calls per week</strong></td><td>Calls that were paid for and actually took place, counted weekly.</td><td>Trending up week over week</td><td>Payment succeeded event joined to call completed event.</td></tr>
+          <tr><td>Creator activation rate</td><td>Share of creator sign-ups that become bookable: price set, availability added, profile live.</td><td>Over 55%</td><td>Sign-up event and a bookable-state flag on the creator record.</td></tr>
+          <tr><td>Call completion rate</td><td>Share of booked calls where both parties joined and the call ran.</td><td>Over 80%</td><td>Booking confirmed event against call joined events from the video provider.</td></tr>
+          <tr><td>Average rating</td><td>Mean star rating across all reviewed calls.</td><td>Over 4.6&#9733;</td><td>Review submitted event.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="foot">Reported weekly from launch. Booking conversion (profile visits reaching a paid booking) is also captured as a supporting diagnostic, but is not a gate criterion for the pilot.</p>
+  </section>
+
+  <!-- ============ 8. TECHNICAL DECISIONS ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">08</span>Technical decisions</div>
+      <h2>Locked for Phase 1</h2>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th style="width:24%">Area</th><th style="width:32%">Phase 1 decision</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Frontend</td><td>Next.js, React, TypeScript, progressive web app</td><td>Carried forward unchanged into Phase 2.</td></tr>
+          <tr><td>Backend</td><td>Node.js</td><td>Queues and caching are added in Phase 2, not now.</td></tr>
+          <tr><td>Data</td><td>PostgreSQL via Supabase, including accounts and storage</td><td>Money-grade relational integrity from day one.</td></tr>
+          <tr><td>Payments</td><td>Stripe Connect, US entity, USD only</td><td>Handles identity checks, payouts, card security and tax reporting.</td></tr>
+          <tr><td>Video</td><td>Managed provider <span class="tc">D7</span>, prebuilt interface</td><td>No custom call UI in Phase 1.</td></tr>
+          <tr><td>Email</td><td>Transactional provider, verified sending domain</td><td>Reminders and confirmations only.</td></tr>
+          <tr><td>Hosting</td><td>Vercel and Cloudflare</td><td>Same platform as Phase 2.</td></tr>
+          <tr><td>Monitoring</td><td>Error tracking and uptime monitoring from launch</td><td>Required for the two-week support window.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><span class="tag">Carry-forward guarantee</span>Every technical decision above is the same one the Phase 2 platform is built on. Phase 2 extends this codebase rather than replacing it, so no Phase 1 engineering hour is spent on something that gets thrown away.</div>
+  </section>
+
+  <!-- ============ 9. CLIENT DEPENDENCIES ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">09</span>What we need from you</div>
+      <h2>Dependencies, and when they are needed</h2>
+    </div>
+    <p class="lede">Six weeks has no slack. Each item below blocks a specific week, and a late dependency moves the launch date rather than compressing the work.</p>
+    <div class="card" style="padding:4px 14px">
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Named decision-maker and shared channel</b><span>One person who can approve within a working day, plus the demo slot.</span></div><span class="dwhen">Week 1</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>All twelve decisions in Section 3 answered</b><span>Design cannot start against open questions.</span></div><span class="dwhen">Week 1</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Stripe account and business verification started</b><span>In the client's legal entity. Verification can take several days.</span></div><span class="dwhen">Week 1</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Social developer account access</b><span>So platform app review can be submitted in Week 1 and land during Phase 2.</span></div><span class="dwhen">Week 1</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Domain and DNS access</b><span>Production domain plus a verified email sending domain.</span></div><span class="dwhen">Week 1</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Brand assets</b><span>Logo files, any existing type and colour definitions, and the final product name.</span></div><span class="dwhen">Week 2</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Design approval at Milestone 2</b><span>Within one working day of the Week 2 demo.</span></div><span class="dwhen">Week 2</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Video provider account</b><span>Opened in the client's name, per decision D7.</span></div><span class="dwhen">Week 3</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Refund and conduct policy text</b><span>Final wording to display at checkout and on the profile.</span></div><span class="dwhen">Week 4</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Creator cohort shortlist</b><span>Named creators in the launch niche, with a route to contact them.</span></div><span class="dwhen">Week 4</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Test payment method and a real bank account</b><span>Required to prove a full payout end to end before launch.</span></div><span class="dwhen">Week 5</span></div>
+      <div class="dep"><span class="box"></span><div class="dtx"><b>Go-live approval</b><span>Sign-off to deploy to production.</span></div><span class="dwhen">Week 6</span></div>
+    </div>
+  </section>
+
+  <!-- ============ 10. ASSUMPTIONS ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">10</span>Assumptions</div>
+      <h2>What this scope takes as given</h2>
+    </div>
+    <div class="grid g2" style="margin-top:6px">
+      <div class="card">
+        <h3 style="margin-top:0">Product and market</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li>United States only, single currency, single language</li>
+          <li>One niche and one social platform at launch</li>
+          <li>Twenty-five to fifty creators, hand-recruited</li>
+          <li>Commission at fifteen percent, creators keep eighty-five</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Delivery</h3>
+        <ul class="clean" style="font-size:11px;margin-bottom:0">
+          <li>The existing prototype codebase is available and usable from Week 1</li>
+          <li>Approvals arrive within one working day of each demo</li>
+          <li>Third-party running costs are billed to your accounts, roughly $60 to $250 a month at pilot scale</li>
+          <li>Legal review of terms, privacy and conduct policies is the client's responsibility</li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot">If any assumption proves false, the affected rows in Section 4 are re-estimated under Section 11 before work continues on them.</p>
+  </section>
+
+  <!-- ============ 11. CHANGE CONTROL ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">11</span>Change control</div>
+      <h2>How scope changes after this signature</h2>
+    </div>
+    <div class="grid g3" style="margin-top:6px">
+      <div class="card"><h3 style="margin-top:0">1. Raise it</h3><p style="margin:0;font-size:11px">Any change, from either side, goes on the shared task list as a written request. Nothing is built on a verbal agreement.</p></div>
+      <div class="card"><h3 style="margin-top:0">2. Price it</h3><p style="margin:0;font-size:11px">We estimate it within one working day, in hours, and state what it displaces. Phase 1 is a fixed fee against a fixed 156 hours.</p></div>
+      <div class="card"><h3 style="margin-top:0">3. Choose</h3><p style="margin:0;font-size:11px">Three options: trade it against something of equal size in Section 4, defer it to Phase 2, or extend the fee and the timeline in writing.</p></div>
+    </div>
+    <div class="callout warn"><span class="tag">The trade rule</span>Because Phase 1 is fixed in both fee and duration, <strong>additions must displace something</strong>. A request that adds twelve hours removes twelve hours from elsewhere in Section 4, or it moves to Phase 2. This is what protects the six-week launch date, and it is the only reason a fixed price at this scale is possible.</div>
+  </section>
+
+  <!-- ============ 12. SCHEDULE & SIGN-OFF ============ -->
+  <section class="sec">
+    <div class="titleblock">
+      <div class="eyebrow"><span class="num-badge">12</span>Schedule, payment and sign-off</div>
+      <h2>Confirmed terms</h2>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr><th style="width:26%">Milestone</th><th>Deliverable</th><th style="width:12%">When</th><th class="num" style="width:16%">Payment</th></tr></thead>
+        <tbody>
+          <tr><td><strong>M1 &middot; Scope locked</strong></td><td>This document, signed, with all twelve decisions closed</td><td>Week 1</td><td class="num">40% on start</td></tr>
+          <tr><td><strong>M2 &middot; Design ready</strong></td><td>Token set and pilot screens, trust and layout fixes applied</td><td>Week 2</td><td class="num">&mdash;</td></tr>
+          <tr><td><strong>M3 &middot; Core built</strong></td><td>Social sign-in, onboarding, dashboard, live payments</td><td>Week 4</td><td class="num">30%</td></tr>
+          <tr><td><strong>M4 &middot; Pilot live</strong></td><td>Reviews, admin, testing, accessibility, production launch</td><td>Week 6</td><td class="num">30%</td></tr>
+          <tr class="total"><td>Gate review</td><td>Four weeks of pilot data against Section 7; Phase 2 scoped and quoted</td><td>Week 10</td><td class="num">&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="foot" style="margin-bottom:12px">Ownership of all code and designs transfers to the client on final payment. Two weeks of pilot support follow launch. Phase 2 is quoted separately at the gate review and carries no obligation; committing to Phase 1 does not commit you to Phase 2.</p>
+
+    <div class="callout"><span class="tag">Effect of signing</span>Signing below fixes the scope in Section 4, accepts the exclusions in Section 5, confirms the decisions recorded in Section 3, and starts the six-week clock. Changes after this point follow Section 11.</div>
+
+    <div class="sign">
+      <div class="sigbox">
+        <div class="sl">For the client</div>
+        <div class="sigrule"></div>
+        <div class="sigcap">Name, role and date</div>
+      </div>
+      <div class="sigbox">
+        <div class="sl">For Oyolloo</div>
+        <div class="sigrule"></div>
+        <div class="sigcap">Name, role and date</div>
+      </div>
+    </div>
+
+    <p class="foot" style="margin-top:14px">Prepared for the LINK founder team. &ldquo;LINK&rdquo; is the client's working product name pending decision D8. Figures reflect the Phase 1 Pilot MVP proposal and are finalised in a mutually signed statement of work.</p>
+  </section>
+
+</main>
+<button class="printbtn" onclick="window.print()">&#8595; Save as PDF</button>
+</body>
+</html>
