@@ -1,0 +1,297 @@
+<title>LINK Delivery Schedule</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700&display=swap">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa; --surface-3:#e7eef8;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --good:#15803d; --good-bg:#e4f7ea; --warn:#b45309; --warn-bg:#fdf0d5;
+    --crit:#b91c1c; --crit-bg:#fbe4e4;
+    --s1:#e8effc; --s2:#cfe0fb; --s3:#93b4f5; --s4:#2563eb;
+    --shadow:0 1px 2px rgba(11,31,58,.05);
+    --f-disp:"Charter","Source Serif 4","Cambria","Georgia",serif;
+    --f-body:"Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --f-mono:"IBM Plex Mono","SFMono-Regular",ui-monospace,Consolas,monospace;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--f-body);
+       font-size:14.5px; line-height:1.6; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px; margin:0 auto; padding-inline:20px; padding-block:26px 80px}
+  p{margin:0 0 10px}
+  strong{font-weight:600}
+  h1,h2,h3{margin:0; line-height:1.22; text-wrap:balance; color:var(--ink)}
+  h1{font-family:var(--f-disp); font-size:clamp(28px,4.8vw,40px); font-weight:700; letter-spacing:-.022em}
+  h1 em{font-style:italic; font-weight:700; color:var(--accent)}
+  h2{font-family:var(--f-disp); font-size:23px; font-weight:700; letter-spacing:-.014em}
+  h3{font-size:14.5px; font-weight:700}
+  ul{margin:7px 0 0; padding-left:18px}
+  li{margin:3.5px 0}
+  .lab{font-family:var(--f-mono); font-size:9.5px; font-weight:500; letter-spacing:.14em;
+       text-transform:uppercase; color:var(--muted)}
+  .soft{color:var(--ink-soft)}
+  .tiny{font-size:12.5px; line-height:1.52}
+  .num{font-variant-numeric:tabular-nums}
+
+  .dochead{border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:12px;
+           padding:22px 24px; background:var(--surface); box-shadow:var(--shadow)}
+  .dochead .kicker{font-family:var(--f-mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+                   color:var(--accent); font-weight:500; margin-bottom:10px; display:block}
+  .dochead h1{margin:0 0 10px}
+  .dochead .sub{font-size:15px; color:var(--ink-soft); line-height:1.55; margin:0}
+  .facts{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line);
+         border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-top:18px}
+  @media (min-width:520px){ .facts{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:740px){ .facts{grid-template-columns:repeat(3,1fr)} }
+  .facts > div{background:var(--bg); padding:11px 14px}
+  .facts .v{font-size:14px; font-weight:700; margin-top:5px; line-height:1.3}
+  .facts .v.accent{color:var(--accent)}
+  .facts .v.good{color:var(--good)}
+
+  section{margin-top:36px; padding-top:20px; border-top:1px solid var(--line)}
+  .shead{display:flex; gap:12px; align-items:baseline; flex-wrap:wrap; margin-bottom:6px}
+  .snum{font-family:var(--f-mono); font-size:18px; font-weight:500; color:var(--accent); flex:0 0 auto}
+  .lede{font-size:14.5px; color:var(--ink-soft); line-height:1.56; margin:4px 0 16px}
+
+  /* timeline strip */
+  .tl{border:1px solid var(--line); border-radius:10px; padding:16px 18px 14px; background:var(--surface)}
+  .tlbar{display:grid; grid-template-columns:2fr 1fr 2fr 1fr; gap:4px}
+  @media (max-width:560px){ .tlbar{grid-template-columns:1fr; gap:6px} }
+  .seg{border-radius:6px; padding:11px 13px; min-height:64px; display:flex; flex-direction:column;
+       justify-content:space-between}
+  .seg .nm{font-weight:700; font-size:13.5px; line-height:1.25}
+  .seg .wk{font-family:var(--f-mono); font-size:10.5px; margin-top:8px; opacity:.85}
+  .seg.s1{background:var(--s1); color:var(--accent-deep)}
+  .seg.s2{background:var(--s2); color:var(--accent-deep)}
+  .seg.s3{background:var(--s3); color:var(--navy)}
+  .seg.s4{background:var(--s4); color:#fff}
+  .tlfoot{display:flex; justify-content:space-between; gap:12px; margin-top:10px; flex-wrap:wrap}
+  .tlfoot span{font-family:var(--f-mono); font-size:10.5px; color:var(--muted)}
+
+  /* week rows */
+  .wkrow{display:grid; grid-template-columns:140px 1fr; gap:16px; padding:13px 0;
+         border-top:1px solid var(--line)}
+  .wkrow:first-of-type{border-top:none}
+  @media (max-width:620px){ .wkrow{grid-template-columns:1fr; gap:7px} }
+  .wkrow.now{background:var(--accent-soft); border-radius:8px; padding-inline:14px; margin-inline:-14px}
+  .when{font-family:var(--f-mono); font-size:11.5px; color:var(--accent-deep); font-weight:500; line-height:1.45}
+  .when .dt{display:block; color:var(--ink-soft); font-size:10.5px; margin-top:3px}
+  .when .wd{display:block; color:var(--muted); font-size:10px; margin-top:3px; letter-spacing:.02em}
+  .wkrow .t{font-weight:700; font-size:14.5px}
+  .wkrow .d{font-size:13.5px; color:var(--ink-soft); margin-top:3px; line-height:1.5}
+  .wkrow .needs{font-size:12.5px; color:var(--ink); margin-top:7px; padding-top:7px;
+                border-top:1px dashed var(--line-strong)}
+  .wkrow .needs b{color:var(--warn)}
+
+  .pill{display:inline-block; font-family:var(--f-mono); font-size:9.5px; font-weight:500; letter-spacing:.09em;
+        text-transform:uppercase; padding:3px 8px; border-radius:20px; white-space:nowrap; vertical-align:middle}
+  .pill.done{background:var(--good-bg); color:var(--good)}
+  .pill.now{background:var(--accent); color:#fff}
+  .pill.pay{background:var(--warn-bg); color:var(--warn)}
+
+  .tw{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--bg); margin:10px 0}
+  table{border-collapse:collapse; width:100%; font-size:13px; min-width:520px}
+  th,td{text-align:left; padding:10px 13px; border-top:1px solid var(--line); vertical-align:top}
+  thead th{border-top:none; background:var(--surface-2); font-family:var(--f-mono); font-weight:500;
+           font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); white-space:nowrap}
+  tbody tr:hover{background:var(--surface)}
+  td.w{white-space:nowrap; font-variant-numeric:tabular-nums}
+
+  .note{border:1px solid var(--line); border-left:3px solid var(--accent); background:var(--accent-soft);
+        border-radius:0 10px 10px 0; padding:13px 16px; margin:14px 0}
+  .note h3{color:var(--accent-deep); margin-bottom:4px}
+  .note p{margin:0}
+  .note.warn{border-left-color:var(--warn); background:var(--warn-bg)}
+  .note.warn h3{color:var(--warn)}
+
+  .dock{position:fixed; right:16px; bottom:16px; z-index:20}
+  .dockbtn{background:var(--surface); border:1px solid var(--line-strong); border-radius:22px;
+           box-shadow:0 4px 18px rgba(11,31,58,.14); padding:9px 16px; font-size:13px; font-weight:600;
+           font-family:var(--f-body); color:var(--ink); cursor:pointer; min-height:40px; line-height:1;
+           display:inline-flex; align-items:center; gap:7px}
+  .dockbtn:hover{border-color:var(--accent); color:var(--accent-deep)}
+  .dockbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .foot{margin-top:36px; padding-top:14px; border-top:1px solid var(--line); color:var(--muted); font-size:12px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+
+  @page{ margin:14mm }
+  @media print{
+    .dock{display:none !important}
+    body{background:#fff; font-size:11pt}
+    .wrap{max-width:none; padding:0}
+    .tl,.note,.tw,.dochead,.facts,.wkrow{break-inside:avoid; page-break-inside:avoid}
+    h1,h2,h3{break-after:avoid; page-break-after:avoid}
+    .seg{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+    table{min-width:0}
+  }
+</style>
+
+<div class="dock">
+  <button class="dockbtn" id="pdfBtn" type="button"><span aria-hidden="true">⇩</span> Download PDF</button>
+</div>
+
+<div class="wrap">
+
+  <div class="dochead">
+    <span class="kicker">LINK · Phase 1 pilot · delivery schedule</span>
+    <h1>Six weeks to a <em>live pilot</em>.</h1>
+    <p class="sub">Work commenced Thursday 17 September 2026, the day after scope was locked. Weeks run Thursday to Wednesday to match that start, and each one is a full seven working days. This schedule is the delivery plan referenced in the Milestone 1 agreement, version 1.1.</p>
+    <div class="facts">
+      <div><span class="lab">Commenced</span><div class="v">Thu 17 Sep 2026</div></div>
+      <div><span class="lab">Launch target</span><div class="v accent">Wed 28 Oct 2026</div></div>
+      <div><span class="lab">Build duration</span><div class="v">6 weeks · 42 working days</div></div>
+      <div><span class="lab">Support to</span><div class="v">28 Jan 2027</div></div>
+      <div><span class="lab">Gate review</span><div class="v">Wed 25 Nov 2026</div></div>
+      <div><span class="lab">Outer bound</span><div class="v">Mid December 2026</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>The shape of it</h2></div>
+    <p class="lede">Four phases across six weeks. Research and design take the first half, because the decisions taken there determine what gets built in the second.</p>
+    <div class="tl">
+      <div class="tlbar">
+        <div class="seg s1"><span class="nm">UX research</span><span class="wk">Weeks 1&ndash;2 · 17&ndash;30 Sep</span></div>
+        <div class="seg s2"><span class="nm">UI design</span><span class="wk">Week 3 · 1&ndash;7 Oct</span></div>
+        <div class="seg s3"><span class="nm">Core build</span><span class="wk">Weeks 4&ndash;5 · 8&ndash;21 Oct</span></div>
+        <div class="seg s4"><span class="nm">Test &amp; launch</span><span class="wk">Week 6 · 22&ndash;28 Oct</span></div>
+      </div>
+      <div class="tlfoot">
+        <span>&#9679; Start 17 Sep</span>
+        <span>&#9670; Scope &amp; cost fixed 7 Oct</span>
+        <span>&#9670; Core built 14 Oct</span>
+        <span>&#9679; Live 28 Oct</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>Week by week</h2></div>
+    <p class="lede">Each row carries what is delivered, and what we need from the client inside that week for the next one to start on time.</p>
+
+    <div>
+      <div class="wkrow">
+        <div class="when">Week 1<span class="dt">Thu 17 &ndash; Wed 23 Sep</span><span class="wd">Working days 1&ndash;7</span></div>
+        <div>
+          <div class="t">Scope locked, UX research opened <span class="pill done">complete</span></div>
+          <div class="d">Scope-lock meeting held and the cancellation policy approved. Cost baseline set at $9,000. Milestone 1 funded at 50 percent. UX research began the following day. Existing website updates handed to the developers.</div>
+        </div>
+      </div>
+
+      <div class="wkrow now">
+        <div class="when">Week 2<span class="dt">Thu 24 &ndash; Wed 30 Sep</span><span class="wd">Working days 8&ndash;14</span></div>
+        <div>
+          <div class="t">UX research, and the week the open questions close <span class="pill now">current</span></div>
+          <div class="d">Milestone 1 version 1.1 issued with its six supporting documents. UX questionnaire sent. First collaborative UX session.</div>
+          <div class="needs"><b>Needed from the client this week:</b> written answers to the twelve questions, a response on the launch niche, the Stripe entity with EIN and business bank status, Replit access with transferable admin, and the completed UX questionnaire.</div>
+        </div>
+      </div>
+
+      <div class="wkrow">
+        <div class="when">Week 3<span class="dt">Thu 1 &ndash; Wed 7 Oct</span><span class="wd">Working days 15&ndash;21</span></div>
+        <div>
+          <div class="t">Research closes, scope and final cost fixed, UI design begins</div>
+          <div class="d">Findings written up and the feature list cut against what research shows. The final figure confirmed in writing inside the $8,000 to $10,000 range. Token set and the first pilot screens. Second collaborative session, on design.</div>
+          <div class="needs"><b>Needed:</b> brand assets and the final product name, trademark result, approval of the service fee structure, and design approval by the end of the week.</div>
+        </div>
+      </div>
+
+      <div class="wkrow">
+        <div class="when">Week 4<span class="dt">Thu 8 &ndash; Wed 14 Oct</span><span class="wd">Working days 22&ndash;28</span></div>
+        <div>
+          <div class="t">Identity, onboarding and the creator dashboard <span class="pill pay">25% due</span></div>
+          <div class="d">Social sign-in with manual verification fallback, creator onboarding through to bookable, the earnings-first dashboard, and the public profile hardened. <strong>Core build milestone, Wednesday 14 October.</strong></div>
+          <div class="needs"><b>Needed:</b> the video provider account opened in the client's name.</div>
+        </div>
+      </div>
+
+      <div class="wkrow">
+        <div class="when">Week 5<span class="dt">Thu 15 &ndash; Wed 21 Oct</span><span class="wd">Working days 29&ndash;35</span></div>
+        <div>
+          <div class="t">Payments, calls and the cancellation rules</div>
+          <div class="d">Live checkout, held funds, the approved refund policy wired into the payment state machine, payouts, booking, email confirmations and reminders, and video calls end to end.</div>
+          <div class="needs"><b>Needed:</b> final refund and conduct policy wording, plus a test payment method and a real bank account to prove a payout end to end.</div>
+        </div>
+      </div>
+
+      <div class="wkrow">
+        <div class="when">Week 6<span class="dt">Thu 22 &ndash; Wed 28 Oct</span><span class="wd">Working days 36&ndash;42</span></div>
+        <div>
+          <div class="t">Reviews, admin, testing and launch <span class="pill pay">25% due</span></div>
+          <div class="d">Ratings and reviews, gated messaging, the five admin levers, cross-device testing, an accessibility pass, then production deployment with monitoring and a written runbook. Final testing meeting. <strong>Live Wednesday 28 October.</strong></div>
+          <div class="needs"><b>Needed:</b> the creator cohort shortlist with a route to contact them, and go-live approval.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>Milestones and payments</h2></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Milestone</th><th>Date</th><th>Working day</th><th>Payment</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>M1 · Scope locked</strong></td><td class="w">16 Sep</td><td class="w">Day 0</td><td class="w">50% · $4,500</td><td class="w"><span class="pill done">paid</span></td></tr>
+          <tr><td><strong>Scope and cost fixed</strong></td><td class="w">Wed 7 Oct</td><td class="w">Day 21</td><td class="w">&middot;</td><td class="w">&middot;</td></tr>
+          <tr><td><strong>M2 · Core built</strong></td><td class="w">Wed 14 Oct</td><td class="w">Day 28</td><td class="w">25% · $2,250</td><td class="w">&middot;</td></tr>
+          <tr><td><strong>M3 · Pilot live</strong></td><td class="w">Wed 28 Oct</td><td class="w">Day 42</td><td class="w">25% · $2,250</td><td class="w">&middot;</td></tr>
+          <tr><td><strong>Gate review</strong></td><td class="w">Wed 25 Nov</td><td class="w">Launch + 4 wks</td><td class="w">&middot;</td><td class="w">&middot;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">Figures are against the $9,000 baseline. If UX research settles the scope at $8,000 the two remaining instalments become $1,750 each; at $10,000 they become $2,750 each. The $4,500 already received is unaffected either way.</p>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>After launch</h2></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Period</th><th>Dates</th><th>What happens</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Technical support</strong></td>
+            <td class="w">28 Oct 2026 &ndash; 28 Jan 2027</td>
+            <td>Three months of free technical support under the Service Level Agreement. Bug fixes and production incidents inside the delivered scope, not new features and not marketing.</td>
+          </tr>
+          <tr>
+            <td><strong>Gate review</strong></td>
+            <td class="w">Wed 25 Nov 2026</td>
+            <td>Four weeks of live pilot data read against the four success measures, then Phase 2 scoped and quoted. No obligation attaches to it.</td>
+          </tr>
+          <tr>
+            <td><strong>Continuation</strong></td>
+            <td class="w">From 28 Jan 2027</td>
+            <td>Optional monthly retainer, quoted no later than four weeks before support expires so there is no gap.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>What moves these dates</h2></div>
+    <div class="note warn">
+      <h3>Late dependencies move the week, they do not compress it</h3>
+      <p>Anything in a <b>Needed</b> line above that arrives more than three working days late moves that week's milestone rather than shortening the work, and we confirm that in writing in the same week. It is not a penalty, it is what keeps a fixed fee against a fixed duration honest for both sides.</p>
+    </div>
+    <div class="note">
+      <h3>The outer bound</h3>
+      <p>Six weeks is the plan and the basis of the fee. The client has said that quality matters more than speed and that running to roughly three months would be acceptable, which sets a hard outer bound of <strong>mid December 2026</strong>. That room exists to absorb late answers and research findings, not additional scope, which still follows change control.</p>
+    </div>
+    <div class="note warn">
+      <h3>Two decisions still sit on the critical path</h3>
+      <p>The <strong>launch niche</strong> is tabled and blocks creator recruitment and every category-specific form. The <strong>Stripe entity</strong> carries multi-day verification inside it and gates the payments week. Both are Week 2 items, and both are the client's to answer.</p>
+    </div>
+  </section>
+
+  <p class="foot">LINK Phase 1 delivery schedule, issued 24 September 2026. Derived from the Milestone 1 agreement version 1.1 and the scope-lock call of 16 September 2026. Dates assume seven working days per week from Thursday 17 September. Prepared by Oyolloo for WorkDev Solutions.</p>
+
+</div>
+
+<script>
+  document.getElementById("pdfBtn").addEventListener("click", function(){
+    window.print();
+  });
+</script>
