@@ -1,0 +1,458 @@
+<title>LINK Support Agreement</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,600&display=swap">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa; --surface-3:#e7eef8;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --good:#15803d; --good-bg:#e4f7ea; --warn:#b45309; --warn-bg:#fdf0d5; --crit:#b91c1c; --crit-bg:#fbe4e4;
+    --shadow:0 1px 2px rgba(11,31,58,.05);
+    --f-disp:"Charter","Source Serif 4","Cambria","Georgia",serif;
+    --f-body:"Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --f-mono:"IBM Plex Mono","SFMono-Regular",ui-monospace,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#0a0f1a; --surface:#111a2b; --surface-2:#17223a; --surface-3:#1d2b47;
+      --ink:#e8eef8; --ink-soft:#aab7cd; --muted:#7e8da6;
+      --line:#22304a; --line-strong:#33455f;
+      --accent:#5b8def; --accent-deep:#93b4f5; --accent-soft:#182a4a; --navy:#07101f;
+      --good:#4ade80; --good-bg:#0f2a1a; --warn:#fbbf24; --warn-bg:#2c2109; --crit:#f87171; --crit-bg:#2c1414;
+      --shadow:0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0a0f1a; --surface:#111a2b; --surface-2:#17223a; --surface-3:#1d2b47;
+    --ink:#e8eef8; --ink-soft:#aab7cd; --muted:#7e8da6;
+    --line:#22304a; --line-strong:#33455f;
+    --accent:#5b8def; --accent-deep:#93b4f5; --accent-soft:#182a4a; --navy:#07101f;
+    --good:#4ade80; --good-bg:#0f2a1a; --warn:#fbbf24; --warn-bg:#2c2109; --crit:#f87171; --crit-bg:#2c1414;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--f-body);
+       font-size:14.5px; line-height:1.6; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px; margin:0 auto; padding-inline:20px; padding-block:26px 80px}
+  p{margin:0 0 10px}
+  strong{font-weight:600}
+  h1,h2,h3,h4{margin:0; line-height:1.22; text-wrap:balance; color:var(--ink)}
+  h1{font-family:var(--f-disp); font-size:clamp(28px,4.8vw,40px); font-weight:700; letter-spacing:-.022em}
+  h1 em{font-style:italic; font-weight:600; color:var(--accent)}
+  h2{font-family:var(--f-disp); font-size:24px; font-weight:700; letter-spacing:-.014em}
+  h3{font-size:15px; font-weight:700; letter-spacing:-.005em}
+  h4{font-size:13.5px; font-weight:700}
+  ul{margin:7px 0 0; padding-left:18px}
+  li{margin:3.5px 0}
+  .lab{font-family:var(--f-mono); font-size:9.5px; font-weight:500; letter-spacing:.14em;
+       text-transform:uppercase; color:var(--muted)}
+  .num{font-variant-numeric:tabular-nums}
+  .soft{color:var(--ink-soft)}
+  .tiny{font-size:12.5px; line-height:1.52}
+
+  .dochead{border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:12px;
+           padding:22px 24px; background:var(--surface); box-shadow:var(--shadow)}
+  .dochead .kicker{font-family:var(--f-mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+                   color:var(--accent); font-weight:500; margin-bottom:10px; display:block}
+  .dochead h1{margin:0 0 10px}
+  .dochead .sub{font-size:15px; color:var(--ink-soft); line-height:1.55; margin:0}
+  .parties{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line);
+           border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-top:18px}
+  @media (min-width:520px){ .parties{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:740px){ .parties{grid-template-columns:repeat(3,1fr)} }
+  .parties > div{background:var(--bg); padding:10px 13px}
+  .parties .v{font-size:13px; font-weight:700; margin-top:5px; line-height:1.3}
+  .parties .v.accent{color:var(--accent)}
+
+  section{margin-top:36px; padding-top:20px; border-top:1px solid var(--line)}
+  .shead{display:flex; gap:12px; align-items:baseline; flex-wrap:wrap; margin-bottom:6px}
+  .snum{font-family:var(--f-mono); font-size:19px; font-weight:500; color:var(--accent); flex:0 0 auto}
+  .lede{font-size:14.5px; color:var(--ink-soft); line-height:1.56; margin:4px 0 14px}
+
+  .sub-h{display:flex; gap:10px; align-items:baseline; margin:22px 0 10px;
+         padding-bottom:6px; border-bottom:1px solid var(--line-strong)}
+  .sub-h .l{font-family:var(--f-mono); font-size:13px; font-weight:500; color:var(--accent)}
+
+  .grp{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:14px 16px}
+  .grp h4{color:var(--accent-deep); margin-bottom:2px}
+  .grp ul{font-size:13.5px}
+  .grid{display:grid; gap:11px; grid-template-columns:1fr}
+  @media (min-width:700px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    /* a card left alone on the last row takes the whole row rather than half of it */
+    .grid > :last-child:nth-child(odd){grid-column:1 / -1}
+  }
+
+  .tw{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--bg); margin:10px 0}
+  table{border-collapse:collapse; width:100%; font-size:13px; min-width:540px}
+  th,td{text-align:left; padding:10px 13px; border-top:1px solid var(--line); vertical-align:top}
+  thead th{border-top:none; background:var(--surface-2); font-family:var(--f-mono); font-weight:500;
+           font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); white-space:nowrap}
+  tbody tr:hover{background:var(--surface)}
+  td.w{white-space:nowrap; font-variant-numeric:tabular-nums}
+  .sev{display:inline-block; font-family:var(--f-mono); font-size:9.5px; font-weight:500; letter-spacing:.09em;
+       text-transform:uppercase; padding:3px 8px; border-radius:20px; white-space:nowrap}
+  .sev.c{background:var(--crit-bg); color:var(--crit)}
+  .sev.h{background:var(--warn-bg); color:var(--warn)}
+  .sev.n{background:var(--accent-soft); color:var(--accent-deep)}
+  .sev.l{background:var(--surface-3); color:var(--muted)}
+
+  .note{border:1px solid var(--line); border-left:3px solid var(--accent); background:var(--accent-soft);
+        border-radius:0 10px 10px 0; padding:12px 15px; margin:12px 0}
+  .note h4{color:var(--accent-deep); margin-bottom:3px}
+  .note p{margin:0; color:var(--ink)}
+  .note.warn{border-left-color:var(--warn); background:var(--warn-bg)}
+  .note.warn h4{color:var(--warn)}
+
+  ol.notes{counter-reset:nt; list-style:none; padding:0; margin:10px 0 0}
+  ol.notes > li{counter-increment:nt; display:grid; grid-template-columns:26px 1fr; gap:11px;
+                padding:10px 0; border-top:1px solid var(--line); margin:0}
+  ol.notes > li:first-child{border-top:none}
+  ol.notes > li::before{content:counter(nt); font-family:var(--f-mono); font-size:11px; color:var(--accent);
+                        font-weight:500; padding-top:2px}
+
+  .sign{border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:10px;
+        padding:20px 22px 24px; background:var(--surface); margin-top:16px; break-inside:avoid}
+  .sigrow{display:grid; gap:30px 34px; grid-template-columns:1fr; margin-top:4px}
+  @media (min-width:640px){ .sigrow{grid-template-columns:1fr 1fr} }
+  .sigcol > .lab{display:block; margin-bottom:16px}
+  .sigfield .rule{height:52px; border-bottom:1.5px solid var(--line-strong)}
+  .sigfield.short .rule{height:32px}
+  .sigfield .cap{display:block; font-size:11.5px; color:var(--muted); margin-top:7px}
+  .sigsplit{display:grid; grid-template-columns:1fr 118px; gap:18px; margin-top:20px}
+
+  .dock{position:fixed; right:16px; bottom:16px; z-index:20; display:flex; gap:8px; align-items:center}
+  .dockbtn{background:var(--surface); border:1px solid var(--line-strong); border-radius:22px;
+           box-shadow:0 4px 18px rgba(11,31,58,.14); padding:9px 16px; font-size:13px; font-weight:600;
+           font-family:var(--f-body); color:var(--ink); cursor:pointer; min-height:40px; line-height:1;
+           display:inline-flex; align-items:center; gap:7px}
+  .dockbtn:hover{border-color:var(--accent); color:var(--accent-deep)}
+  .dockbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .dockbtn.icon{padding:9px 13px; font-size:15px; min-width:42px; justify-content:center}
+  @media (max-width:430px){ .dock{right:12px; bottom:12px} .dockbtn{padding:8px 12px; font-size:12.5px} }
+
+  .foot{margin-top:36px; padding-top:14px; border-top:1px solid var(--line); color:var(--muted); font-size:12px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+
+  @page{ margin:14mm }
+  @media print{
+    :root, :root[data-theme="dark"], :root[data-theme="light"]{
+      --bg:#ffffff; --surface:#ffffff; --surface-2:#f4f7fb; --surface-3:#eaf0f8;
+      --ink:#101820; --ink-soft:#3c4759; --muted:#5f6b7d;
+      --line:#d9e1ec; --line-strong:#aebdd0;
+      --accent:#1d4ed8; --accent-deep:#152f6e; --accent-soft:#e8effc;
+      --good:#14663a; --good-bg:#e9f6ee; --warn:#8a4708; --warn-bg:#fbf1dd;
+      --crit:#991b1b; --crit-bg:#fae5e3; --shadow:none;
+    }
+    .dock{display:none !important}
+    body{background:#fff; font-size:11pt}
+    .wrap{max-width:none; padding:0}
+    .grp,.note,.sign,.tw,.parties,.dochead,ol.notes > li{break-inside:avoid; page-break-inside:avoid}
+    h1,h2,h3,h4{break-after:avoid; page-break-after:avoid}
+    section{border-top-color:#d9e1ec}
+    table{min-width:0}
+  }
+</style>
+
+<script>
+  (function(){ try{ var t=localStorage.getItem("link-sla-theme");
+    if(t==="dark"||t==="light") document.documentElement.setAttribute("data-theme",t); }catch(e){} })();
+</script>
+
+<div class="dock">
+  <button class="dockbtn" id="pdfBtn" type="button"><span aria-hidden="true">⇩</span> Download PDF</button>
+  <button class="dockbtn icon" id="themeBtn" type="button" aria-label="Toggle theme"><span id="themeIcon">☾</span></button>
+</div>
+
+<div class="wrap">
+
+  <div class="dochead">
+    <span class="kicker">Phase 1 · post-launch · three month term</span>
+    <h1>Support &amp; Service <em>Level Agreement</em></h1>
+    <p class="sub">This document sets out the technical support and maintenance provided for the LINK platform for three months following launch, as agreed on the scope-lock call of 16 September 2026. It defines what support covers, what it does not, how quickly we respond, and when we are available.</p>
+    <div class="parties">
+      <div><span class="lab">Client</span><div class="v">WorkDev Solutions</div></div>
+      <div><span class="lab">Provider</span><div class="v">Oyolloo</div></div>
+      <div><span class="lab">Platform</span><div class="v">LINK · Phase 1 pilot</div></div>
+      <div><span class="lab">Term</span><div class="v accent">3 months, free</div></div>
+      <div><span class="lab">Starts</span><div class="v">Launch · 28 Oct 2026</div></div>
+      <div><span class="lab">Ends</span><div class="v">28 Jan 2027</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="shead"><span class="snum">1</span><h2>Support scope</h2></div>
+    <p class="lede">Support covers the platform as delivered at launch. The reference for what "as delivered" means is the locked build list and its acceptance tests in the Milestone 1 document. If a capability passed its acceptance test at launch and later stops behaving that way, it is covered here.</p>
+
+    <div class="sub-h"><span class="l">A</span><h3>Included services</h3></div>
+    <div class="grid">
+
+      <div class="grp">
+        <h4>Payments, payouts and refunds</h4>
+        <ul>
+          <li>Card payments failing or not completing at checkout</li>
+          <li>Held funds not releasing after a completed call and the review window</li>
+          <li>Payouts not reaching a creator's bank account</li>
+          <li>Refunds not reaching a customer under the agreed cancellation policy</li>
+          <li>Stripe Connect webhook failures and reconciliation mismatches</li>
+          <li>Commission or customer service fee calculated incorrectly</li>
+        </ul>
+      </div>
+
+      <div class="grp">
+        <h4>Bookings, reminders and calls</h4>
+        <ul>
+          <li>Bookings not confirming, or confirmation not sending within sixty seconds</li>
+          <li>Reminders not sending at twenty-four hours or one hour, or arriving without a working join link</li>
+          <li>Availability displaying in the wrong time zone</li>
+          <li>Video call join failures on supported browsers and devices</li>
+          <li>Grace period, no-show and cancellation rules not applying as specified</li>
+        </ul>
+      </div>
+
+      <div class="grp">
+        <h4>Creator and customer accounts</h4>
+        <ul>
+          <li>Social sign-in and account connection failures</li>
+          <li>Follower count import errors, or the verification badge not showing</li>
+          <li>Onboarding steps not saving, or a creator not reaching bookable state</li>
+          <li>Dashboard showing incorrect pending or paid earnings</li>
+          <li>Gated messaging opening before payment, or failing to open after it</li>
+          <li>Ratings or reviews not appearing on a profile</li>
+        </ul>
+      </div>
+
+      <div class="grp">
+        <h4>Administrator tools</h4>
+        <ul>
+          <li>Member or payment lists not loading, or failing to locate a record</li>
+          <li>Manual refund, manual creator verification or account suspension not working</li>
+          <li>Administrator access and permission problems</li>
+        </ul>
+      </div>
+
+      <div class="grp">
+        <h4>Bugs and non-working pages</h4>
+        <ul>
+          <li>Broken links and 404 errors inside the platform</li>
+          <li>Layout breakage on delivered screens, including breakage caused by browser updates</li>
+          <li>JavaScript and server-side errors affecting delivered functionality</li>
+          <li>Accessibility regressions on the booking and checkout paths</li>
+          <li>Mobile rendering faults on the tested device matrix</li>
+        </ul>
+      </div>
+
+      <div class="grp">
+        <h4>Security and maintenance</h4>
+        <ul>
+          <li>Security patches and dependency updates</li>
+          <li>Responding to error tracking and uptime monitoring alerts</li>
+          <li>Monthly check of the Stripe, video and email integrations against provider changes</li>
+          <li>SSL certificate, DNS and domain configuration issues</li>
+          <li>Advance notice of provider deprecations, with guidance on replacements</li>
+          <li>Monthly security review, reported to the client</li>
+        </ul>
+      </div>
+
+      <div class="grp">
+        <h4>Minor content and configuration</h4>
+        <ul>
+          <li>Small text or image changes on existing pages</li>
+          <li>Category names, interface labels and transactional email copy</li>
+          <li>Adjusting configured values: price slider range, call durations, reminder timings, grace period length, commission and service fee percentages</li>
+          <li>Announcement or promotional banners on existing pages</li>
+        </ul>
+        <div class="note" style="margin-bottom:0">
+          <h4>Note on content</h4>
+          <p class="tiny">Text and images should be supplied by the client. Where new copy has to be written or new imagery designed, that is copywriting or graphic design work and is quoted separately rather than covered here.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="note warn">
+      <h4>Fair use on minor changes</h4>
+      <p>Defect fixes are uncapped for the whole term. Minor content and configuration work is covered up to <strong>two hours per month</strong>, not cumulative, with anything beyond that quoted before it starts. This exists so the three month term stays genuinely generous without turning into unpaid development, and so neither side has to argue about it later.</p>
+    </div>
+
+    <div class="sub-h"><span class="l">B</span><h3>Excluded services</h3></div>
+    <div class="grid">
+      <div class="grp">
+        <h4>Not technical support</h4>
+        <ul class="soft">
+          <li>Marketing, SEO and social media management, excluded by agreement on the 16 September call</li>
+          <li>Paid advertising, campaign management and analytics reporting</li>
+          <li>Content creation: copy, photography, video, brand assets</li>
+          <li>Creator recruitment, outreach and onboarding of the cohort</li>
+          <li>Speaking to creators or customers on the client's behalf</li>
+        </ul>
+      </div>
+      <div class="grp">
+        <h4>New work, not maintenance</h4>
+        <ul class="soft">
+          <li>New features, and changes to how a delivered feature behaves</li>
+          <li>New pages or screens, and redesigns of existing ones</li>
+          <li>Everything on the Phase 2 list: additional social platform connections, real-time availability, AI features, call recording, search with ranking, push and text notifications, escrow release logic, dispute and fraud tooling, calendar sync, availability rules, multiple currencies</li>
+          <li>Data migration and bulk imports</li>
+          <li>Integrating new third-party services</li>
+        </ul>
+      </div>
+      <div class="grp">
+        <h4>Outside our control or our remit</h4>
+        <ul class="soft">
+          <li>Third-party running costs, meaning Stripe fees, video minutes, email sending and hosting, which are billed to the client's own accounts</li>
+          <li>Outages at Stripe, the video provider, the email provider or the host. We coordinate and keep the client informed, but the fix is theirs</li>
+          <li>Faults caused by changes made to the platform, its accounts or its DNS without us</li>
+          <li>External systems, including the separate WorkDev Solutions website, which is tracked outside this agreement</li>
+          <li>Training beyond the written runbook and one handover session</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">2</span><h2>Response and resolution times</h2></div>
+    <p class="lede">Response time is how quickly a real person acknowledges the report and begins work. Resolution goal is the target for a fix or a working workaround. Both are measured from the moment the report reaches the support address, not from when it is read.</p>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Issue type</th><th>What it means</th><th>Response time</th><th>Resolution goal</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="sev c">Critical</span></td>
+            <td>Platform down, checkout or payments failing, payouts blocked, money at risk, or a security incident. No workaround exists.</td>
+            <td class="w">Within 4 hours<div class="tiny soft">Including outside business hours</div></td>
+            <td class="w">12&ndash;24 hours<div class="tiny soft">Or a workaround sooner</div></td>
+          </tr>
+          <tr>
+            <td><span class="sev h">High</span></td>
+            <td>A core journey is broken for all users: booking, joining a call, creator onboarding, or refunds not processing. No reasonable workaround.</td>
+            <td class="w">Within 12 hours</td>
+            <td class="w">1&ndash;2 business days</td>
+          </tr>
+          <tr>
+            <td><span class="sev n">Normal</span></td>
+            <td>Something is wrong but usable, affects a limited number of users, or has a workaround. Includes minor content and configuration requests.</td>
+            <td class="w">Within 1 business day</td>
+            <td class="w">2&ndash;3 business days</td>
+          </tr>
+          <tr>
+            <td><span class="sev l">Low</span></td>
+            <td>Cosmetic issues, copy corrections, small inconsistencies with no functional impact.</td>
+            <td class="w">Within 3 business days</td>
+            <td class="w">Batched into the next release</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <h4>How severity is set</h4>
+      <p>The client sets the initial severity when reporting. If we disagree we say so within the response window and explain why, rather than silently reclassifying it. Anything involving money, whether a customer charged incorrectly or a creator not paid, is treated as Critical regardless of how many people it affects.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">3</span><h2>Support hours and channels</h2></div>
+    <div class="grid">
+      <div class="grp">
+        <h4>Standard support</h4>
+        <p class="tiny" style="margin:6px 0 0">Monday to Friday. The team works from Dhaka and Lisbon, so the guaranteed overlap with United States Eastern time is <strong>09:00 to 13:00 ET</strong>. Reports sent outside that window are picked up at the start of the next overlap.</p>
+      </div>
+      <div class="grp">
+        <h4>Critical cover</h4>
+        <p class="tiny" style="margin:6px 0 0">Critical issues are covered <strong>seven days a week, outside standard hours</strong>. Because the team sits ahead of Eastern time, an incident reported in the United States evening is often already being worked on by the following morning.</p>
+      </div>
+      <div class="grp">
+        <h4>Channels</h4>
+        <p class="tiny" style="margin:6px 0 0">Reports go to the shared support email address so there is a written record with a timestamp. WhatsApp is for flagging urgency, not for the report itself. A message sent only by WhatsApp does not start the response clock.</p>
+      </div>
+      <div class="grp">
+        <h4>Holidays and premium cover</h4>
+        <p class="tiny" style="margin:6px 0 0">Public holidays in Bangladesh and Portugal are excluded from business days and published to the client in advance. Critical cover continues through them. Full 24/7 support can be arranged as a paid add-on if the platform volume later justifies it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">4</span><h2>Notes</h2></div>
+    <ol class="notes">
+      <li><div><strong>Requests outside the included services are treated as new work.</strong> They are estimated in hours within one working day and quoted before anything begins, following the change control process in the Milestone 1 agreement. Nothing outside this scope is built on a verbal request.</div></li>
+      <li><div><strong>Critical issues take priority over content updates.</strong> If both are open at once, the content work moves. We will say so rather than let it sit silently.</div></li>
+      <li><div><strong>Recommended security and dependency updates should be approved promptly.</strong> Where the client declines or delays an update and an incident follows from that specific gap, the incident is still fixed, but the time is quoted rather than covered.</div></li>
+      <li><div><strong>Backups run automatically and are our responsibility.</strong> The client responsibility is holding its own credentials: registrar, Stripe, domain and email accounts must remain in the client name and accessible to the client independently of us.</div></li>
+      <li><div><strong>Third-party running costs remain with the client throughout.</strong> Roughly sixty to two hundred and fifty dollars a month at pilot volume, billed directly to the client accounts rather than passing through us.</div></li>
+      <li><div><strong>This agreement does not affect ownership.</strong> All code and designs transfer to the client on final payment of the Phase 1 fee, whether or not support is used and whether or not it is extended afterwards.</div></li>
+      <li><div><strong>The term runs from the launch date, not from signature.</strong> On the current schedule that is 28 October 2026 to 28 January 2027. If launch moves, the term moves with it and the end date is restated in writing.</div></li>
+      <li><div><strong>Continuation is offered before the term ends.</strong> A monthly retainer will be quoted no later than four weeks before expiry, so there is no gap and no pressure to decide at the last moment. Declining it ends support cleanly, with the runbook and monitoring configuration handed over in full.</div></li>
+    </ol>
+
+    <div class="note warn">
+      <h4>What this agreement deliberately does not promise</h4>
+      <p>It does not promise a specific uptime percentage. The platform runs on Vercel, Cloudflare, Supabase, Stripe and a managed video provider, and their availability is theirs to guarantee rather than ours. What we commit to is monitoring, alerting, response within the times above, and keeping the client informed through any provider incident. A number we do not control is not worth writing into a contract.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">5</span><h2>Client acknowledgement and agreement</h2></div>
+    <p class="lede">Signing confirms the scope in Section 1, the response and resolution targets in Section 2, the hours and channels in Section 3, and the notes in Section 4.</p>
+    <div class="sign">
+      <div class="sigrow">
+        <div class="sigcol">
+          <span class="lab">For WorkDev Solutions</span>
+          <div class="sigfield"><div class="rule"></div><span class="cap">Signature</span></div>
+          <div class="sigsplit">
+            <div class="sigfield short"><div class="rule"></div><span class="cap">Name and role</span></div>
+            <div class="sigfield short"><div class="rule"></div><span class="cap">Date</span></div>
+          </div>
+        </div>
+        <div class="sigcol">
+          <span class="lab">For Oyolloo</span>
+          <div class="sigfield"><div class="rule"></div><span class="cap">Signature</span></div>
+          <div class="sigsplit">
+            <div class="sigfield short"><div class="rule"></div><span class="cap">Name and role</span></div>
+            <div class="sigfield short"><div class="rule"></div><span class="cap">Date</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">LINK Support and Service Level Agreement, issued 24 September 2026, covering the three month post-launch term agreed on the scope-lock call of 16 September 2026. This document sits alongside the Milestone 1 agreement version 1.1 and takes its definition of delivered scope from that document build list. Support for the separate WorkDev Solutions website is not covered here and is tracked separately.</p>
+
+</div>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var btn = document.getElementById("themeBtn");
+  var icon = document.getElementById("themeIcon");
+  function dark(){
+    var t = root.getAttribute("data-theme");
+    if(t === "dark") return true;
+    if(t === "light") return false;
+    return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  }
+  function paint(){
+    var d = dark();
+    icon.textContent = d ? "☀" : "☾";
+    btn.setAttribute("aria-label", d ? "Switch to light theme" : "Switch to dark theme");
+  }
+  btn.addEventListener("click", function(){
+    var next = dark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try{ localStorage.setItem("link-sla-theme", next); }catch(e){}
+    paint();
+  });
+  paint();
+  if(window.matchMedia){
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    if(mq.addEventListener) mq.addEventListener("change", paint);
+  }
+
+  document.getElementById("pdfBtn").addEventListener("click", function(){
+    window.print();
+  });
+})();
+</script>
