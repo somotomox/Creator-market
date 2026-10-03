@@ -1,0 +1,1514 @@
+<meta charset="utf-8">
+<title>LINK Navigation and Pages</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa; --surface-3:#e7eef8;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --good:#15803d; --good-bg:#e4f7ea; --warn:#b45309; --warn-bg:#fdf0d5;
+    --crit:#b91c1c; --crit-bg:#fbe4e4; --coral:#ff6b5a;
+    --l1:#15803d; --l1-bg:#e4f7ea; --l2:#2563eb; --l2-bg:#dbe6fe; --l3:#6b7789; --l3-bg:#e7eef8;
+    --shadow:0 1px 2px rgba(11,31,58,.05);
+    --f-body:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --f-mono:"IBM Plex Mono","SFMono-Regular",ui-monospace,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--f-body);
+       font-size:16px; line-height:1.78; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px; margin:0 auto; padding-inline:22px; padding-block:30px 90px}
+  p{margin:0 0 15px}
+  strong{font-weight:600}
+  h1,h2,h3,h4{margin:0; line-height:1.3; text-wrap:balance; color:var(--ink)}
+  h1{font-size:clamp(28px,4.6vw,40px); font-weight:600; letter-spacing:-.025em; line-height:1.26}
+  h1 em{font-style:normal; color:var(--accent)}
+  h2{font-size:26px; font-weight:600; letter-spacing:-.018em}
+  h3{font-size:17px; font-weight:600; margin-top:28px; letter-spacing:-.008em}
+  h4{font-size:15px; font-weight:600; margin-top:0}
+  ul,ol{margin:12px 0 15px; padding-left:22px}
+  li{margin:7px 0; padding-left:3px}
+  .lab{font-size:11.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+  .soft{color:var(--ink-soft)}
+  .tiny{font-size:14px; line-height:1.68}
+  code,.path{font-family:var(--f-mono); font-size:13.5px; background:var(--surface-2); color:var(--accent-deep);
+       padding:2px 7px; border-radius:5px; white-space:nowrap}
+
+  .dochead{border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:12px;
+           padding:24px 26px; background:var(--surface); box-shadow:var(--shadow)}
+  .dochead .kicker{font-size:11.5px; letter-spacing:.09em; text-transform:uppercase;
+                   color:var(--accent); font-weight:600; margin-bottom:12px; display:block}
+  .dochead h1{margin:0 0 12px}
+  .dochead .sub{font-size:17px; color:var(--ink-soft); line-height:1.7; margin:0}
+  .facts{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line);
+         border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-top:20px}
+  @media (min-width:520px){ .facts{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:760px){ .facts{grid-template-columns:repeat(3,1fr)} }
+  .facts > div{background:var(--bg); padding:12px 15px}
+  .facts .v{font-size:15px; font-weight:600; margin-top:6px; line-height:1.4}
+  .facts .v.accent{color:var(--accent)}
+
+  section{margin-top:52px; padding-top:30px; border-top:1px solid var(--line)}
+  .shead{display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; margin-bottom:10px}
+  .snum{font-family:var(--f-mono); font-size:19px; font-weight:500; color:var(--accent); flex:0 0 auto}
+  .lede{font-size:17px; color:var(--ink-soft); line-height:1.65; margin:8px 0 22px}
+
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:19px 21px}
+  .stack{display:grid; gap:14px}
+  .g2{display:grid; gap:14px; grid-template-columns:1fr}
+  @media (min-width:660px){ .g2{grid-template-columns:repeat(2,1fr)}
+    .g2 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  .g3{display:grid; gap:14px; grid-template-columns:1fr}
+  @media (min-width:560px) and (max-width:879px){ .g3{grid-template-columns:repeat(2,1fr)}
+    .g3 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  @media (min-width:880px){ .g3{grid-template-columns:repeat(3,1fr)} }
+
+  .tw{overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--bg); margin:16px 0}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; line-height:1.6; min-width:700px}
+  th,td{text-align:left; padding:12px 14px; border-top:1px solid var(--line); vertical-align:top}
+  thead th{border-top:none; background:var(--surface-2); font-weight:600; font-size:12px;
+           letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap}
+  tbody tr:hover{background:var(--surface)}
+  td.w2{white-space:nowrap; font-variant-numeric:tabular-nums}
+  tbody th{background:var(--surface-2); font-weight:600; font-size:13px; letter-spacing:.03em;
+           text-transform:uppercase; color:var(--ink-soft)}
+
+  .chip{display:inline-block; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+        padding:3px 9px; border-radius:20px; white-space:nowrap}
+  .chip.l1{background:var(--l1-bg); color:var(--l1)}
+  .chip.l2{background:var(--l2-bg); color:var(--l2)}
+  .chip.l3{background:var(--l3-bg); color:var(--l3)}
+  .chip.p1{background:var(--crit-bg); color:var(--crit)}
+  .chip.p2{background:var(--warn-bg); color:var(--warn)}
+  .chip.p3{background:var(--surface-3); color:var(--muted)}
+  .chip.ph2{background:var(--surface-3); color:var(--muted)}
+  .chip.ok{background:var(--good-bg); color:var(--good)}
+
+  /* navigation bar mockups */
+  .nav{border:1px solid var(--line-strong); border-radius:10px; background:var(--bg); overflow:hidden; margin:12px 0}
+  .nav .nbar{display:flex; align-items:center; gap:18px; padding:13px 18px; background:var(--surface-2);
+             flex-wrap:wrap; font-size:14.5px}
+  .nav .nlogo{font-weight:600; letter-spacing:-.01em; color:var(--coral)}
+  .nav .nlink{color:var(--ink-soft)}
+  .nav .nspace{flex:1 1 auto}
+  .nav .ncta{background:var(--coral); color:#fff; padding:6px 14px; border-radius:8px; font-weight:600; font-size:13.5px}
+  .nav .nghost{border:1px solid var(--line-strong); padding:6px 14px; border-radius:8px; font-size:13.5px}
+  .nav .ncap{padding:10px 18px; font-size:13.5px; color:var(--muted); border-top:1px dashed var(--line-strong)}
+  .nav.tabs .nbar{justify-content:space-around; gap:6px; background:var(--bg); border-top:1px solid var(--line)}
+  .nav.tabs .ntab{display:flex; flex-direction:column; align-items:center; gap:3px; font-size:12px;
+                  color:var(--muted); min-width:64px}
+  .nav.tabs .ntab.on{color:var(--coral); font-weight:600}
+  .nav.tabs .ntab i{display:block; width:20px; height:20px; border-radius:6px; background:currentColor; opacity:.35}
+  .nav.tabs .ntab.on i{opacity:1}
+
+  /* sitemap tree */
+  .tree{font-family:var(--f-mono); font-size:13.5px; line-height:2; background:var(--surface);
+        border:1px solid var(--line); border-radius:12px; padding:20px 22px; overflow-x:auto}
+  .tree .t0{font-weight:500; color:var(--accent-deep)}
+  .tree .tn{color:var(--ink)}
+  .tree .tc{color:var(--muted); font-family:var(--f-body); font-size:13px}
+  .tree .tp{color:var(--good)}
+  .tree .t2{color:var(--muted)}
+
+  .note{border:1px solid var(--line); border-left:4px solid var(--accent); background:var(--accent-soft);
+        border-radius:0 12px 12px 0; padding:18px 22px; margin:20px 0}
+  .note h3{color:var(--accent-deep); margin:0 0 8px; font-size:16.5px}
+  .note p:last-child{margin-bottom:0}
+  .note.warn{border-left-color:var(--warn); background:var(--warn-bg)} .note.warn h3{color:var(--warn)}
+  .note.crit{border-left-color:var(--crit); background:var(--crit-bg)} .note.crit h3{color:var(--crit)}
+  .note.good{border-left-color:var(--good); background:var(--good-bg)} .note.good h3{color:var(--good)}
+
+  /* page specifications */
+  .pg{border:1px solid var(--line); border-radius:12px; background:var(--bg); margin:18px 0; overflow:hidden}
+  .pg > header{display:flex; gap:11px; align-items:baseline; flex-wrap:wrap; padding:15px 19px;
+               background:var(--surface-2); border-bottom:1px solid var(--line)}
+  .pg .pid{font-family:var(--f-mono); font-size:12.5px; font-weight:500; background:var(--accent);
+           color:#fff; padding:3px 10px; border-radius:5px}
+  .pg .ptitle{font-size:18px; font-weight:600; letter-spacing:-.012em}
+  .pg .ppath{font-family:var(--f-mono); font-size:13px; color:var(--accent-deep);
+             background:var(--bg); border:1px solid var(--line); padding:2px 9px; border-radius:5px}
+  .pg .ppri{margin-left:auto}
+  .pg .pbody{padding:17px 19px 19px}
+  .pg h5{margin:0 0 9px; font-size:14px; font-weight:600; letter-spacing:.03em; text-transform:uppercase}
+  .pg .how{font-size:15px; line-height:1.72; margin:0 0 16px}
+  .split{display:grid; gap:14px; grid-template-columns:1fr; margin:16px 0 0}
+  @media (min-width:780px){ .split{grid-template-columns:1fr 1fr} }
+  .forwho{border-radius:10px; padding:15px 17px}
+  .forwho.design{background:var(--accent-soft); border:1px solid #bcd3fa}
+  .forwho.design h5{color:var(--accent-deep)}
+  .forwho.dev{background:var(--good-bg); border:1px solid #b9e3cb}
+  .forwho.dev h5{color:var(--good)}
+  .forwho ul{margin:0; padding-left:19px}
+  .forwho li{font-size:14px; line-height:1.6; margin:7px 0}
+  .pmeta{display:grid; gap:9px; grid-template-columns:1fr; margin-top:16px; padding-top:14px;
+         border-top:1px dashed var(--line-strong)}
+  @media (min-width:700px){ .pmeta{grid-template-columns:96px 1fr} }
+  .pmeta dt{font-size:11.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+            color:var(--muted); padding-top:3px}
+  .pmeta dd{margin:0; font-size:14px; line-height:1.6}
+  .pmeta dd code{font-size:12.5px}
+  .pgroup{border:1px solid var(--line); border-left:4px solid var(--line-strong); border-radius:0 12px 12px 0;
+          background:var(--surface); padding:17px 20px; margin:16px 0}
+  .pgroup h4{margin:0 0 4px}
+
+  /* data visuals */
+  .viz{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:20px 22px; margin:20px 0}
+  .viz > h4{margin:0 0 5px; font-size:15.5px; font-weight:600}
+  .viz .vcap{font-size:13.5px; color:var(--muted); margin:0 0 18px; line-height:1.55}
+  .viz .vnote{font-size:13px; color:var(--muted); margin:16px 0 0; padding-top:13px;
+              border-top:1px solid var(--line); line-height:1.55}
+  .viz.plain{background:var(--surface)}
+
+  .bars{display:grid; gap:11px}
+  .bar{display:grid; grid-template-columns:minmax(96px,27%) 1fr minmax(58px,auto); gap:14px; align-items:center}
+  @media (max-width:600px){ .bar{grid-template-columns:1fr auto; gap:4px 10px}
+    .bar .bl{grid-column:1/-1} .bar .bv{text-align:right} }
+  .bar .bl{font-size:14px; line-height:1.32}
+  .bar .bl small{display:block; font-size:12px; color:var(--muted); font-weight:400}
+  .bar .bt{background:var(--surface-2); border-radius:6px; height:28px; overflow:hidden}
+  .bar .bt i{display:block; height:100%; border-radius:6px; background:var(--accent)}
+  .bar .bt i.good{background:var(--good)}
+  .bar .bt i.warn{background:var(--warn)}
+  .bar .bt i.crit{background:var(--crit)}
+  .bar .bt i.mute{background:var(--line-strong)}
+  .bar .bt i.deep{background:var(--accent-deep)}
+  .bar .bv{font-family:var(--f-mono); font-size:14px; font-weight:500; white-space:nowrap; text-align:right}
+
+  .stackbar{display:flex; height:50px; border-radius:9px; overflow:hidden; border:1px solid var(--line)}
+  .stackbar > span{display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:600;
+                   color:#fff; white-space:nowrap; overflow:hidden; padding:0 4px; min-width:0}
+  .stackkey{display:flex; flex-wrap:wrap; gap:16px; margin-top:14px; font-size:13.5px}
+  .stackkey span{display:flex; align-items:center; gap:8px; white-space:nowrap}
+  .stackkey i{width:13px; height:13px; border-radius:3px; display:block; flex:0 0 auto}
+
+  .tiles{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .tile{border:1px solid var(--line); border-radius:11px; padding:15px 16px; background:var(--bg)}
+  .tile .tv{font-family:var(--f-mono); font-size:26px; font-weight:500; letter-spacing:-.02em; line-height:1.1}
+  .tile .tk{font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.45}
+  .tile.ok{border-left:4px solid var(--good)} .tile.ok .tv{color:var(--good)}
+  .tile.at{border-left:4px solid var(--warn)} .tile.at .tv{color:var(--warn)}
+  .tile.no{border-left:4px solid var(--crit)} .tile.no .tv{color:var(--crit)}
+  .tile.nu{border-left:4px solid var(--accent)} .tile.nu .tv{color:var(--accent)}
+
+  .funnel{display:grid; gap:7px}
+  .fstep2{display:grid; grid-template-columns:1fr; gap:4px}
+  .fstep2 .fbar{height:38px; border-radius:7px; background:var(--accent); display:flex; align-items:center;
+                padding:0 14px; color:#fff; font-size:14px; font-weight:600}
+  .fstep2 .fmeta{font-size:12.5px; color:var(--muted); padding-left:2px}
+  .fdrop{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--crit);
+         padding-left:14px; font-weight:600}
+
+  svg.dia{display:block; width:100%; height:auto; max-width:100%}
+  .diawrap{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:18px;
+           margin:20px 0; overflow-x:auto}
+  .diawrap h4{margin:0 0 14px; font-size:15.5px}
+
+  @media print{
+    .viz,.diawrap{break-inside:avoid; page-break-inside:avoid}
+    .bar .bt i,.stackbar > span,.tile,.fstep2 .fbar{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* cross-document navigation */
+  .docnav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.94);
+          -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+          border-bottom:1px solid var(--line)}
+  .docnav .dn{max-width:1080px; margin:0 auto; padding:0 22px; display:flex; align-items:center; gap:20px}
+  .docnav .dnbrand{font-weight:600; font-size:15px; letter-spacing:-.012em; color:var(--ink);
+                   white-space:nowrap; padding:14px 0; flex:0 0 auto; text-decoration:none}
+  .docnav .dnbrand b{color:var(--accent); font-weight:600}
+  .docnav .dnbrand:hover b{color:var(--accent-deep)}
+  .docnav .dnlinks{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .docnav .dnlinks::-webkit-scrollbar{display:none}
+  .docnav .dnlinks a{display:block; padding:14px 12px; font-size:14px; color:var(--ink-soft);
+            text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; font-weight:400}
+  .docnav .dnlinks a:hover{color:var(--accent-deep)}
+  .docnav .dnlinks a.on{color:var(--accent-deep); font-weight:600; border-bottom-color:var(--accent)}
+  .docnav .dnlinks a:focus-visible{outline:2px solid var(--accent); outline-offset:-3px; border-radius:4px}
+  @media (max-width:680px){
+    .docnav .dn{gap:12px; padding:0 14px}
+    .docnav .dnbrand{font-size:13.5px; padding:12px 0}
+    .docnav .dnlinks a{padding:12px 9px; font-size:13.5px}
+  }
+  section, [id^="s"], [id^="p-"]{scroll-margin-top:76px}
+  @media print{ .docnav{display:none !important} }
+
+  .dock{position:fixed; right:16px; bottom:16px; z-index:20}
+  .dockbtn{background:var(--surface); border:1px solid var(--line-strong); border-radius:22px;
+           box-shadow:0 4px 18px rgba(11,31,58,.14); padding:10px 17px; font-size:14px; font-weight:600;
+           font-family:var(--f-body); color:var(--ink); cursor:pointer; min-height:42px; line-height:1;
+           display:inline-flex; align-items:center; gap:8px}
+  .dockbtn:hover{border-color:var(--accent); color:var(--accent-deep)}
+  .dockbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .foot{margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+  @page{ margin:14mm }
+  @media print{
+    .dock{display:none !important}
+    body{background:#fff; font-size:10.5pt; line-height:1.6}
+    .wrap{max-width:none; padding:0}
+    .card,.note,.tw,.nav,.tree,.dochead,.facts{break-inside:avoid; page-break-inside:avoid}
+    h1,h2,h3,h4{break-after:avoid}
+    table{min-width:0}
+    .chip,.nav .ncta,.nav.tabs .ntab i{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* ---- black and white print ---- */
+  @media print{
+    :root{
+      --bg:#ffffff; --surface:#f7f7f7; --surface-2:#f0f0f0; --surface-3:#e8e8e8;
+      --ink:#000000; --ink-soft:#2b2b2b; --muted:#5a5a5a;
+      --line:#d0d0d0; --line-strong:#9a9a9a;
+      --accent:#1a1a1a; --accent-deep:#000000; --accent-soft:#f0f0f0; --navy:#000000;
+      --good:#1a1a1a; --good-bg:#f2f2f2;
+      --warn:#1a1a1a; --warn-bg:#ededed;
+      --crit:#000000; --crit-bg:#e6e6e6;
+      --coral:#1a1a1a;
+      --l1:#1a1a1a; --l1-bg:#f2f2f2; --l2:#1a1a1a; --l2-bg:#ededed; --l3:#5a5a5a; --l3-bg:#e8e8e8;
+      --s:#1a1a1a; --s-bg:#f4f4f4; --w:#1a1a1a; --w-bg:#ededed;
+      --o:#1a1a1a; --o-bg:#f0f0f0; --t:#000000; --t-bg:#e6e6e6;
+      --ev-a:#1a1a1a; --ev-a-bg:#f0f0f0; --ev-b:#1a1a1a; --ev-b-bg:#eaeaea;
+      --ev-c:#1a1a1a; --ev-c-bg:#eeeeee; --ev-d:#1a1a1a; --ev-d-bg:#e9e9e9;
+      --ev-e:#1a1a1a; --ev-e-bg:#e4e4e4;
+      --shadow:none;
+    }
+    body{background:#fff; color:#000}
+    a{color:#000; text-decoration:underline}
+    svg.dia, .stackbar, .tile, .bar .bt, .qbox, .seg, .nav .ncta, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .chip, .ev, .sev, .pill, .dcode, .pid, .xid, .rid, .sid, .fid, .iid, .dnum, .tag, .path, code{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .note, .find, .rule, .card, .viz, .diawrap, .pop, .scr, .pg, .item, .lvl{
+      border-color:#bdbdbd !important;
+    }
+    .stackbar > span{color:#fff !important}
+    .dock, .docnav, .chkbar button{display:none !important}
+  }
+
+  /* ---- plain print: no panels, cards or chips. charts and diagrams stay ---- */
+  @media print{
+    /* every decorative container becomes plain typography */
+    .dochead, .hero, .doc, .card, .note, .find, .rule, .item, .pgroup, .qbox,
+    .scr, .pg, .pg > header, .pg .pbody, .pop, .pop > header, .lvl, .viz, .viz.plain,
+    .diawrap, .tw, .chk, .chk label, .tree, .forwho, .forwho.design, .forwho.dev,
+    .tile, .facts, .facts > div, .toc a, .pmeta, .ppath, .chkbar, .dmeta, .seg{
+      background:transparent !important;
+      border:0 !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      overflow:visible !important;
+      filter:none !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+    }
+    .note, .find, .rule, .item, .pgroup, .qbox, .scr, .pg, .pop, .lvl, .card, .viz, .diawrap{
+      margin:15pt 0 !important;
+      padding-top:0 !important;
+      padding-bottom:0 !important;
+    }
+    .dochead, .hero{padding:0 !important; margin:0 0 16pt !important}
+    .forwho{padding:0 !important; margin-top:10pt !important}
+    .tree{padding:0 !important; font-size:9pt !important}
+    .tile{padding:0 !important}
+    .doc{padding:0 !important; margin:0 0 12pt !important}
+
+    /* headings and ids carry the structure now that the boxes are gone */
+    .note h3, .find .ft, .rule .rt, .viz > h4, .diawrap h4, .card h4, .item .itxt strong,
+    .pop .xt, .scr .st2, .scr h4, .pg .ptitle, .lvl .lvname, .qbox .qt, .doc .dt,
+    .forwho h5, .shead h2{ color:#000 !important }
+    .qbox header, .pg > header, .pop > header, .lvl > header, .scr header{
+      border-bottom:0.5pt solid #b4b4b4 !important; padding-bottom:5pt !important;
+      margin-bottom:8pt !important;
+    }
+    .forwho h5{border-bottom:0.5pt solid #d4d4d4 !important; padding-bottom:3pt !important}
+
+    /* badges, pills and code chips become plain text */
+    .chip, .ev, .sev, .pill, .tag, .dcode, .dnum, .pid, .xid, .rid, .sid, .fid, .iid,
+    .lvtag, .qk, .qn, .sz, .cnt, .path, code, .fscr, .bk, .tv{
+      background:transparent !important; border:0 !important; padding:0 !important;
+      border-radius:0 !important; color:#000 !important; filter:none !important;
+      box-shadow:none !important; width:auto !important; height:auto !important;
+    }
+    .chip, .ev, .sev, .pill, .tag, .lvtag, .qk, .bk{font-weight:600 !important; margin-right:6pt}
+    .tile .tv{font-size:19pt !important; color:#000 !important}
+    .swatch i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+
+    /* hairlines where a list needs separating, instead of panels */
+    .facts > div{border-bottom:0.5pt solid #d2d2d2 !important; padding:5pt 0 !important}
+    .chk label{border-bottom:0.5pt solid #dcdcdc !important; padding:4pt 0 !important}
+    .pop .say{border-left:1pt solid #8a8a8a !important; padding:2pt 0 2pt 9pt !important;
+              background:transparent !important; border-radius:0 !important}
+    .cprog{display:none !important}
+
+    /* tables: horizontal rules only */
+    table{width:100% !important; min-width:0 !important}
+    thead th{background:transparent !important; color:#000 !important;
+             border-bottom:1pt solid #000 !important; padding:0 9pt 5pt 0 !important}
+    th, td{border-top:0 !important; border-bottom:0.5pt solid #cfcfcf !important;
+           padding:5pt 9pt 5pt 0 !important; background:transparent !important}
+    tr.tot td, tr.tot th{border-top:1pt solid #000 !important; font-weight:600 !important}
+
+    /* the charts stay */
+    .bar .bt{background:#ededed !important; border:0.5pt solid #c4c4c4 !important;
+             border-radius:0 !important; filter:grayscale(100%) !important;
+             -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .bar .bt i{border-radius:0 !important; filter:grayscale(100%) !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+              filter:grayscale(100%) !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar > span{color:#fff !important}
+    .stackkey i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+                -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep2 .fbar{border-radius:0 !important; filter:grayscale(100%) !important;
+                  -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    svg.dia{filter:grayscale(100%) !important; max-width:100% !important; height:auto !important}
+
+    /* the user-flow diagram stays: numbered nodes, rails, decision points */
+    .fstep .fn{filter:grayscale(100%) !important; width:26px !important; height:26px !important;
+               border-radius:50% !important; padding:0 !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep.exit .fn{color:#fff !important}
+    .frail .fline i{background:#6a6a6a !important}
+    .fdec{border:0.5pt dashed #8a8a8a !important; background:transparent !important;
+          border-radius:0 !important}
+    .fbr{border-top:0.5pt solid #e0e0e0 !important}
+
+    /* the navigation mock-ups are wireframes, not decoration */
+    .nav{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+         background:transparent !important; overflow:hidden !important}
+    .nav .nbar, .nav .ncta, .nav .nghost, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .nav .ncap{border-top:0.5pt dashed #8a8a8a !important}
+
+    .dock, .docnav, .chkbar button{display:none !important}
+    .g2, .g3, .tiles, .docs, .quad, .split{gap:10pt !important}
+  }
+
+  /* ---- plain print corrections ---- */
+  @media print{
+    /* an id that is a table cell still needs its column gap */
+    td.fid, td.pid, td.iid, td.xid, td.rid, td.sid, td.dcode, td.cnt, td.sz{
+      padding:5pt 12pt 5pt 0 !important; white-space:nowrap !important;
+    }
+    /* an inline tag needs a delimiter once the chip is gone */
+    .ev::before, .sev::before{content:"["}
+    .ev::after, .sev::after{content:"] "}
+    td .ev::before, td .sev::before, th .ev::before, th .sev::before{content:""}
+    td .ev::after, td .sev::after, th .ev::after, th .sev::after{content:""}
+    .ev, .sev{white-space:nowrap !important; margin-left:3pt !important}
+  }
+</style>
+
+<div class="dock">
+  <button class="dockbtn" id="pdfBtn" type="button"><span aria-hidden="true">⇩</span> Download PDF</button>
+</div>
+
+<nav class="docnav">
+  <div class="dn">
+    <a class="dnbrand" href="index.html">LINK <b>UX</b></a>
+    <div class="dnlinks">
+      <a href="LINK-UX-Research.html">Research</a>
+      <a href="LINK-SWOT.html">SWOT</a>
+      <a href="LINK-Revenue-Policy.html">Revenue &amp; Policy</a>
+      <a href="LINK-UI-Design-Brief.html">Design Brief</a>
+      <a href="LINK-Navigation-Pages.html" class="on" aria-current="page">Navigation</a>
+      <a href="LINK-Page-Features.html">Features</a>
+      <a href="LINK-Popups-Forms.html">Popups &amp; Forms</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="dochead">
+    <span class="kicker">LINK · Phase 1 pilot · information architecture · Week 4</span>
+    <h1>Navigation structure and the <em>complete page list</em></h1>
+    <p class="sub">Every page, every URL, and the navigation that connects them. Organised by user level, because the three levels need different navigation and the current prototype mixes them. Phase 1 pages are specified in full; Phase 2 additions are listed so the structure accommodates them without a rebuild.</p>
+    <div class="facts">
+      <div><span class="lab">Phase 1 pages</span><div class="v accent">38</div></div>
+      <div><span class="lab">Transactional emails</span><div class="v">8</div></div>
+      <div><span class="lab">Phase 2 additions</span><div class="v">11</div></div>
+      <div><span class="lab">Navigation contexts</span><div class="v">5</div></div>
+      <div><span class="lab">Issued</span><div class="v">1 October 2026</div></div>
+      <div><span class="lab">For</span><div class="v">Design, Weeks 4&ndash;6</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>Five principles behind this structure</h2></div>
+    <p class="lede">Each of these comes from the research and each one explains a choice that would otherwise look wrong.</p>
+
+    <div class="stack">
+      <div class="card">
+        <h4>1. The customer does not need navigation</h4>
+        <p class="tiny soft" style="margin:9px 0 0">They arrive on one creator's profile from a link, book, attend, and leave. They are not browsing a marketplace. <strong>Every navigation link on the booking path is an exit, not a convenience.</strong> The public header is therefore deliberately minimal, and the checkout has no navigation at all.</p>
+      </div>
+      <div class="card">
+        <h4>2. The creator does need navigation, because they return</h4>
+        <p class="tiny soft" style="margin:9px 0 0">A creator comes back to check earnings, add availability and answer messages. That is a repeat-use app and it gets persistent navigation, app-style, with bottom tabs on mobile.</p>
+      </div>
+      <div class="card">
+        <h4>3. Browse is built but demoted</h4>
+        <p class="tiny soft" style="margin:9px 0 0">Category pages advertise exactly how small a launching marketplace is. They exist, they are reachable, and they are not promoted in the pilot. Promote them in Phase 2 once density exists.</p>
+      </div>
+      <div class="card">
+        <h4>4. Three surfaces, one shell</h4>
+        <p class="tiny soft" style="margin:9px 0 0">Shared components and one visual language, but three distinct navigation contexts. Mixing creator and fan surfaces is one of the four structural problems in the current prototype.</p>
+      </div>
+      <div class="card">
+        <h4>5. The creator profile is the front door, not the home page</h4>
+        <p class="tiny soft" style="margin:9px 0 0">Most pilot traffic never sees <span class="path">/</span>. It lands on <span class="path">/c/{handle}</span>. The profile carries the trust burden that a home page normally carries, and it is designed and reviewed accordingly.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>Navigation contexts</h2></div>
+    <p class="lede">Five contexts, each with a different job. The header changes with the context; it is not one global navigation with items hidden.</p>
+
+    <h3>Context A · Marketing <span class="chip l2">signed out</span></h3>
+    <p class="tiny soft">Used on the home page, the creator recruitment page, browse and policy pages. The only context with a full navigation.</p>
+    <div class="nav">
+      <div class="nbar">
+        <span class="nlogo">LINK</span>
+        <span class="nlink">How it works</span>
+        <span class="nlink">Browse</span>
+        <span class="nlink">For creators</span>
+        <span class="nspace"></span>
+        <span class="nghost">Sign in</span>
+        <span class="ncta">Start earning</span>
+      </div>
+      <div class="ncap">Mobile: logo, hamburger, and the <strong>Start earning</strong> button stays visible. The primary action never collapses into a menu.</div>
+    </div>
+
+    <h3>Context B · Creator profile <span class="chip l2">the front door</span></h3>
+    <p class="tiny soft">The page most customers see first and many see only. Navigation is reduced to a logo and one trust link.</p>
+    <div class="nav">
+      <div class="nbar">
+        <span class="nlogo">LINK</span>
+        <span class="nspace"></span>
+        <span class="nlink">How LINK works</span>
+      </div>
+      <div class="ncap"><strong>No browse, no search, no sign-in prompt.</strong> The visitor has already chosen a creator. Offering alternatives at this moment loses the booking. <em>How LINK works</em> opens a panel rather than navigating away.</div>
+    </div>
+
+    <h3>Context C · Checkout <span class="chip p1">no exits</span></h3>
+    <div class="nav">
+      <div class="nbar">
+        <span class="nlogo">LINK</span>
+        <span class="nspace"></span>
+        <span class="nlink" style="font-size:13px">Secure checkout</span>
+      </div>
+      <div class="ncap">Logo is <strong>not</strong> a link during checkout. Standard practice for a payment flow: remove every exit except the browser back button. Trust marks and the refund line sit in the page, not in the header.</div>
+    </div>
+
+    <h3>Context D · Creator app <span class="chip l1">signed in</span></h3>
+    <div class="nav">
+      <div class="nbar">
+        <span class="nlogo">LINK</span>
+        <span class="nlink">Dashboard</span>
+        <span class="nlink">Bookings</span>
+        <span class="nlink">Messages</span>
+        <span class="nspace"></span>
+        <span class="nghost">View my profile</span>
+        <span class="nghost">Account</span>
+      </div>
+      <div class="ncap">Desktop top bar. <strong>View my profile</strong> is prominent because creators constantly want to see what their audience sees. Account menu holds Offers, Availability, Payouts, Settings and Sign out.</div>
+    </div>
+    <div class="nav tabs">
+      <div class="nbar">
+        <span class="ntab on"><i></i>Home</span>
+        <span class="ntab"><i></i>Bookings</span>
+        <span class="ntab"><i></i>Messages</span>
+        <span class="ntab"><i></i>Profile</span>
+      </div>
+      <div class="ncap">Mobile: four bottom tabs, thumb-reachable. Four is the maximum before labels truncate at 375px. Offers, Availability and Payouts live inside Profile rather than taking a tab.</div>
+    </div>
+
+    <h3>Context E · Administrator <span class="chip l3">internal</span></h3>
+    <div class="nav">
+      <div class="nbar">
+        <span class="nlogo" style="color:var(--ink)">LINK admin</span>
+        <span class="nlink">Members</span>
+        <span class="nlink">Payments</span>
+        <span class="nspace"></span>
+        <span class="nghost">Search</span>
+      </div>
+      <div class="ncap">Deliberately plain. Two lists and a search is the entire navigation. Every action is reached from a record, not from the nav.</div>
+    </div>
+
+    <div class="note warn">
+      <h3>The footer is where the policy links live, not the header</h3>
+      <p>Refunds, terms, privacy, conduct and the support contact sit in a footer on marketing and profile pages. <strong>On checkout, the refund policy is lifted out of the footer and placed beside the pay button</strong>, because policy links are not read before payment and a refund line adjacent to the button is. The footer is suppressed entirely during checkout.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>Sitemap</h2></div>
+    <p class="lede">The whole structure in one view. Green marks a Phase 1 entry point that carries traffic; grey marks Phase 2.</p>
+
+    <div class="tree">
+<span class="t0">LINK</span>
+│
+├── <span class="tn">Public</span> <span class="tc">· signed out · 16 pages</span>
+│   ├── <span class="tp">/</span> <span class="tc">Home, split creator and customer story</span>
+│   ├── <span class="tp">/join</span> <span class="tc">Creator recruitment landing</span>
+│   ├── <span class="tp">/c/{handle}</span> <span class="tc">Creator profile + booking panel &nbsp;←&nbsp; PRIMARY ENTRY</span>
+│   ├── <span class="tp">/checkout/{ref}</span> <span class="tc">Checkout, guest</span>
+│   ├── <span class="tp">/booking/{ref}</span> <span class="tc">Confirmation and manage, link access</span>
+│   ├── <span class="tp">/call/{ref}</span> <span class="tc">Call join wrapper</span>
+│   ├── <span class="tp">/review/{ref}</span> <span class="tc">Post-call rating and rebook</span>
+│   ├── /browse <span class="tc">All creators, demoted in pilot</span>
+│   ├── /browse/{category} <span class="tc">Category listing</span>
+│   ├── /how-it-works <span class="tc">Trust explainer, also a panel</span>
+│   ├── /help <span class="tc">Support contact</span>
+│   ├── /refunds · /terms · /privacy · /conduct <span class="tc">Policy</span>
+│   └── /404 · /500 <span class="tc">Error pages</span>
+│
+├── <span class="tn">Creator</span> <span class="tc">· authenticated · 17 pages</span>
+│   ├── <span class="tp">/signup</span> <span class="tc">Account + social connection</span>
+│   ├── /login · /login/reset
+│   ├── <span class="tp">/onboarding/offer</span> <span class="tc">Step 1 of 3</span>
+│   ├── <span class="tp">/onboarding/availability</span> <span class="tc">Step 2 of 3</span>
+│   ├── <span class="tp">/onboarding/payouts</span> <span class="tc">Step 3 of 3, deferrable</span>
+│   ├── <span class="tp">/dashboard</span> <span class="tc">Earnings first &nbsp;←&nbsp; CREATOR HOME</span>
+│   ├── /dashboard/bookings <span class="tc">Upcoming and past</span>
+│   ├── /dashboard/bookings/{id} <span class="tc">Booking detail, join link</span>
+│   ├── /dashboard/messages <span class="tc">Threads, gated</span>
+│   ├── /dashboard/messages/{id}
+│   ├── /dashboard/profile <span class="tc">Public profile editor</span>
+│   ├── /dashboard/offers <span class="tc">Duration and price</span>
+│   ├── /dashboard/availability
+│   ├── /dashboard/payouts <span class="tc">Stripe Connect status</span>
+│   └── /dashboard/settings <span class="tc">Account, notifications, delete</span>
+│
+├── <span class="tn">Administrator</span> <span class="tc">· internal · 5 pages</span>
+│   ├── /admin <span class="tc">Alerts and today</span>
+│   ├── /admin/members · /admin/members/{id}
+│   └── /admin/payments · /admin/payments/{id}
+│
+└── <span class="t2">Phase 2</span> <span class="tc">· structure accommodates, not built</span>
+    ├── <span class="t2">/search</span> <span class="tc">Ranked search</span>
+    ├── <span class="t2">/booking/{ref}/reschedule</span> <span class="tc">Self-serve</span>
+    ├── <span class="t2">/dashboard/analytics</span> <span class="tc">Funnels and nudges</span>
+    ├── <span class="t2">/admin/reports</span> <span class="tc">Moderation queue</span>
+    ├── <span class="t2">/admin/disputes</span> <span class="tc">Chargebacks</span>
+    └── <span class="t2">/admin/audit</span> <span class="tc">Action log</span>
+    </div>
+
+    <div class="note">
+      <h3>Two structural choices worth defending</h3>
+      <p><strong>Creator profiles sit at <span class="path">/c/{handle}</span>, not at <span class="path">/{handle}</span>.</strong> A root-level namespace looks cleaner but permanently collides with every future page: a creator called "help" or "browse" breaks the site. The two extra characters buy a namespace that never has to be migrated.</p>
+      <p><strong>Booking, checkout, call and review are reached by reference, not by login.</strong> A guest customer has no account, so these pages are accessed through a long unguessable reference in the URL, delivered by email. That is what makes guest checkout possible, and the reference must be long enough that it cannot be enumerated.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Page list, Level 2 · Customer</h2></div>
+    <p class="lede">Sixteen URLs across eleven entries. These carry the money and the trust problem, and they are designed first.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Path</th><th>Page</th><th>Job</th><th>Nav</th><th>Pri</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="w2">C1</td><td><span class="path">/c/{handle}</span></td>
+            <td><strong>Creator profile</strong><div class="tiny soft">Booking panel inline</div></td>
+            <td>Establish that LINK is legitimate in seconds, then reach a selected slot. Carries the verified badge, availability in the viewer's time zone, and the all-in total once a slot is picked.</td>
+            <td class="w2">B</td><td class="w2"><span class="chip p1">1</span></td>
+          </tr>
+          <tr>
+            <td class="w2">C2</td><td><span class="path">/checkout/{ref}</span></td>
+            <td><strong>Checkout</strong></td>
+            <td>Take payment without surprising anyone. Guest only. Same total as the profile showed. Held-funds and refund lines at the button.</td>
+            <td class="w2">C</td><td class="w2"><span class="chip p1">1</span></td>
+          </tr>
+          <tr>
+            <td class="w2">C3</td><td><span class="path">/booking/{ref}</span></td>
+            <td><strong>Confirmation and manage</strong></td>
+            <td>Reassure immediately and make the join link impossible to lose. Also the cancellation surface, reached from every email.</td>
+            <td class="w2">B</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">C4</td><td><span class="path">/call/{ref}</span></td>
+            <td><strong>Call join</strong></td>
+            <td>Wrapper around the provider's prebuilt call interface. Owns too-early, waiting, ended and permission-denied states.</td>
+            <td class="w2">None</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">C5</td><td><span class="path">/review/{ref}</span></td>
+            <td><strong>Post-call review</strong></td>
+            <td>Capture a rating, and prompt the second booking. The rebooking affordance lives here.</td>
+            <td class="w2">B</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">C6</td><td><span class="path">/</span></td>
+            <td><strong>Home</strong></td>
+            <td>One page with a clear split between the creator story and the customer story. Replaces the two competing landing pages in the prototype.</td>
+            <td class="w2">A</td><td class="w2"><span class="chip p3">3</span></td>
+          </tr>
+          <tr>
+            <td class="w2">C7</td><td><span class="path">/browse</span><br><span class="path">/browse/{category}</span></td>
+            <td><strong>Browse and category</strong></td>
+            <td>Exists and is reachable, deliberately not promoted. Design the sparse state as the normal state.</td>
+            <td class="w2">A</td><td class="w2"><span class="chip p3">3</span></td>
+          </tr>
+          <tr>
+            <td class="w2">C8</td><td><span class="path">/how-it-works</span></td>
+            <td><strong>How LINK works</strong></td>
+            <td>Trust explainer: held funds, refunds, what verification means. Also rendered as a panel from the profile so it never navigates the visitor away.</td>
+            <td class="w2">A</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">C9</td><td><span class="path">/help</span></td>
+            <td><strong>Support contact</strong></td>
+            <td>A published, monitored route for a customer whose call failed. Currently unscoped and flagged as a gap in the research.</td>
+            <td class="w2">A</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">C10</td>
+            <td><span class="path">/refunds</span> <span class="path">/terms</span><br><span class="path">/privacy</span> <span class="path">/conduct</span></td>
+            <td><strong>Policy pages</strong></td>
+            <td>Plain and readable. Linked from the footer and from checkout. Content is the client's legal responsibility; layout is ours.</td>
+            <td class="w2">A</td><td class="w2"><span class="chip p3">3</span></td>
+          </tr>
+          <tr>
+            <td class="w2">C11</td><td><span class="path">/404</span> <span class="path">/500</span></td>
+            <td><strong>Error pages</strong></td>
+            <td>A dead creator link is a realistic case in a pilot with suspensions. The 404 should offer browse rather than a dead end.</td>
+            <td class="w2">A</td><td class="w2"><span class="chip p3">3</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="cust-detail">Page details</h3>
+    <p>How each page works, and what the designer and the developer each need to do about it.</p>
+
+    <div class="pg" id="p-c1">
+      <header><span class="pid">C1</span><span class="ptitle">Creator profile</span><span class="ppath">/c/{handle}</span><span class="ppri"><span class="chip p1">Priority 1</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> A visitor arrives from the creator's own link, on a phone, having never heard of LINK. The page has to prove the platform is legitimate within seconds, then move them to a selected time slot. Everything above the fold is doing trust work: the creator's photo and name, the verified badge with its dated claim, and the offer with a price. Below that sits availability, rendered in the visitor's own time zone and leading with the nearest slot rather than a month view. Choosing a slot reveals the <strong>all-in total including the service fee</strong>, which is the last number the visitor should ever see change. This page is not a marketplace listing competing for attention; the visitor has already chosen the person, so the page's only job is removing doubt and getting to checkout fast.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>Draw at 375px first. The booking panel becomes a sticky bottom bar on mobile and a side column on desktop.</li>
+              <li>The verified badge reads <code>18.2k on Instagram · verified Oct 2026</code>. Design the lighter <em>linked</em> variant for manually verified creators at the same time, not later.</li>
+              <li>Availability leads with the nearest slot. Show the viewer's time zone as a label they can see, not as an assumption.</li>
+              <li>No browse, no search, no sign-in prompt anywhere on this page. Nav context B only.</li>
+              <li><em>How LINK works</em> opens a panel over the page, never navigates away.</li>
+              <li>Design the no-availability state as a first-class state. It will happen often in a pilot.</li>
+              <li>No invented review counts, follower numbers or social proof. If it is not real it does not appear, including in the mockup.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Resolve <code>{handle}</code> case-insensitively, and permanently redirect retired handles rather than returning 404.</li>
+              <li>Compute availability server-side in UTC, send with offsets, render in the browser's resolved time zone. Never trust a stored local time.</li>
+              <li>Exclude slots inside the booking lead time and any already-held slot. A slot held in another session is unavailable.</li>
+              <li>Return the all-in total from the server, including the service fee, so the client never calculates money.</li>
+              <li>Fire <code>profile_viewed</code> on load and <code>slot_selected</code> on choice. These are two of the four funnel events.</li>
+              <li>Suspended or unverified creators: return a valid page with a reduced state, never a server error.</li>
+              <li>Open graph tags matter here. This link is shared into social feeds and the preview card is the first impression.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Default, no availability, creator unverified, creator suspended, loading, handle not found</dd>
+          <dt>Acceptance</dt><dd>A visitor reaches checkout in under 90 seconds. Availability renders in the viewer's own zone. Only real, sourced values appear.</dd>
+          <dt>Events</dt><dd><code>profile_viewed</code>, <code>slot_selected</code></dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pg" id="p-c2">
+      <header><span class="pid">C2</span><span class="ptitle">Checkout</span><span class="ppath">/checkout/{ref}</span><span class="ppri"><span class="chip p1">Priority 1</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> The single highest-value screen in the product, and the one carrying the two largest documented abandonment causes. The customer arrives with a slot held for them and a total they have already seen. They enter a name, an email and a card. No password, no account, no second step. The page shows the fee line labelled with what it covers, a line saying the payment is held until the call completes, and a line of refund policy, all adjacent to the pay button rather than in a footer. On success the slot converts from held to booked and both parties are emailed within sixty seconds. Navigation is suppressed entirely: the logo is not a link and there is no footer, because every exit on a payment page is a lost booking.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>One screen on mobile. If it scrolls past two viewport heights at 375px, cut fields.</li>
+              <li>The total must be visually identical to the figure shown on C1. A customer should never see a number move.</li>
+              <li>Fee line reads <code>Service fee (card processing)</code>, not "Service fee".</li>
+              <li>At the button: "Your payment is held until the call is complete." and "Free cancellation up to 24 hours before."</li>
+              <li>Design the held-slot countdown. The customer needs to know the slot is reserved and for how long.</li>
+              <li>Every field needs a visible label, a focus state and an error state. Placeholder-as-label is not acceptable here.</li>
+              <li>Design the card-declined and slot-taken states properly. Both are common and both are recoverable if designed.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Hold the slot when the checkout reference is created, with a server-side expiry. Release it on expiry or abandonment.</li>
+              <li>Recompute the total server-side at payment time and reject any client-supplied amount.</li>
+              <li>Use Stripe's hosted card element so card data never touches our origin.</li>
+              <li><strong>Capture, then hold.</strong> Funds are held until the call completes and the review window passes. Do not release on payment.</li>
+              <li>Idempotency key on the payment call. A double-tapped pay button must not charge twice.</li>
+              <li>Handle the race where the slot is taken during payment: refund immediately and offer the nearest alternative.</li>
+              <li>Fire <code>checkout_started</code> on load and <code>payment_succeeded</code> on confirmation. Completing the four-event funnel.</li>
+              <li>Store the booking-source attribution captured from the referring link, even though nothing uses it in Phase 1.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Default, validating, card declined, slot taken while paying, hold expired, success, network failure</dd>
+          <dt>Acceptance</dt><dd>Guest only. Fully keyboard navigable with visible focus. The total never changes. Errors say what to do next.</dd>
+          <dt>Events</dt><dd><code>checkout_started</code>, <code>payment_succeeded</code>, <code>payment_failed</code></dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pg" id="p-c3">
+      <header><span class="pid">C3</span><span class="ptitle">Confirmation and manage booking</span><span class="ppath">/booking/{ref}</span><span class="ppri"><span class="chip p2">Priority 2</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> Two jobs in one page. Immediately after payment it reassures and hands over the join link. Afterwards it is the page every reminder email links to, and the only place a guest customer can cancel. Because the customer has no account, access is by the long reference in the URL, which is the credential. It shows the creator, the time in the viewer's zone, the join link, what happens next, and the cancellation option with its refund consequence stated plainly rather than linked.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>The join link is the most important element on the page at every stage. Treat it as the primary action, not as detail.</li>
+              <li>Show the cancellation consequence as text, not as a policy link: "Cancel now for a full refund" changes to "Cancel now for a 50 percent refund" as the window closes.</li>
+              <li>Add-to-calendar is worth the space. It is the single best defence against a no-show.</li>
+              <li>Design the post-call state. This page does not disappear after the call; it becomes the receipt.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>The reference must be long and random enough that it cannot be enumerated. It is the only access control.</li>
+              <li>Compute the refund tier live from the current time against the call start, not from a stored value.</li>
+              <li>Generate a proper calendar file with the join link inside the event body.</li>
+              <li>Never expose the creator's email or the other party's details on this page.</li>
+              <li>Cancellation triggers the refund path immediately and emails both parties.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Just booked, upcoming, within the hour, in progress, completed, cancelled, refunded, creator suspended</dd>
+          <dt>Acceptance</dt><dd>Reachable without an account. Refund tier shown is always correct for the current time.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pg" id="p-c4">
+      <header><span class="pid">C4</span><span class="ptitle">Call join</span><span class="ppath">/call/{ref}</span><span class="ppri"><span class="chip p2">Priority 2</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> A thin wrapper around the video provider's prebuilt call interface. We do not design or build the call UI itself. What we own is everything around it: the too-early state, the ready-to-join state, the waiting-for-the-other-party state, the ended state, and the one that matters most, permission denied. There is no pre-call device check in Phase 1, so if a browser refuses camera or microphone access, this page is the only recovery path that exists.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>Give the permission-denied state real attention. Browser-specific instructions, because the fix differs on iOS Safari and Android Chrome.</li>
+              <li>The too-early state should show a countdown, not a locked door. The customer is anxious and the countdown is reassurance.</li>
+              <li>Waiting-for-other-party needs a grace timer and a clear statement of what happens if they do not arrive.</li>
+              <li>Minimal chrome. Once the call starts, the provider's UI owns the screen.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Issue a short-lived room token per participant. Never a shared permanent room URL.</li>
+              <li>Open the room only inside the join window: a few minutes before start until a defined cutoff after.</li>
+              <li>Capture <code>call_joined</code> per party from the provider webhook, not from the client. The completion gate metric depends on it.</li>
+              <li>Start the no-show grace timer server-side when the first party joins.</li>
+              <li>Detect permission failures and route to the recovery state rather than letting the provider show a raw error.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Too early, ready, waiting for other party, in call, ended, permission denied, expired, cancelled</dd>
+          <dt>Acceptance</dt><dd>Both parties join from a browser on desktop and mobile, no download, no account for the customer.</dd>
+          <dt>Events</dt><dd><code>call_joined</code> per party, <code>call_completed</code></dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pg" id="p-c5">
+      <header><span class="pid">C5</span><span class="ptitle">Post-call review</span><span class="ppath">/review/{ref}</span><span class="ppri"><span class="chip p2">Priority 2</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> Reached from the review request email and from the ended state of the call page. One to five stars, optional written text, and beside it the <strong>book again</strong> affordance. That second element is a recommended addition rather than original scope, and it matters because the primary gate metric is defined as trending up and nothing else in Phase 1 encourages a repeat booking. The review feeds the average rating gate metric and appears on the creator's profile.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>Stars first, text optional and visibly optional. A required text field halves submission.</li>
+              <li><em>Book again</em> sits beside the submit action, not after it. The intent is highest in the moments right after a good call.</li>
+              <li>Design the call-did-not-happen variant. It routes to refund and support, not to a rating.</li>
+              <li>One screen, no scrolling at 375px.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Only reachable after a completed call, once per booking.</li>
+              <li>Submitting the review ends the review window and releases the payout.</li>
+              <li>Fire <code>review_submitted</code> with the star value. Fire <code>rebook_clicked</code> separately.</li>
+              <li><em>Book again</em> pre-selects the same creator and offer on C1.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Prompt, submitted, already reviewed, call did not happen, expired</dd>
+          <dt>Acceptance</dt><dd>Rating and text appear on the creator profile. Payout releases on submission or window expiry.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <h4>C6 · Home <span class="chip p3">Priority 3</span> &nbsp; <span class="path">/</span></h4>
+      <p class="tiny" style="margin:8px 0 0"><strong>How it works.</strong> One page explaining the product to two audiences, replacing the two competing landing pages in the prototype. Split clearly: the creator story with <em>Start earning</em>, the customer story with <em>Browse creators</em>. Most pilot traffic never sees this page.<br>
+      <strong>Designer:</strong> do not let the two stories compete for the same space. A visitor should know within one screen which half is for them. Nav context A, full header.<br>
+      <strong>Developer:</strong> static and cacheable. No personalisation. This is also the page search engines index, so it carries the canonical metadata.</p>
+    </div>
+
+    <div class="pgroup">
+      <h4>C7 · Browse and category <span class="chip p3">Priority 3</span> &nbsp; <span class="path">/browse</span> <span class="path">/browse/{category}</span></h4>
+      <p class="tiny" style="margin:8px 0 0"><strong>How it works.</strong> A grid of creator cards, filterable by category. Built and reachable, deliberately not promoted in the pilot, because a category page advertises exactly how small the marketplace is.<br>
+      <strong>Designer:</strong> design the sparse state as the normal state. Three creators must not look like a broken page. Do not expose a category with fewer than a handful of creators at all.<br>
+      <strong>Developer:</strong> hide empty categories from navigation rather than rendering an empty page. Paginate from the start even if the first page never fills. Ordering is deliberately simple in Phase 1; ranked search is Phase 2.</p>
+    </div>
+
+    <div class="pgroup">
+      <h4>C8 · How LINK works &nbsp; C9 · Help <span class="chip p2">Priority 2</span> &nbsp; <span class="path">/how-it-works</span> <span class="path">/help</span></h4>
+      <p class="tiny" style="margin:8px 0 0"><strong>How they work.</strong> C8 is the trust explainer: what held funds mean, what the refund policy is, what verification does and does not claim. It renders both as a standalone page and as a panel opened from the creator profile, so a doubting visitor never navigates away mid-booking. C9 is the support route, which the research flagged as an unscoped gap: a customer whose creator did not show currently has no path except the creator who did not show.<br>
+      <strong>Designer:</strong> write C8 as answers to the three questions a nervous customer actually asks. C9 can be a single form or a published monitored address, but it must exist and be findable from the footer and from every booking.<br>
+      <strong>Developer:</strong> C8 panel and page share one content source. C9 submissions must reach a monitored inbox and include the booking reference automatically when opened from a booking.</p>
+    </div>
+
+    <div class="pgroup">
+      <h4>C10 · Policy pages &nbsp; C11 · Error pages <span class="chip p3">Priority 3</span></h4>
+      <p class="tiny" style="margin:8px 0 0"><strong>How they work.</strong> Refunds, terms, privacy and conduct are plain readable documents linked from the footer and from checkout. Content is the client's legal responsibility; the layout is ours. The 404 matters more than usual here, because a retired or suspended creator handle is a realistic case in a pilot.<br>
+      <strong>Designer:</strong> policy pages get real typographic care. People read the refund policy when they are already unhappy. The 404 offers browse and support, never a dead end.<br>
+      <strong>Developer:</strong> policy content should be editable without a deploy. Return a real 404 status rather than a 200 with an error page, and log handle-not-found separately so retired links can be spotted.</p>
+    </div>
+
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>Page list, Level 1 · Creator</h2></div>
+    <p class="lede">Seventeen URLs across fifteen entries. The onboarding three carry a gate metric between them.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Path</th><th>Page</th><th>Job</th><th>Nav</th><th>Pri</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="w2">K0</td><td><span class="path">/join</span></td>
+            <td><strong>Creator recruitment landing</strong></td>
+            <td>The page a hand-recruited creator is sent to. Explains the offer, the 85 percent, and how little setup is involved. Separate from the home page because the audience and the ask are different.</td>
+            <td class="w2">A</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K1</td><td><span class="path">/signup</span></td>
+            <td><strong>Sign up and connect</strong></td>
+            <td>From invitation link to a connected social account. Must never dead-end: a failed connection continues to manual verification.</td>
+            <td class="w2">A</td><td class="w2"><span class="chip p1">1</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K2</td><td><span class="path">/login</span><br><span class="path">/login/reset</span></td>
+            <td><strong>Sign in and reset</strong></td>
+            <td>Returning creators only. Customers never sign in during Phase 1.</td>
+            <td class="w2">A</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K3</td><td><span class="path">/onboarding/offer</span></td>
+            <td><strong>Onboarding 1, the offer</strong></td>
+            <td>Duration from bounded options, price with a suggestion and its basis, plus the net received. <strong>The likeliest abandonment point in the product.</strong></td>
+            <td class="w2">Minimal</td><td class="w2"><span class="chip p1">1</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K4</td><td><span class="path">/onboarding/availability</span></td>
+            <td><strong>Onboarding 2, availability</strong></td>
+            <td>Flat slots in the creator's own zone, with same-day and next-hour presets so first availability is one tap.</td>
+            <td class="w2">Minimal</td><td class="w2"><span class="chip p1">1</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K5</td><td><span class="path">/onboarding/payouts</span></td>
+            <td><strong>Onboarding 3, payouts</strong></td>
+            <td>Stripe Connect. <strong>Visibly optional.</strong> The creator reaches a live profile without entering bank details.</td>
+            <td class="w2">Minimal</td><td class="w2"><span class="chip p1">1</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K6</td><td><span class="path">/dashboard</span></td>
+            <td><strong>Dashboard</strong><div class="tiny soft">Creator home</div></td>
+            <td>Pending earnings, paid earnings, next call, and anything still missing. Its empty state is the most important in the product.</td>
+            <td class="w2">D</td><td class="w2"><span class="chip p1">1</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K7</td><td><span class="path">/dashboard/bookings</span></td>
+            <td><strong>Bookings</strong></td>
+            <td>Upcoming and past, with the join link prominent on anything upcoming.</td>
+            <td class="w2">D</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K8</td><td><span class="path">/dashboard/bookings/{id}</span></td>
+            <td><strong>Booking detail</strong></td>
+            <td>Customer, time, amount, join link, and the cancel path with its refund consequence stated.</td>
+            <td class="w2">D</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K9</td><td><span class="path">/dashboard/messages</span><br><span class="path">/dashboard/messages/{id}</span></td>
+            <td><strong>Messages</strong></td>
+            <td>Threads exist only after a confirmed booking. The locked state needs a clear explanation, because the restriction will be questioned.</td>
+            <td class="w2">D</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K10</td><td><span class="path">/dashboard/profile</span></td>
+            <td><strong>Profile editor</strong></td>
+            <td>Bio, photo, handle, verification status. Live preview of what the audience sees, which is what creators are actually anxious about.</td>
+            <td class="w2">D</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K11</td><td><span class="path">/dashboard/offers</span></td>
+            <td><strong>Offer editor</strong></td>
+            <td>Same components as onboarding step 1, in an editing context. Do not design twice.</td>
+            <td class="w2">D</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K12</td><td><span class="path">/dashboard/availability</span></td>
+            <td><strong>Availability editor</strong></td>
+            <td>As onboarding step 2. The hardest mobile component in the product.</td>
+            <td class="w2">D</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K13</td><td><span class="path">/dashboard/payouts</span></td>
+            <td><strong>Payouts</strong></td>
+            <td>Stripe Connect status, bank details, payout history. Reached from a dashboard prompt when deferred at onboarding.</td>
+            <td class="w2">D</td><td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">K14</td><td><span class="path">/dashboard/settings</span></td>
+            <td><strong>Settings</strong></td>
+            <td>Email, password, notification preferences, account deletion.</td>
+            <td class="w2">D</td><td class="w2"><span class="chip p3">3</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>Onboarding navigation is deliberately stripped</h3>
+      <p>The three onboarding pages carry a progress indicator and a back control, and nothing else. No tabs, no dashboard link, no account menu. A creator who wanders out of onboarding at step 2 does not come back, and creator activation above 55 percent is a gate metric.</p>
+    </div>
+
+    <h3 id="creator-detail">Page details</h3>
+    <p>The three onboarding pages carry a gate metric between them. They get the most attention here for that reason.</p>
+
+    <div class="pg" id="p-k1">
+      <header><span class="pid">K1</span><span class="ptitle">Sign up and connect account</span><span class="ppath">/signup</span><span class="ppri"><span class="chip p1">Priority 1</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> A hand-recruited creator arrives from a founder's message. They create a minimal account, then connect a social account so LINK can import their profile and follower count and set the verified marker. This is where permission anxiety peaks, before any value has been demonstrated, so the page must say plainly what connecting does and does not do. <strong>The critical rule is that this step can never dead-end.</strong> If the connection fails, or the creator leads on a platform Phase 1 does not automate, the flow continues with a manual verification pending and a lighter <em>linked</em> badge. An administrator confirms later. A creator must never be told their platform is unsupported.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>State the permission scope in the creator's words before the OAuth button: what we read, what we never post, what we never see.</li>
+              <li>The failure path needs to look like an alternative route, not an error. Same visual weight as the success path.</li>
+              <li>Minimal account fields. Email and password, or social identity. Nothing optional at this stage.</li>
+              <li>Show what happens next so the creator knows the setup is short. Three steps, roughly five minutes.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Request the narrowest OAuth scope that returns profile and follower count. Nothing more.</li>
+              <li>Store the follower count <strong>with the date it was read</strong>. The badge claim is dated and must stay accurate.</li>
+              <li>Handle revoked access later: the badge degrades to <em>linked</em> rather than disappearing.</li>
+              <li>Create the account before the OAuth redirect so a failed callback does not lose the signup.</li>
+              <li>Capture a referral code if present in the URL, even though nothing consumes it in Phase 1.</li>
+              <li>Fire <code>signup_completed</code>. This is the denominator of the activation gate metric.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Default, connecting, connected, connection failed, unsupported platform, already registered, email taken</dd>
+          <dt>Acceptance</dt><dd>A creator whose connection fails still reaches onboarding. No dead ends.</dd>
+          <dt>Events</dt><dd><code>signup_completed</code>, <code>social_connected</code>, <code>social_failed</code></dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pg" id="p-k3">
+      <header><span class="pid">K3</span><span class="ptitle">Onboarding 1 · the offer</span><span class="ppath">/onboarding/offer</span><span class="ppri"><span class="chip p1">Priority 1</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> The creator picks a call duration from bounded options and sets a price. This is <strong>the likeliest abandonment point in the entire product</strong>, and not for a technical reason: of the four steps to a live profile, three have an obviously correct answer and this one does not. Setting a price on your own time is a self-valuation, and an empty field invites deliberation at exactly the moment deliberation causes people to leave. The page therefore never shows an empty price field. It shows a suggested price with its basis, and the net amount the creator will actually receive, converting an identity question into a simple accept-or-adjust.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>Never an empty price input. Pre-fill the suggestion and state where it came from in one short line.</li>
+              <li>Show the net figure live: <code>You receive $34 of $40</code>. Not "85 percent commission", which is abstract.</li>
+              <li>Durations as bounded choices, not a free field. Fifteen, thirty and sixty minutes pending final confirmation.</li>
+              <li>Progress indicator shows how little is left, not how much has been done.</li>
+              <li><strong>No navigation on this page.</strong> No tabs, no dashboard link, no account menu. A back control and progress only.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Suggested price derives from the category and follower band. Keep the rule server-side and configurable, because it will be tuned during the pilot.</li>
+              <li>Validate against the agreed price band. The floor exists because fixed card fees consume very small transactions.</li>
+              <li>Calculate the net figure server-side from the live commission and service fee settings, never hardcoded in the client.</li>
+              <li>Save on every step so a creator can leave and resume without losing work.</li>
+              <li>Fire <code>onboarding_step_completed</code> with the step number. Step-level drop-off is how the activation problem gets diagnosed.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Empty with suggestion, edited, below floor, above ceiling, saving, saved, resumed</dd>
+          <dt>Acceptance</dt><dd>No empty price field is ever shown. The net amount is visible before the creator commits.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pg" id="p-k4">
+      <header><span class="pid">K4</span><span class="ptitle">Onboarding 2 · availability</span><span class="ppath">/onboarding/availability</span><span class="ppri"><span class="chip p1">Priority 1</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> The creator adds times they are free, entered in their own time zone and rendered to every visitor in theirs. Phase 1 supports flat slots only: no recurring rules, no buffers, no blackout dates, all of which are Phase 2. The hard part is not the logic but the interface, because an availability grid is the most difficult component to make usable on a small screen. Same-day and next-hour presets exist so that adding a first slot is one tap rather than a calendar negotiation.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>This is the hardest mobile component in the product. Design it at 375px before anything else and keep touch targets at 44 points.</li>
+              <li>Presets first, calendar second. "Today afternoon" and "Next 2 hours" remove the hardest decision.</li>
+              <li>Show the creator's own time zone explicitly, and state that visitors see their own.</li>
+              <li>Thin availability is the normal state in a pilot. Design for three slots looking intentional, not sparse.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Store every slot in UTC with the creator's zone recorded alongside. Render per viewer.</li>
+              <li>Handle daylight saving transitions explicitly. A slot created before a change must not move after it.</li>
+              <li>Enforce a minimum booking lead time so a slot cannot be booked seconds before it starts.</li>
+              <li>Prevent overlapping slots at save time, not at booking time.</li>
+              <li>Reaching a saved offer plus at least one future slot plus a live profile sets the <strong>bookable flag</strong> on the creator record. That flag is what the activation metric counts, and it is a field, not a report.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Empty, presets shown, slots added, overlapping, past time selected, saving, saved</dd>
+          <dt>Acceptance</dt><dd>A first slot can be added in one tap. Slots render correctly across a daylight saving boundary.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pg" id="p-k5">
+      <header><span class="pid">K5</span><span class="ptitle">Onboarding 3 · payouts</span><span class="ppath">/onboarding/payouts</span><span class="ppri"><span class="chip p1">Priority 1</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> Stripe Connect identity and bank details. This is the heaviest step in the creator flow and the one most likely to end the session, which is why it is <strong>deliberately deferrable</strong>: the creator reaches a live, bookable profile without entering bank details, and only needs them before the first payout. The design intent already exists; the risk is entirely in the copy. A step that looks mandatory will be treated as mandatory, and a creator who stops here never becomes activated.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>The skip control must read as a legitimate route, not as abandoning setup. Use the full sentence: "Add your bank details later. You will need them before your first payout, not before going live."</li>
+              <li>Give the deferral option equal visual weight to continuing. Do not grey it out or shrink it.</li>
+              <li>Design the deferred state on the dashboard at the same time, since that is where the prompt reappears.</li>
+              <li>Explain why a bank connection needs identity details. Unexplained identity requests read as suspicious.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Use Stripe's hosted onboarding. Do not collect bank or identity data on our own forms.</li>
+              <li>Deferral must not block the bookable flag. A creator can take bookings with payouts pending.</li>
+              <li>Listen for the Connect account webhook and update payout readiness asynchronously. Verification can take days.</li>
+              <li>Block only the payout itself when details are missing, never the booking, and surface that clearly on the dashboard.</li>
+              <li>Fire <code>payout_deferred</code> and <code>payout_connected</code> separately. The ratio is a real signal about this step.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Not started, deferred, in progress, pending verification, verified, rejected, restricted</dd>
+          <dt>Acceptance</dt><dd>A creator becomes bookable without entering bank details.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pg" id="p-k6">
+      <header><span class="pid">K6</span><span class="ptitle">Dashboard</span><span class="ppath">/dashboard</span><span class="ppri"><span class="chip p1">Priority 1</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> The creator's home, answering one question at a glance: am I making money and what is next. Pending earnings, paid earnings, the next upcoming call, and a prompt for anything still missing from the profile, most often payouts. <strong>Its empty state is the most important empty state in the product</strong>, because a brand new creator sees it immediately after onboarding, before a single booking exists. "No bookings yet" is a failure message. The right content is the next action: share your link, with the link and a copy button right there.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>Design the empty state first and the populated state second. Empty is the condition most creators will be in for their first days.</li>
+              <li>Earnings before everything. Pending and paid as distinct figures, because the difference is the question creators actually have.</li>
+              <li><em>View my profile</em> prominent. Creators constantly want to see what their audience sees.</li>
+              <li>Missing-payout prompt is persistent but not alarming. It is a reminder, not an error.</li>
+              <li>Nav context D. Four bottom tabs on mobile.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Pending means held and not yet released. Paid means settled to the bank. Never conflate them.</li>
+              <li>Compute from the ledger, not from a cached balance. Money figures must reconcile with Stripe.</li>
+              <li>The next-call card needs the join link live in the window, and hidden outside it.</li>
+              <li>Derive the completion prompts from actual record state rather than a stored checklist that can drift.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Brand new, awaiting first booking, active, payout pending, payout failed, verification pending, suspended</dd>
+          <dt>Acceptance</dt><dd>Pending, paid, next call and any missing step are all visible on sign-in without scrolling at 375px.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pgroup">
+      <h4>K0 · Creator landing &nbsp; K2 · Sign in <span class="chip p2">Priority 2</span> &nbsp; <span class="path">/join</span> <span class="path">/login</span></h4>
+      <p class="tiny" style="margin:8px 0 0"><strong>How they work.</strong> K0 is the page a hand-recruited creator is sent to before they commit. It explains the offer, the 85 percent, and how little setup is involved. Separate from the home page because the audience and the ask are different. K2 is sign-in and reset for returning creators; customers never sign in during Phase 1.<br>
+      <strong>Designer:</strong> K0 leads with earnings and setup time, the two things a creator weighs. One primary action, <em>Start earning</em>. K2 is conventional and should not be reinvented.<br>
+      <strong>Developer:</strong> K0 carries the referral or campaign parameter through to signup. K2 needs rate limiting and must not reveal whether an email exists.</p>
+    </div>
+
+    <div class="pgroup">
+      <h4>K7 · Bookings &nbsp; K8 · Booking detail <span class="chip p2">Priority 2</span> &nbsp; <span class="path">/dashboard/bookings</span></h4>
+      <p class="tiny" style="margin:8px 0 0"><strong>How they work.</strong> Upcoming and past bookings, with the join link prominent on anything upcoming. The detail view shows customer, time, amount the creator receives, the join link, and the cancel path with its refund consequence stated plainly.<br>
+      <strong>Designer:</strong> upcoming and past are different enough to be separate groups, not a filter. The join link is the primary action on every upcoming row. Cancelling must show what the customer receives before confirming.<br>
+      <strong>Developer:</strong> a creator cancellation always refunds in full including the service fee, regardless of timing. Notify the customer immediately. Never expose the customer's full contact details beyond what the call requires.</p>
+    </div>
+
+    <div class="pgroup">
+      <h4>K9 · Messages <span class="chip p2">Priority 2</span> &nbsp; <span class="path">/dashboard/messages</span></h4>
+      <p class="tiny" style="margin:8px 0 0"><strong>How it works.</strong> A thread exists only between a customer and a creator with a confirmed booking. It is unavailable before payment, which is a deliberate restriction: ungated messaging is how bookings leak off the platform.<br>
+      <strong>Designer:</strong> the locked state needs a clear explanation, because this restriction will be questioned by creators. "Messaging opens once a booking is confirmed."<br>
+      <strong>Developer:</strong> enforce the gate server-side, not by hiding the interface. Threads are scoped to a booking. Consider whether a thread closes after the review window, and make that a configurable rule rather than a hardcoded one.</p>
+    </div>
+
+    <div class="pgroup">
+      <h4>K10 · Profile editor &nbsp; K11 · Offers &nbsp; K12 · Availability &nbsp; K13 · Payouts <span class="chip p2">Priority 2</span></h4>
+      <p class="tiny" style="margin:8px 0 0"><strong>How they work.</strong> The editing counterparts to onboarding. K11, K12 and K13 reuse the onboarding components in an editing context rather than being designed twice. K10 covers bio, photo, handle and verification status, with a live preview of the public profile, which is what creators are genuinely anxious about.<br>
+      <strong>Designer:</strong> do not draw the offer and availability editors a second time. Design the editing chrome around the existing components. The profile preview should be the dominant element on K10.<br>
+      <strong>Developer:</strong> a handle change must permanently redirect the old URL, because creator links live in bios and old posts. Changes to price or availability must not alter bookings already paid for. K13 reflects live Stripe Connect state rather than a cached copy.</p>
+    </div>
+
+    <div class="pgroup">
+      <h4>K14 · Settings <span class="chip p3">Priority 3</span> &nbsp; <span class="path">/dashboard/settings</span></h4>
+      <p class="tiny" style="margin:8px 0 0"><strong>How it works.</strong> Email, password, notification preferences and account deletion. Conventional, and should look it.<br>
+      <strong>Designer:</strong> use existing components throughout. Deletion needs a confirmation that states the consequences for upcoming bookings.<br>
+      <strong>Developer:</strong> deletion with future bookings must be blocked or must cancel and refund them first. Phase 2 adds channel preferences here when push and SMS arrive, so group notification settings in a way that can grow.</p>
+    </div>
+
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>Page list, Level 3 · Administrator</h2></div>
+    <p class="lede">Five pages holding five actions. Plain by design, because speed matters and polish does not.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Path</th><th>Page</th><th>Job and actions</th><th>Pri</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="w2">A1</td><td><span class="path">/admin</span></td>
+            <td><strong>Admin home</strong></td>
+            <td>Monitoring alerts, today's calls, anything needing attention. The only proactive surface in a role that is otherwise reactive.</td>
+            <td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">A2</td><td><span class="path">/admin/members</span></td>
+            <td><strong>Members</strong></td>
+            <td>List and locate one record without a database query. That is the whole bar in Phase 1.</td>
+            <td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">A3</td><td><span class="path">/admin/members/{id}</span></td>
+            <td><strong>Member detail</strong></td>
+            <td>Two of the five actions: <strong>verify a creator manually</strong> and <strong>suspend an account</strong>. Both need a confirm step with the consequence stated, because there is no audit log.</td>
+            <td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">A4</td><td><span class="path">/admin/payments</span></td>
+            <td><strong>Payments</strong></td>
+            <td>List with money-state pills: held, released, refunded, failed. Searchable by reference, creator or customer email.</td>
+            <td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+          <tr>
+            <td class="w2">A5</td><td><span class="path">/admin/payments/{id}</span></td>
+            <td><strong>Payment detail</strong></td>
+            <td>The third action: <strong>issue a refund</strong> against the agreed policy. Shows the booking, the call outcome and the policy that applies.</td>
+            <td class="w2"><span class="chip p2">2</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">The remaining two of the five actions are not pages: <strong>find a member or payment</strong> is the search in A2 and A4, and <strong>respond to a monitoring alert</strong> starts at A1 and ends wherever the alert points.</p>
+
+    <h3 id="admin-detail">Page details</h3>
+    <p>Five pages holding five actions. The design budget here is deliberately low: this surface needs to be fast and correct, not attractive. Every hour spent making admin beautiful is an hour not spent on creator onboarding, which carries a gate metric.</p>
+
+    <div class="pg" id="p-a1">
+      <header><span class="pid">A1</span><span class="ptitle">Admin home</span><span class="ppath">/admin</span><span class="ppri"><span class="chip p2">Priority 2</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> The only proactive surface in a role that is otherwise entirely reactive. It shows monitoring alerts, today's calls, and anything needing attention: payouts that failed, refunds that did not reach a customer, creators awaiting manual verification. There is no queue system in Phase 1, so this page is the substitute for one, and the administrator triages by reading it rather than by being routed.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>A list of things needing attention, ordered by urgency. Not a dashboard of charts.</li>
+              <li>Each row links directly to the record that fixes it. Two clicks from here to resolved.</li>
+              <li>The empty state is the goal state. "Nothing needs attention" should look like success, not like a broken page.</li>
+              <li>Use the existing component library as-is. No bespoke layouts.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Derive attention items from real state: failed payouts, failed refunds, pending verifications, calls where only one party joined.</li>
+              <li>Surface uptime and error-tracking alerts here as well as to email, so there is one place to look.</li>
+              <li>Admin access is role-gated server-side on every route, not by hiding navigation.</li>
+              <li>Count administrator actions per week. The research proposes this as an operational load proxy, since the manual model has an unknown breaking point.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Clear, items pending, system alert active</dd>
+          <dt>Acceptance</dt><dd>Every attention item reaches its resolving record in one click.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pg" id="p-a3">
+      <header><span class="pid">A2 &amp; A3</span><span class="ptitle">Members list and member detail</span><span class="ppath">/admin/members</span><span class="ppri"><span class="chip p2">Priority 2</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> A searchable list of creators and customers, and a detail view holding two of the five administrator actions: <strong>verify a creator manually</strong> and <strong>suspend an account</strong>. Manual verification is what makes a single automated platform connection acceptable for a whole pilot, so it is not a fallback feature, it is load-bearing. Suspension is immediate and has no reporting queue or moderation workflow behind it. Because Phase 1 has no audit log, the confirmation dialog on each irreversible action is effectively the only record that the decision was deliberate.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>Search is the primary element on the list, not a filter tucked in a corner. Finding one record is the whole job.</li>
+              <li>Verification needs the evidence next to the action: the claimed handle, the follower count, the date read, and a link out to the actual profile.</li>
+              <li>Suspension needs a confirm step stating the consequences: existing bookings, refunds, and whether the profile goes dark.</li>
+              <li>Show the three verification levels distinctly: verified, linked, pending.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Search across handle, display name and email, with partial matching. An administrator rarely has an exact value.</li>
+              <li>Manual verification sets the badge to <em>linked</em> with the administrator and timestamp recorded on the record, since there is no audit table.</li>
+              <li>Suspension must define what happens to future bookings. Recommended: cancel and refund in full, notify both parties.</li>
+              <li>A suspended creator's profile returns a valid reduced page, never a server error.</li>
+              <li>Every state-changing admin action needs a confirmation step and a written record on the affected record.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>List: results, no results, loading. Detail: verified, linked, pending, suspended, deleted</dd>
+          <dt>Acceptance</dt><dd>Any member located without a database query. Verify and suspend each reachable in two clicks.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pg" id="p-a5">
+      <header><span class="pid">A4 &amp; A5</span><span class="ptitle">Payments list and payment detail</span><span class="ppath">/admin/payments</span><span class="ppri"><span class="chip p2">Priority 2</span></span></header>
+      <div class="pbody">
+        <p class="how"><strong>How it works.</strong> Every payment with its current money state, and a detail view holding the third administrator action: <strong>issue a refund</strong> against the agreed policy. The detail view shows the booking, the call outcome, and which refund tier applies given the timing, so the administrator applies a rule rather than making a judgement. That distinction matters: the research identified arbitrating without an agreed rule as the weak point of the Phase 1 manual model.</p>
+        <div class="split">
+          <div class="forwho design">
+            <h5>For the UI designer</h5>
+            <ul>
+              <li>Money states as pills with semantic colour: held, released, refunded, failed, disputed. Never coral, which is the brand colour.</li>
+              <li>The refund action should show the applicable tier and the resulting amount <em>before</em> confirmation, computed rather than typed.</li>
+              <li>Show the call outcome beside the payment. Whether both parties joined is the fact that decides most refunds.</li>
+              <li>Numbers right-aligned with tabular figures so columns scan.</li>
+            </ul>
+          </div>
+          <div class="forwho dev">
+            <h5>For the developer</h5>
+            <ul>
+              <li>Compute the refund tier from the cancellation policy and the call outcome. Offer an override, but record that it was an override.</li>
+              <li>The platform fee is returned on creator-side failures and retained on customer no-show. Make that automatic, not a manual decision.</li>
+              <li>Refunds are idempotent and must reconcile against Stripe. Never mark refunded locally before the provider confirms.</li>
+              <li>Search by reference, creator, customer email and amount.</li>
+              <li>Surface a failed refund on A1 as an attention item. A refund that silently fails is the worst outcome in this product.</li>
+            </ul>
+          </div>
+        </div>
+        <dl class="pmeta">
+          <dt>States</dt><dd>Held, released, refunded in full, refunded in part, failed, disputed, retained on no-show</dd>
+          <dt>Acceptance</dt><dd>A refund can be issued and reaches the customer. The applied tier matches the agreed policy.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <h3>Two gaps the administrator pages cannot close on their own</h3>
+      <p><strong>There is no audit log in Phase 1.</strong> Confirmation dialogs and a timestamp on the affected record are the substitute. That is adequate at thirty creators and inadequate above a few hundred, which is why the audit log is an early Phase 2 item.</p>
+      <p><strong>The no-show grace period and outcomes were still unspecified when this document was written.</strong> Until they are, the refund tier on A5 cannot be computed automatically and the administrator is arbitrating case by case. This is a decision, not a build task, and it sits on the critical path for the payment state machine.</p>
+    </div>
+
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">07</span><h2>Transactional emails</h2></div>
+    <p class="lede">Eight templates. They are product surfaces, not notifications, and two of them carry a gate metric. They need design attention equal to the screens.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Email</th><th>To</th><th>Trigger</th><th>Primary element</th><th>Pri</th></tr></thead>
+        <tbody>
+          <tr><td class="w2">E1</td><td><strong>Booking confirmed</strong></td><td class="w2">Customer</td><td>Payment succeeded</td><td>Join link, time in their zone, cancellation window</td><td class="w2"><span class="chip p1">1</span></td></tr>
+          <tr><td class="w2">E2</td><td><strong>New booking</strong></td><td class="w2">Creator</td><td>Payment succeeded</td><td>Customer, time in their zone, amount they will receive</td><td class="w2"><span class="chip p1">1</span></td></tr>
+          <tr><td class="w2">E3</td><td><strong>Reminder, 24 hours</strong></td><td class="w2">Both</td><td>24h before start</td><td>Join link. Everything else is secondary.</td><td class="w2"><span class="chip p1">1</span></td></tr>
+          <tr><td class="w2">E4</td><td><strong>Reminder, 1 hour</strong></td><td class="w2">Both</td><td>1h before start</td><td>Join link. <strong>The highest-leverage message in the product</strong> and the case for adding SMS.</td><td class="w2"><span class="chip p1">1</span></td></tr>
+          <tr><td class="w2">E5</td><td><strong>Review request</strong></td><td class="w2">Customer</td><td>Call ended</td><td>Star rating, then the rebook link</td><td class="w2"><span class="chip p2">2</span></td></tr>
+          <tr><td class="w2">E6</td><td><strong>Payout sent</strong></td><td class="w2">Creator</td><td>Payout released</td><td>Amount and arrival window. The moment the product becomes real.</td><td class="w2"><span class="chip p2">2</span></td></tr>
+          <tr><td class="w2">E7</td><td><strong>Refund issued</strong></td><td class="w2">Customer</td><td>Refund processed</td><td>Amount, reason, and the 5 to 10 business day arrival window</td><td class="w2"><span class="chip p2">2</span></td></tr>
+          <tr><td class="w2">E8</td><td><strong>Verification complete</strong></td><td class="w2">Creator</td><td>Manual verification approved</td><td>Badge now live, with a link to view the public profile</td><td class="w2"><span class="chip p3">3</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note crit">
+      <h3>Two sending domains, not one</h3>
+      <p>These eight go from the <strong>transactional</strong> sending domain. Any marketing send, including the large contact list, goes from a <strong>separate marketing domain or provider</strong>.</p>
+      <p>A large cold send damages the sending domain's reputation, and if reminders start landing in spam, call completion falls. Call completion above 80 percent is a Phase 2 gate criterion, so a deliverability mistake would fail the pilot for a reason that has nothing to do with whether the marketplace works. This costs nothing to get right and cannot be undone afterwards.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">08</span><h2>URL conventions</h2></div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Rule</th><th>Convention</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Creator namespace</strong></td><td><span class="path">/c/{handle}</span></td><td>Keeps the root namespace free. A creator called "help" or "browse" would otherwise break the site permanently.</td></tr>
+          <tr><td><strong>Guest access</strong></td><td><span class="path">/booking/{ref}</span> with a long random reference</td><td>No account means no login, so the reference is the credential. Long enough that it cannot be enumerated.</td></tr>
+          <tr><td><strong>Lower case, hyphens</strong></td><td><span class="path">/how-it-works</span>, never <span class="path">/howItWorks</span></td><td>Case-sensitivity bugs and shareability.</td></tr>
+          <tr><td><strong>No trailing slash</strong></td><td>Canonical without, redirect the other</td><td>Duplicate URLs split analytics, and this product measures a four-event funnel.</td></tr>
+          <tr><td><strong>Nested by ownership</strong></td><td><span class="path">/dashboard/bookings/{id}</span></td><td>The path states who the record belongs to, which makes access rules obvious in code and in analytics.</td></tr>
+          <tr><td><strong>Stable handles</strong></td><td>Changing a handle keeps the old URL redirecting</td><td>Creators share links that live in bios and old posts. A broken creator link is a lost booking and an unrecoverable impression.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>Handle changes are a real risk in a pilot</h3>
+      <p>Creators will rename themselves during the pilot, and the link is already in their bio and in posts. Old handles must redirect permanently rather than 404. This is cheap to build now and effectively impossible to repair once links are circulating.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">09</span><h2>Navigation rules</h2></div>
+    <p class="lede">Nine rules the design should hold to. Each one has a reason, because a rule without a reason gets broken the first time it is inconvenient.</p>
+
+    <div class="g2">
+      <div class="card">
+        <h4>Do</h4>
+        <ul class="tiny">
+          <li><strong>Suppress navigation during checkout.</strong> Logo not clickable, no footer, no exits.</li>
+          <li><strong>Keep the creator profile header to a logo and one trust link.</strong> The visitor has already chosen.</li>
+          <li><strong>Give the creator app four bottom tabs on mobile.</strong> Four is the maximum before labels truncate at 375px.</li>
+          <li><strong>Put the refund line beside the pay button</strong>, lifted out of the footer, where it will actually be read.</li>
+          <li><strong>Make "View my profile" prominent in the creator app.</strong> Creators constantly want to see what their audience sees.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Do not</h4>
+        <ul class="tiny soft">
+          <li><strong>Do not offer browse or search on a creator profile.</strong> Alternatives at that moment lose the booking.</li>
+          <li><strong>Do not promote category pages in the pilot.</strong> They advertise how small the marketplace is.</li>
+          <li><strong>Do not put navigation on the onboarding steps.</strong> A creator who wanders out at step 2 does not come back.</li>
+          <li><strong>Do not build one global nav with items hidden by role.</strong> Three contexts, built as three contexts.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">10</span><h2>What Phase 2 adds</h2></div>
+    <p class="lede">Listed so the structure accommodates them now rather than being rebuilt later. None of these are designed or built in Phase 1.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Addition</th><th>Where it attaches</th><th>Structural impact</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Ranked search</strong></td><td><span class="path">/search</span>, promoted into context A</td><td>Browse becomes a secondary route. Marketing nav gains a search affordance.</td></tr>
+          <tr><td><strong>Self-serve rescheduling</strong></td><td><span class="path">/booking/{ref}/reschedule</span></td><td>Adds a third option between keep and cancel. Changes the confirmation page and every reminder email.</td></tr>
+          <tr><td><strong>Creator analytics</strong></td><td><span class="path">/dashboard/analytics</span></td><td>A fifth item in the creator account menu. Does not take a mobile tab.</td></tr>
+          <tr><td><strong>Moderation queue</strong></td><td><span class="path">/admin/reports</span></td><td>Admin nav grows from two items to four. The first genuinely proactive admin surface.</td></tr>
+          <tr><td><strong>Dispute tooling</strong></td><td><span class="path">/admin/disputes</span></td><td>Payment detail gains a dispute state beyond the current five.</td></tr>
+          <tr><td><strong>Audit log</strong></td><td><span class="path">/admin/audit</span></td><td>Removes the need for confirm-dialog-as-record on every destructive admin action.</td></tr>
+          <tr><td><strong>Additional platforms</strong></td><td>Within <span class="path">/signup</span> and the profile editor</td><td>No new pages. The verified badge component gains two more sources.</td></tr>
+          <tr><td><strong>Push and SMS</strong></td><td>Preferences in <span class="path">/dashboard/settings</span></td><td>No new pages. Settings gains a channel preference group, and unsubscribe handling.</td></tr>
+          <tr><td><strong>Customer accounts</strong></td><td>A fourth navigation context</td><td>The largest structural change. Guest booking must continue to work alongside it, not be replaced by it.</td></tr>
+          <tr><td><strong>Multi-currency</strong></td><td>Checkout and payouts</td><td>No new pages. Every price component needs a currency, which is worth allowing for in the data model now.</td></tr>
+          <tr><td><strong>Referral programme</strong></td><td>Creator app and signup</td><td>Signup should capture a referral code in Phase 1 even though nothing uses it yet, because attribution is expensive to reconstruct.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note good">
+      <h3>Two things to build into Phase 1 that only pay off in Phase 2</h3>
+      <p><strong>A referral code field on signup</strong> and <strong>a currency on every price</strong>. Neither does anything in the pilot. Both are very cheap now and genuinely expensive to retrofit, because one requires reconstructing attribution that was never recorded and the other touches every price in the system.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">11</span><h2>Summary count</h2></div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Level</th><th>Pages</th><th>Priority 1</th><th>Nav context</th><th>Design week</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Level 2 · Customer</strong></td><td class="w2">16</td><td class="w2">2</td><td class="w2">A, B, C</td><td class="w2">Week 6</td></tr>
+          <tr><td><strong>Level 1 · Creator</strong></td><td class="w2">17</td><td class="w2">5</td><td class="w2">A, D</td><td class="w2">Week 5</td></tr>
+          <tr><td><strong>Level 3 · Administrator</strong></td><td class="w2">5</td><td class="w2">0</td><td class="w2">E</td><td class="w2">Week 6</td></tr>
+          <tr><td><strong>Transactional emails</strong></td><td class="w2">8</td><td class="w2">4</td><td class="w2">&mdash;</td><td class="w2">Week 6</td></tr>
+          <tr style="background:var(--surface-2)"><td><strong>Phase 1 total</strong></td><td class="w2"><strong>38 pages + 8 emails</strong></td><td class="w2"><strong>11</strong></td><td class="w2"><strong>5 contexts</strong></td><td class="w2"><strong>Weeks 4&ndash;6</strong></td></tr>
+          <tr><td class="soft">Phase 2 additions</td><td class="w2 soft">11</td><td class="w2 soft">&mdash;</td><td class="w2 soft">+1 context</td><td class="w2 soft">Phase 2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="viz">
+      <h4>Where the 46 surfaces sit</h4>
+      <p class="vcap">Pages and emails by level, with the priority-1 share marked.</p>
+      <div class="bars">
+        <div class="bar"><span class="bl">Creator pages</span><span class="bt"><i style="width:100%"></i></span><span class="bv">17</span></div>
+        <div class="bar"><span class="bl">Customer pages</span><span class="bt"><i style="width:94%"></i></span><span class="bv">16</span></div>
+        <div class="bar"><span class="bl">Transactional emails</span><span class="bt"><i class="warn" style="width:47%"></i></span><span class="bv">8</span></div>
+        <div class="bar"><span class="bl">Administrator pages</span><span class="bt"><i class="mute" style="width:29%"></i></span><span class="bv">5</span></div>
+      </div>
+      <p class="vcap" style="margin:20px 0 10px">The eleven priority-1 surfaces, by where they sit:</p>
+      <div class="stackbar">
+        <span style="width:45.5%; background:#15803d">Creator onboarding &amp; dashboard, 5</span>
+        <span style="width:36.4%; background:#b45309">Emails, 4</span>
+        <span style="width:18.1%; background:#2563eb">Profile &amp; checkout, 2</span>
+      </div>
+      <p class="vnote">The administrator level has no priority-1 surfaces at all, which is deliberate. And four of the eleven are emails, which is the part most teams under-resource: two of those four carry the call-completion gate metric.</p>
+    </div>
+
+    <div class="note">
+      <h3>Where the design effort should go</h3>
+      <p>Eleven of the 46 surfaces are priority 1, and they are not evenly distributed. <strong>Five are creator onboarding and dashboard</strong>, because creator activation is a gate metric and the supply side is the hard side of this marketplace. <strong>Two are the profile and checkout</strong>, which carry the money and the trust problem. <strong>Four are emails</strong>, two of which carry the call-completion gate metric.</p>
+      <p>The administrator level has no priority 1 surfaces at all. That is deliberate: it needs to exist and be fast, and it does not need to be good-looking.</p>
+    </div>
+  </section>
+
+  <p class="foot">LINK navigation structure and page list, issued 1 October 2026 for the Phase 1 design phase, Weeks 4 to 6. Derived from the LINK UX Research Report and UI Design Brief of the same date, the Milestone 1 agreement version 1.1, and the delivery schedule revised 25 September 2026. Page count and structure assume the open decisions in Section 29 of the research report are settled at the Week 3 scope fix; the launch niche in particular affects the category taxonomy under <span class="path">/browse</span>. Prepared by Oyolloo for WorkDev Solutions.</p>
+
+</div>
+
+<script>
+  document.getElementById("pdfBtn").addEventListener("click", function(){
+    window.print();
+  });
+</script>

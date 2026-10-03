@@ -1,0 +1,864 @@
+<meta charset="utf-8">
+<title>LINK Page Features</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa; --surface-3:#e7eef8;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --good:#15803d; --good-bg:#e4f7ea; --warn:#b45309; --warn-bg:#fdf0d5;
+    --crit:#b91c1c; --crit-bg:#fbe4e4; --coral:#ff6b5a;
+    --shadow:0 1px 2px rgba(11,31,58,.05);
+    --f-body:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --f-mono:"IBM Plex Mono","SFMono-Regular",ui-monospace,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--f-body);
+       font-size:16px; line-height:1.78; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px; margin:0 auto; padding-inline:22px; padding-block:30px 90px}
+  p{margin:0 0 15px}
+  strong{font-weight:600}
+  h1,h2,h3,h4{margin:0; line-height:1.3; text-wrap:balance; color:var(--ink)}
+  h1{font-size:clamp(28px,4.6vw,40px); font-weight:600; letter-spacing:-.025em; line-height:1.26}
+  h1 em{font-style:normal; color:var(--accent)}
+  h2{font-size:26px; font-weight:600; letter-spacing:-.018em}
+  h3{font-size:17px; font-weight:600; margin-top:30px; letter-spacing:-.008em;
+     display:flex; gap:11px; align-items:baseline; flex-wrap:wrap}
+  h4{font-size:15px; font-weight:600; margin-top:0}
+  ul,ol{margin:12px 0 15px; padding-left:22px}
+  li{margin:7px 0; padding-left:3px}
+  .lab{font-size:11.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+  .soft{color:var(--ink-soft)}
+  .tiny{font-size:14px; line-height:1.68}
+  code,.path{font-family:var(--f-mono); font-size:13.5px; background:var(--surface-2); color:var(--accent-deep);
+       padding:2px 7px; border-radius:5px; white-space:nowrap}
+
+  .dochead{border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:12px;
+           padding:24px 26px; background:var(--surface); box-shadow:var(--shadow)}
+  .dochead .kicker{font-size:11.5px; letter-spacing:.09em; text-transform:uppercase;
+                   color:var(--accent); font-weight:600; margin-bottom:12px; display:block}
+  .dochead h1{margin:0 0 12px}
+  .dochead .sub{font-size:17px; color:var(--ink-soft); line-height:1.7; margin:0}
+  .facts{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line);
+         border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-top:20px}
+  @media (min-width:520px){ .facts{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:760px){ .facts{grid-template-columns:repeat(3,1fr)} }
+  .facts > div{background:var(--bg); padding:12px 15px}
+  .facts .v{font-size:15px; font-weight:600; margin-top:6px; line-height:1.4}
+  .facts .v.accent{color:var(--accent)}
+
+  section{margin-top:52px; padding-top:30px; border-top:1px solid var(--line)}
+  .shead{display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; margin-bottom:10px}
+  .snum{font-family:var(--f-mono); font-size:19px; font-weight:500; color:var(--accent); flex:0 0 auto}
+  .lede{font-size:17px; color:var(--ink-soft); line-height:1.65; margin:8px 0 22px}
+
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:19px 21px}
+  .g2{display:grid; gap:14px; grid-template-columns:1fr}
+  @media (min-width:660px){ .g2{grid-template-columns:repeat(2,1fr)}
+    .g2 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  .g3{display:grid; gap:14px; grid-template-columns:1fr}
+  @media (min-width:560px) and (max-width:879px){ .g3{grid-template-columns:repeat(2,1fr)}
+    .g3 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  @media (min-width:880px){ .g3{grid-template-columns:repeat(3,1fr)} }
+
+  .tw{overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--bg); margin:14px 0}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; line-height:1.6; min-width:700px}
+  th,td{text-align:left; padding:11px 14px; border-top:1px solid var(--line); vertical-align:top}
+  thead th{border-top:none; background:var(--surface-2); font-weight:600; font-size:12px;
+           letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap}
+  tbody tr:hover{background:var(--surface)}
+  td.w2{white-space:nowrap; font-variant-numeric:tabular-nums}
+  td.fid{font-family:var(--f-mono); font-size:12.5px; color:var(--muted); white-space:nowrap}
+
+  .chip{display:inline-block; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+        padding:3px 9px; border-radius:20px; white-space:nowrap}
+  .chip.p1{background:var(--crit-bg); color:var(--crit)}
+  .chip.p2{background:var(--warn-bg); color:var(--warn)}
+  .chip.ph2{background:var(--surface-3); color:var(--muted)}
+  .chip.new{background:var(--good-bg); color:var(--good)}
+  .chip.keep{background:var(--accent-soft); color:var(--accent-deep)}
+  .chip.cnt{background:var(--surface-3); color:var(--ink-soft); font-family:var(--f-mono)}
+  .sz{display:inline-block; width:22px; height:22px; border-radius:6px; font-size:11.5px; font-weight:600;
+      line-height:22px; text-align:center}
+  .sz.s{background:var(--good-bg); color:var(--good)}
+  .sz.m{background:var(--warn-bg); color:var(--warn)}
+  .sz.l{background:var(--crit-bg); color:var(--crit)}
+
+  .note{border:1px solid var(--line); border-left:4px solid var(--accent); background:var(--accent-soft);
+        border-radius:0 12px 12px 0; padding:18px 22px; margin:20px 0}
+  .note h3{color:var(--accent-deep); margin:0 0 8px; font-size:16.5px; display:block}
+  .note p:last-child{margin-bottom:0}
+  .note.warn{border-left-color:var(--warn); background:var(--warn-bg)} .note.warn h3{color:var(--warn)}
+  .note.crit{border-left-color:var(--crit); background:var(--crit-bg)} .note.crit h3{color:var(--crit)}
+  .note.good{border-left-color:var(--good); background:var(--good-bg)} .note.good h3{color:var(--good)}
+
+  /* data visuals */
+  .viz{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:20px 22px; margin:20px 0}
+  .viz > h4{margin:0 0 5px; font-size:15.5px; font-weight:600}
+  .viz .vcap{font-size:13.5px; color:var(--muted); margin:0 0 18px; line-height:1.55}
+  .viz .vnote{font-size:13px; color:var(--muted); margin:16px 0 0; padding-top:13px;
+              border-top:1px solid var(--line); line-height:1.55}
+  .viz.plain{background:var(--surface)}
+
+  .bars{display:grid; gap:11px}
+  .bar{display:grid; grid-template-columns:minmax(96px,27%) 1fr minmax(58px,auto); gap:14px; align-items:center}
+  @media (max-width:600px){ .bar{grid-template-columns:1fr auto; gap:4px 10px}
+    .bar .bl{grid-column:1/-1} .bar .bv{text-align:right} }
+  .bar .bl{font-size:14px; line-height:1.32}
+  .bar .bl small{display:block; font-size:12px; color:var(--muted); font-weight:400}
+  .bar .bt{background:var(--surface-2); border-radius:6px; height:28px; overflow:hidden}
+  .bar .bt i{display:block; height:100%; border-radius:6px; background:var(--accent)}
+  .bar .bt i.good{background:var(--good)}
+  .bar .bt i.warn{background:var(--warn)}
+  .bar .bt i.crit{background:var(--crit)}
+  .bar .bt i.mute{background:var(--line-strong)}
+  .bar .bt i.deep{background:var(--accent-deep)}
+  .bar .bv{font-family:var(--f-mono); font-size:14px; font-weight:500; white-space:nowrap; text-align:right}
+
+  .stackbar{display:flex; height:50px; border-radius:9px; overflow:hidden; border:1px solid var(--line)}
+  .stackbar > span{display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:600;
+                   color:#fff; white-space:nowrap; overflow:hidden; padding:0 4px; min-width:0}
+  .stackkey{display:flex; flex-wrap:wrap; gap:16px; margin-top:14px; font-size:13.5px}
+  .stackkey span{display:flex; align-items:center; gap:8px; white-space:nowrap}
+  .stackkey i{width:13px; height:13px; border-radius:3px; display:block; flex:0 0 auto}
+
+  .tiles{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .tile{border:1px solid var(--line); border-radius:11px; padding:15px 16px; background:var(--bg)}
+  .tile .tv{font-family:var(--f-mono); font-size:26px; font-weight:500; letter-spacing:-.02em; line-height:1.1}
+  .tile .tk{font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.45}
+  .tile.ok{border-left:4px solid var(--good)} .tile.ok .tv{color:var(--good)}
+  .tile.at{border-left:4px solid var(--warn)} .tile.at .tv{color:var(--warn)}
+  .tile.no{border-left:4px solid var(--crit)} .tile.no .tv{color:var(--crit)}
+  .tile.nu{border-left:4px solid var(--accent)} .tile.nu .tv{color:var(--accent)}
+
+  .funnel{display:grid; gap:7px}
+  .fstep2{display:grid; grid-template-columns:1fr; gap:4px}
+  .fstep2 .fbar{height:38px; border-radius:7px; background:var(--accent); display:flex; align-items:center;
+                padding:0 14px; color:#fff; font-size:14px; font-weight:600}
+  .fstep2 .fmeta{font-size:12.5px; color:var(--muted); padding-left:2px}
+  .fdrop{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--crit);
+         padding-left:14px; font-weight:600}
+
+  svg.dia{display:block; width:100%; height:auto; max-width:100%}
+  .diawrap{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:18px;
+           margin:20px 0; overflow-x:auto}
+  .diawrap h4{margin:0 0 14px; font-size:15.5px}
+
+  @media print{
+    .viz,.diawrap{break-inside:avoid; page-break-inside:avoid}
+    .bar .bt i,.stackbar > span,.tile,.fstep2 .fbar{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* cross-document navigation */
+  .docnav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.94);
+          -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+          border-bottom:1px solid var(--line)}
+  .docnav .dn{max-width:1080px; margin:0 auto; padding:0 22px; display:flex; align-items:center; gap:20px}
+  .docnav .dnbrand{font-weight:600; font-size:15px; letter-spacing:-.012em; color:var(--ink);
+                   white-space:nowrap; padding:14px 0; flex:0 0 auto; text-decoration:none}
+  .docnav .dnbrand b{color:var(--accent); font-weight:600}
+  .docnav .dnbrand:hover b{color:var(--accent-deep)}
+  .docnav .dnlinks{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .docnav .dnlinks::-webkit-scrollbar{display:none}
+  .docnav .dnlinks a{display:block; padding:14px 12px; font-size:14px; color:var(--ink-soft);
+            text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; font-weight:400}
+  .docnav .dnlinks a:hover{color:var(--accent-deep)}
+  .docnav .dnlinks a.on{color:var(--accent-deep); font-weight:600; border-bottom-color:var(--accent)}
+  .docnav .dnlinks a:focus-visible{outline:2px solid var(--accent); outline-offset:-3px; border-radius:4px}
+  @media (max-width:680px){
+    .docnav .dn{gap:12px; padding:0 14px}
+    .docnav .dnbrand{font-size:13.5px; padding:12px 0}
+    .docnav .dnlinks a{padding:12px 9px; font-size:13.5px}
+  }
+  section, [id^="s"], [id^="p-"]{scroll-margin-top:76px}
+  @media print{ .docnav{display:none !important} }
+
+  .dock{position:fixed; right:16px; bottom:16px; z-index:20}
+  .dockbtn{background:var(--surface); border:1px solid var(--line-strong); border-radius:22px;
+           box-shadow:0 4px 18px rgba(11,31,58,.14); padding:10px 17px; font-size:14px; font-weight:600;
+           font-family:var(--f-body); color:var(--ink); cursor:pointer; min-height:42px; line-height:1;
+           display:inline-flex; align-items:center; gap:8px}
+  .dockbtn:hover{border-color:var(--accent); color:var(--accent-deep)}
+  .dockbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .foot{margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+  @page{ margin:14mm }
+  @media print{
+    .dock{display:none !important}
+    body{background:#fff; font-size:10.5pt; line-height:1.6}
+    .wrap{max-width:none; padding:0}
+    .card,.note,.tw,.dochead,.facts{break-inside:avoid; page-break-inside:avoid}
+    h1,h2,h3,h4{break-after:avoid}
+    table{min-width:0}
+    .chip,.sz{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* ---- black and white print ---- */
+  @media print{
+    :root{
+      --bg:#ffffff; --surface:#f7f7f7; --surface-2:#f0f0f0; --surface-3:#e8e8e8;
+      --ink:#000000; --ink-soft:#2b2b2b; --muted:#5a5a5a;
+      --line:#d0d0d0; --line-strong:#9a9a9a;
+      --accent:#1a1a1a; --accent-deep:#000000; --accent-soft:#f0f0f0; --navy:#000000;
+      --good:#1a1a1a; --good-bg:#f2f2f2;
+      --warn:#1a1a1a; --warn-bg:#ededed;
+      --crit:#000000; --crit-bg:#e6e6e6;
+      --coral:#1a1a1a;
+      --l1:#1a1a1a; --l1-bg:#f2f2f2; --l2:#1a1a1a; --l2-bg:#ededed; --l3:#5a5a5a; --l3-bg:#e8e8e8;
+      --s:#1a1a1a; --s-bg:#f4f4f4; --w:#1a1a1a; --w-bg:#ededed;
+      --o:#1a1a1a; --o-bg:#f0f0f0; --t:#000000; --t-bg:#e6e6e6;
+      --ev-a:#1a1a1a; --ev-a-bg:#f0f0f0; --ev-b:#1a1a1a; --ev-b-bg:#eaeaea;
+      --ev-c:#1a1a1a; --ev-c-bg:#eeeeee; --ev-d:#1a1a1a; --ev-d-bg:#e9e9e9;
+      --ev-e:#1a1a1a; --ev-e-bg:#e4e4e4;
+      --shadow:none;
+    }
+    body{background:#fff; color:#000}
+    a{color:#000; text-decoration:underline}
+    svg.dia, .stackbar, .tile, .bar .bt, .qbox, .seg, .nav .ncta, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .chip, .ev, .sev, .pill, .dcode, .pid, .xid, .rid, .sid, .fid, .iid, .dnum, .tag, .path, code{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .note, .find, .rule, .card, .viz, .diawrap, .pop, .scr, .pg, .item, .lvl{
+      border-color:#bdbdbd !important;
+    }
+    .stackbar > span{color:#fff !important}
+    .dock, .docnav, .chkbar button{display:none !important}
+  }
+
+  /* ---- plain print: no panels, cards or chips. charts and diagrams stay ---- */
+  @media print{
+    /* every decorative container becomes plain typography */
+    .dochead, .hero, .doc, .card, .note, .find, .rule, .item, .pgroup, .qbox,
+    .scr, .pg, .pg > header, .pg .pbody, .pop, .pop > header, .lvl, .viz, .viz.plain,
+    .diawrap, .tw, .chk, .chk label, .tree, .forwho, .forwho.design, .forwho.dev,
+    .tile, .facts, .facts > div, .toc a, .pmeta, .ppath, .chkbar, .dmeta, .seg{
+      background:transparent !important;
+      border:0 !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      overflow:visible !important;
+      filter:none !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+    }
+    .note, .find, .rule, .item, .pgroup, .qbox, .scr, .pg, .pop, .lvl, .card, .viz, .diawrap{
+      margin:15pt 0 !important;
+      padding-top:0 !important;
+      padding-bottom:0 !important;
+    }
+    .dochead, .hero{padding:0 !important; margin:0 0 16pt !important}
+    .forwho{padding:0 !important; margin-top:10pt !important}
+    .tree{padding:0 !important; font-size:9pt !important}
+    .tile{padding:0 !important}
+    .doc{padding:0 !important; margin:0 0 12pt !important}
+
+    /* headings and ids carry the structure now that the boxes are gone */
+    .note h3, .find .ft, .rule .rt, .viz > h4, .diawrap h4, .card h4, .item .itxt strong,
+    .pop .xt, .scr .st2, .scr h4, .pg .ptitle, .lvl .lvname, .qbox .qt, .doc .dt,
+    .forwho h5, .shead h2{ color:#000 !important }
+    .qbox header, .pg > header, .pop > header, .lvl > header, .scr header{
+      border-bottom:0.5pt solid #b4b4b4 !important; padding-bottom:5pt !important;
+      margin-bottom:8pt !important;
+    }
+    .forwho h5{border-bottom:0.5pt solid #d4d4d4 !important; padding-bottom:3pt !important}
+
+    /* badges, pills and code chips become plain text */
+    .chip, .ev, .sev, .pill, .tag, .dcode, .dnum, .pid, .xid, .rid, .sid, .fid, .iid,
+    .lvtag, .qk, .qn, .sz, .cnt, .path, code, .fscr, .bk, .tv{
+      background:transparent !important; border:0 !important; padding:0 !important;
+      border-radius:0 !important; color:#000 !important; filter:none !important;
+      box-shadow:none !important; width:auto !important; height:auto !important;
+    }
+    .chip, .ev, .sev, .pill, .tag, .lvtag, .qk, .bk{font-weight:600 !important; margin-right:6pt}
+    .tile .tv{font-size:19pt !important; color:#000 !important}
+    .swatch i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+
+    /* hairlines where a list needs separating, instead of panels */
+    .facts > div{border-bottom:0.5pt solid #d2d2d2 !important; padding:5pt 0 !important}
+    .chk label{border-bottom:0.5pt solid #dcdcdc !important; padding:4pt 0 !important}
+    .pop .say{border-left:1pt solid #8a8a8a !important; padding:2pt 0 2pt 9pt !important;
+              background:transparent !important; border-radius:0 !important}
+    .cprog{display:none !important}
+
+    /* tables: horizontal rules only */
+    table{width:100% !important; min-width:0 !important}
+    thead th{background:transparent !important; color:#000 !important;
+             border-bottom:1pt solid #000 !important; padding:0 9pt 5pt 0 !important}
+    th, td{border-top:0 !important; border-bottom:0.5pt solid #cfcfcf !important;
+           padding:5pt 9pt 5pt 0 !important; background:transparent !important}
+    tr.tot td, tr.tot th{border-top:1pt solid #000 !important; font-weight:600 !important}
+
+    /* the charts stay */
+    .bar .bt{background:#ededed !important; border:0.5pt solid #c4c4c4 !important;
+             border-radius:0 !important; filter:grayscale(100%) !important;
+             -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .bar .bt i{border-radius:0 !important; filter:grayscale(100%) !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+              filter:grayscale(100%) !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar > span{color:#fff !important}
+    .stackkey i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+                -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep2 .fbar{border-radius:0 !important; filter:grayscale(100%) !important;
+                  -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    svg.dia{filter:grayscale(100%) !important; max-width:100% !important; height:auto !important}
+
+    /* the user-flow diagram stays: numbered nodes, rails, decision points */
+    .fstep .fn{filter:grayscale(100%) !important; width:26px !important; height:26px !important;
+               border-radius:50% !important; padding:0 !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep.exit .fn{color:#fff !important}
+    .frail .fline i{background:#6a6a6a !important}
+    .fdec{border:0.5pt dashed #8a8a8a !important; background:transparent !important;
+          border-radius:0 !important}
+    .fbr{border-top:0.5pt solid #e0e0e0 !important}
+
+    /* the navigation mock-ups are wireframes, not decoration */
+    .nav{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+         background:transparent !important; overflow:hidden !important}
+    .nav .nbar, .nav .ncta, .nav .nghost, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .nav .ncap{border-top:0.5pt dashed #8a8a8a !important}
+
+    .dock, .docnav, .chkbar button{display:none !important}
+    .g2, .g3, .tiles, .docs, .quad, .split{gap:10pt !important}
+  }
+
+  /* ---- plain print corrections ---- */
+  @media print{
+    /* an id that is a table cell still needs its column gap */
+    td.fid, td.pid, td.iid, td.xid, td.rid, td.sid, td.dcode, td.cnt, td.sz{
+      padding:5pt 12pt 5pt 0 !important; white-space:nowrap !important;
+    }
+    /* an inline tag needs a delimiter once the chip is gone */
+    .ev::before, .sev::before{content:"["}
+    .ev::after, .sev::after{content:"] "}
+    td .ev::before, td .sev::before, th .ev::before, th .sev::before{content:""}
+    td .ev::after, td .sev::after, th .ev::after, th .sev::after{content:""}
+    .ev, .sev{white-space:nowrap !important; margin-left:3pt !important}
+  }
+</style>
+
+<div class="dock">
+  <button class="dockbtn" id="pdfBtn" type="button"><span aria-hidden="true">⇩</span> Download PDF</button>
+</div>
+
+<nav class="docnav">
+  <div class="dn">
+    <a class="dnbrand" href="index.html">LINK <b>UX</b></a>
+    <div class="dnlinks">
+      <a href="LINK-UX-Research.html">Research</a>
+      <a href="LINK-SWOT.html">SWOT</a>
+      <a href="LINK-Revenue-Policy.html">Revenue &amp; Policy</a>
+      <a href="LINK-UI-Design-Brief.html">Design Brief</a>
+      <a href="LINK-Navigation-Pages.html">Navigation</a>
+      <a href="LINK-Page-Features.html" class="on" aria-current="page">Features</a>
+      <a href="LINK-Popups-Forms.html">Popups &amp; Forms</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="dochead">
+    <span class="kicker">LINK · Phase 1 pilot · functional feature inventory · Week 4</span>
+    <h1>Page features: <em>everything that has to be built, page by page</em></h1>
+    <p class="sub">A functional breakdown of every feature on every page, with what it does, what it depends on, whether it is new work or hardening of the existing prototype, and an indicative size. Written to serve three jobs: a completeness check before design, a scope boundary during build, and a test plan at the end.</p>
+    <div class="facts">
+      <div><span class="lab">Phase 1 features</span><div class="v accent">167</div></div>
+      <div><span class="lab">New build</span><div class="v">142</div></div>
+      <div><span class="lab">Hardening existing</span><div class="v">25</div></div>
+      <div><span class="lab">Cross-cutting</span><div class="v">22</div></div>
+      <div><span class="lab">Deferred to Phase 2</span><div class="v">31</div></div>
+      <div><span class="lab">Issued</span><div class="v">1 October 2026</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>How to read this</h2></div>
+
+    <div class="g3">
+      <div class="card">
+        <h4>Feature ID</h4>
+        <p class="tiny soft" style="margin:9px 0 0">Page ID then a sequence, so <code>C1.04</code> is the fourth feature on the creator profile. Stable references for tickets, test cases and change requests.</p>
+      </div>
+      <div class="card">
+        <h4>Origin</h4>
+        <p class="tiny soft" style="margin:9px 0 0"><span class="chip new">New</span> is work that does not exist in the prototype. <span class="chip keep">Harden</span> is something that exists and needs fixing, finishing or re-fitting. The split matters because the entire commercial case rests on the second number being large.</p>
+      </div>
+      <div class="card">
+        <h4>Size</h4>
+        <p class="tiny soft" style="margin:9px 0 0"><span class="sz s">S</span> roughly 1 to 3 hours. <span class="sz m">M</span> roughly 4 to 8. <span class="sz l">L</span> roughly 9 to 16. <strong>Indicative planning bands, not a quote.</strong> They exist to show where effort concentrates, and they are deliberately coarse.</p>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <h3>A caution on the origin split</h3>
+      <p>The <span class="chip keep">Harden</span> classification assumes the prototype contains what the earlier audit recorded, and that it is reachable and workable. <strong>Prototype access was still unconfirmed when this was written.</strong> If the build is not available, every hardening item becomes new work, and this inventory roughly doubles. That is the single assumption on which the whole estimate rests.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>Customer pages</h2></div>
+    <p class="lede">Sixty-one features across eleven pages. The two priority-1 pages carry thirty of them between them.</p>
+
+    <h3>C1 · Creator profile <span class="chip cnt">16 features</span> <span class="chip p1">Priority 1</span> <span class="path">/c/{handle}</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">C1.01</td><td><strong>Handle resolution</strong></td><td>Resolves <code>{handle}</code> case-insensitively to a creator, with permanent redirects for retired handles.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C1.02</td><td><strong>Profile header</strong></td><td>Photo, display name, bio, category. Initials fallback when the imported image fails.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C1.03</td><td><strong>Verified badge, three states</strong></td><td>Verified with a dated count, lighter <em>linked</em> for manual verification, and pending. Visually distinct.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C1.04</td><td><strong>Follower count with read date</strong></td><td>Displays the imported count and when it was read, rather than an unqualified claim.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C1.05</td><td><strong>Offer display</strong></td><td>Duration and price for each offer the creator has published.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C1.06</td><td><strong>Availability rendering</strong></td><td>Open slots shown as selectable times, leading with the nearest rather than a month view.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">C1.07</td><td><strong>Viewer time zone conversion</strong></td><td>Detects the viewer's zone and renders every time in it, with the zone labelled visibly.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C1.08</td><td><strong>Slot selection</strong></td><td>Choosing a time opens the slot confirmation sheet and places a server-side hold.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C1.09</td><td><strong>All-in total display</strong></td><td>Shows price, service fee and total before checkout. Server-computed, never calculated client-side.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C1.10</td><td><strong>Refund policy line</strong></td><td>One line stating the cancellation window, adjacent to the booking action.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C1.11</td><td><strong>Reviews and rating display</strong></td><td>Average rating and written reviews. Shows nothing rather than a zero when none exist.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C1.12</td><td><strong>How LINK works panel</strong></td><td>Opens the trust explainer over the page without navigating away.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C1.13</td><td><strong>Social share metadata</strong></td><td>Open graph tags so the link previews correctly when shared into a feed. This is the first impression.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C1.14</td><td><strong>Invented data removal</strong></td><td>Strips every fabricated statistic from the surface. A precondition of launch, not an improvement.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C1.15</td><td><strong>Empty and suspended states</strong></td><td>No availability, unverified creator, suspended creator. Each a valid page, never a server error.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C1.16</td><td><strong>Funnel instrumentation</strong></td><td>Fires <code>profile_viewed</code> and <code>slot_selected</code>, two of the four funnel events.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>C2 · Checkout <span class="chip cnt">14 features</span> <span class="chip p1">Priority 1</span> <span class="path">/checkout/{ref}</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">C2.01</td><td><strong>Slot hold with expiry</strong></td><td>Reserves the slot server-side when checkout opens, releases it on expiry or abandonment.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C2.02</td><td><strong>Hold countdown banner</strong></td><td>Shows remaining hold time when under two minutes.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C2.03</td><td><strong>Guest checkout form</strong></td><td>Name, email, optional note. No password, no account creation.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C2.04</td><td><strong>Hosted card element</strong></td><td>Processor-hosted card entry so card data never reaches our origin.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C2.05</td><td><strong>Server-side total recompute</strong></td><td>Recalculates the amount at payment time and rejects any client-supplied figure.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C2.06</td><td><strong>Fee line and total display</strong></td><td>Price, service fee labelled with what it covers, and the total. Identical to the figure shown on C1.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C2.07</td><td><strong>Trust lines at the button</strong></td><td>Held-funds statement and refund policy adjacent to the pay action.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C2.08</td><td><strong>Payment with idempotency</strong></td><td>Charges once even if the button is double-tapped or the request retried.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C2.09</td><td><strong>Funds held, not released</strong></td><td>Captures payment and holds it until the call completes and the review window passes.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">C2.10</td><td><strong>Decline handling</strong></td><td>Inline recovery that preserves entered values and keeps the slot held through the retry.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C2.11</td><td><strong>Slot conflict recovery</strong></td><td>Detects the slot being taken during payment, refunds if charged, offers the nearest alternatives.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C2.12</td><td><strong>Booking creation</strong></td><td>Converts the hold into a confirmed booking and triggers both confirmation emails.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C2.13</td><td><strong>Attribution capture</strong></td><td>Records booking source from the referring link. Unused in Phase 1, expensive to reconstruct later.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C2.14</td><td><strong>Funnel instrumentation</strong></td><td>Fires <code>checkout_started</code>, <code>payment_succeeded</code> and <code>payment_failed</code>.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>C3 · Confirmation and manage <span class="chip cnt">8 features</span> <span class="chip p2">Priority 2</span> <span class="path">/booking/{ref}</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">C3.01</td><td><strong>Reference-based access</strong></td><td>Opens without a login via a long unguessable reference, which is the only access control.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C3.02</td><td><strong>Booking summary</strong></td><td>Creator, time in the viewer's zone, duration, amount paid.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C3.03</td><td><strong>Join link, prominent</strong></td><td>The primary element at every stage, live only inside the join window.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C3.04</td><td><strong>Calendar file generation</strong></td><td>Downloadable event with the join link inside the body. The best defence against a no-show.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C3.05</td><td><strong>Live refund tier</strong></td><td>Computes which refund tier applies right now, rather than linking to a policy.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C3.06</td><td><strong>Customer cancellation</strong></td><td>Cancels, refunds at the applicable tier, and emails both parties.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C3.07</td><td><strong>Lifecycle states</strong></td><td>Just booked, upcoming, imminent, in progress, completed, cancelled, refunded.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C3.08</td><td><strong>Contact privacy</strong></td><td>Never exposes either party's contact details beyond what the call requires.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>C4 · Call join <span class="chip cnt">7 features</span> <span class="chip p2">Priority 2</span> <span class="path">/call/{ref}</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">C4.01</td><td><strong>Provider integration</strong></td><td>Embeds the managed video provider's prebuilt call interface. No custom call UI is built.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">C4.02</td><td><strong>Per-participant tokens</strong></td><td>Short-lived room tokens issued per person, never a shared permanent room URL.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C4.03</td><td><strong>Join window enforcement</strong></td><td>Room opens a few minutes before start and closes after a defined cutoff.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C4.04</td><td><strong>Join events from webhook</strong></td><td>Records <code>call_joined</code> per party from the provider, not the client. The completion metric depends on it.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C4.05</td><td><strong>No-show grace timer</strong></td><td>Starts server-side when the first party joins. <strong>Blocked on the grace period decision.</strong></td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C4.06</td><td><strong>Permission failure recovery</strong></td><td>Detects a camera or microphone refusal and shows browser-specific recovery. The only recovery path in Phase 1.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C4.07</td><td><strong>Window states</strong></td><td>Too early with a countdown, ready, waiting, in call, ended, expired, cancelled.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>C5 · Post-call review <span class="chip cnt">6 features</span> <span class="chip p2">Priority 2</span> <span class="path">/review/{ref}</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">C5.01</td><td><strong>Star rating input</strong></td><td>One to five, operable as a radio group with arrow keys.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C5.02</td><td><strong>Written review</strong></td><td>Optional text, visibly optional. Requiring it roughly halves submission.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C5.03</td><td><strong>Review publication</strong></td><td>Rating and text appear on the creator profile, feeding the average rating metric.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C5.04</td><td><strong>Payout release trigger</strong></td><td>Submitting the review ends the review window and releases the held funds.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C5.05</td><td><strong>Book again</strong></td><td>Pre-selects the same creator and offer. <strong>Recommended addition</strong>, serving the primary gate metric.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C5.06</td><td><strong>Call-did-not-happen route</strong></td><td>Routes to refund and support instead of a rating.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>C6 to C11 · Supporting pages <span class="chip cnt">10 features</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">C6.01</td><td><strong>Single landing page</strong></td><td>One page with a split creator and customer story, replacing the two competing pages in the prototype.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C6.02</td><td><strong>Canonical metadata</strong></td><td>Site-level search and social metadata.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C7.01</td><td><strong>Creator grid</strong></td><td>Browse listing with category filter. Exists and is reachable, deliberately not promoted.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C7.02</td><td><strong>Empty category suppression</strong></td><td>Hides categories below a creator threshold rather than rendering a near-empty page.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C8.01</td><td><strong>Trust explainer, dual render</strong></td><td>Same content as a standalone page and as the panel on C1. Written once.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C9.01</td><td><strong>Support contact</strong></td><td>A published monitored route, auto-filling the booking reference when opened from a booking.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C10.01</td><td><strong>Policy pages</strong></td><td>Refunds, terms, privacy, conduct. Editable without a deploy.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">C10.02</td><td><strong>Checkout policy link</strong></td><td>Refund policy reachable from checkout without leaving it.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C11.01</td><td><strong>Error pages</strong></td><td>Real 404 and 500 statuses with a route onward, not a dead end.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">C11.02</td><td><strong>Retired handle logging</strong></td><td>Logs handle-not-found separately so dead creator links can be spotted during the pilot.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>Creator pages</h2></div>
+    <p class="lede">Sixty-two features across fifteen pages. The three onboarding pages hold twenty-three of them, and between them they decide the creator activation gate metric.</p>
+
+    <h3>K1 · Sign up and connect <span class="chip cnt">9 features</span> <span class="chip p1">Priority 1</span> <span class="path">/signup</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">K1.01</td><td><strong>Account creation</strong></td><td>Email and password, created before the OAuth redirect so a failed callback never loses the signup.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K1.02</td><td><strong>Permission explainer</strong></td><td>States what we read, what we never do, and what the creator gets, before the OAuth screen.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K1.03</td><td><strong>Social OAuth connection</strong></td><td>Narrowest scope that returns profile and follower count. One platform automated in Phase 1.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">K1.04</td><td><strong>Profile and count import</strong></td><td>Pulls name, avatar and follower count, storing the count <strong>with the date it was read</strong>.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K1.05</td><td><strong>Manual verification fallback</strong></td><td>A failed or unsupported connection continues to onboarding with verification pending. <strong>Never a dead end.</strong></td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K1.06</td><td><strong>Revoked access handling</strong></td><td>If the creator later revokes access, the badge degrades to <em>linked</em> rather than vanishing.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K1.07</td><td><strong>Referral code capture</strong></td><td>Stores a referral parameter if present. Nothing consumes it in Phase 1; reconstructing it later is expensive.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K1.08</td><td><strong>Platform app review submission</strong></td><td>Meta and TikTok reviews submitted in Week 7 so approvals land during Phase 2 rather than blocking launch.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K1.09</td><td><strong>Signup instrumentation</strong></td><td>Fires <code>signup_completed</code>, the denominator of the activation gate metric.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>K3 · Onboarding, the offer <span class="chip cnt">8 features</span> <span class="chip p1">Priority 1</span> <span class="path">/onboarding/offer</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">K3.01</td><td><strong>Duration selection</strong></td><td>Bounded options rather than a free field, with a sensible default preselected.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K3.02</td><td><strong>Suggested price engine</strong></td><td>Derives a starting price from category and follower band. Server-side and configurable, because it will be tuned during the pilot.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K3.03</td><td><strong>Price input, never empty</strong></td><td>Opens prefilled with the suggestion. <strong>The single most important input in the product.</strong></td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K3.04</td><td><strong>Net earnings display</strong></td><td>Live server-derived figure: <code>You receive $34 of $40</code>. Turns an abstract percentage into an amount.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K3.05</td><td><strong>Price band validation</strong></td><td>Enforces floor and ceiling, with error copy explaining why the floor exists.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K3.06</td><td><strong>Pricing basis panel</strong></td><td>Explains where the suggestion came from and what the band ends are.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K3.07</td><td><strong>Step autosave and resume</strong></td><td>Saves on every step so a creator can leave and return without losing work.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K3.08</td><td><strong>Step instrumentation</strong></td><td>Fires <code>onboarding_step_completed</code> with the step number. Step-level drop-off is how activation gets diagnosed.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>K4 · Onboarding, availability <span class="chip cnt">8 features</span> <span class="chip p1">Priority 1</span> <span class="path">/onboarding/availability</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">K4.01</td><td><strong>Quick presets</strong></td><td>Today afternoon, next 2 hours, tomorrow morning. Makes a first slot one tap.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K4.02</td><td><strong>Slot creation</strong></td><td>Date and time entry via the mobile sheet. The hardest component in the product to make usable at 375px.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">K4.03</td><td><strong>Creator time zone</strong></td><td>Detected and confirmable, stated once with its effect on what visitors see.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K4.04</td><td><strong>UTC storage</strong></td><td>Every slot stored in UTC with the creator's zone recorded alongside, rendered per viewer.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K4.05</td><td><strong>Daylight saving correctness</strong></td><td>A slot created before a transition must not move after it. Cheap to prevent, miserable to find.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K4.06</td><td><strong>Overlap and lead-time rules</strong></td><td>Rejects overlapping slots at save time, and enforces a minimum booking lead time.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K4.07</td><td><strong>Bookable flag</strong></td><td>Offer plus a future slot plus a live profile sets the flag. <strong>A field on the record, not a report.</strong> This is what activation counts.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K4.08</td><td><strong>Slot deletion and conflict guard</strong></td><td>Prevents deleting a slot that already has a paid booking against it.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>K5 · Onboarding, payouts <span class="chip cnt">7 features</span> <span class="chip p1">Priority 1</span> <span class="path">/onboarding/payouts</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">K5.01</td><td><strong>Connect account creation</strong></td><td>Creates the payment provider connected account for the creator.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K5.02</td><td><strong>Hosted identity flow</strong></td><td>Hands identity and bank collection to the provider. We never build or store those fields.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K5.03</td><td><strong>Deferral path</strong></td><td>Skipping is a first-class route with equal visual weight. Must not block the bookable flag.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K5.04</td><td><strong>Verification webhook</strong></td><td>Updates payout readiness asynchronously, because verification can take days.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K5.05</td><td><strong>Payout-blocked state</strong></td><td>Blocks only the payout when details are missing, never the booking, and says so on the dashboard.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K5.06</td><td><strong>Why-we-need-this panel</strong></td><td>Explains the identity requirement. Unexplained identity requests read as suspicious.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K5.07</td><td><strong>Deferral instrumentation</strong></td><td>Fires <code>payout_deferred</code> and <code>payout_connected</code> separately. The ratio is a real signal about this step.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>K6 · Dashboard <span class="chip cnt">9 features</span> <span class="chip p1">Priority 1</span> <span class="path">/dashboard</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">K6.01</td><td><strong>Earnings summary</strong></td><td>Pending and paid as distinct figures, computed from the ledger rather than a cached balance.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K6.02</td><td><strong>Next call card</strong></td><td>Upcoming booking with the join link live only inside the window.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K6.03</td><td><strong>Completion prompts</strong></td><td>Derived from actual record state rather than a stored checklist that can drift.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K6.04</td><td><strong>First-run empty state</strong></td><td>Share-your-link with the link and a copy action. <strong>The most important empty state in the product.</strong></td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K6.05</td><td><strong>Profile link copy</strong></td><td>One-tap copy with a confirmation toast. Used constantly by creators.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K6.06</td><td><strong>View my profile</strong></td><td>Prominent route to the public view. Creators constantly want to see what their audience sees.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K6.07</td><td><strong>Payout and verification banners</strong></td><td>Persistent, non-dismissible prompts while the state is unresolved. Both map to activation.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K6.08</td><td><strong>No-availability banner</strong></td><td>Prompts when a live profile has no future slots, which is a silent failure otherwise.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K6.09</td><td><strong>Dashboard states</strong></td><td>Brand new, awaiting first booking, active, payout pending, payout failed, suspended.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>K0, K2, K7 to K14 · Remaining creator pages <span class="chip cnt">21 features</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">K0.01</td><td><strong>Creator landing</strong></td><td>Recruitment page leading with earnings and setup time, carrying campaign parameters into signup.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K2.01</td><td><strong>Sign in</strong></td><td>Rate limited, and must not reveal whether an email exists.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K2.02</td><td><strong>Password reset</strong></td><td>Token flow showing the same confirmation whether or not the account exists.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K7.01</td><td><strong>Bookings list</strong></td><td>Upcoming and past as separate groups, with the join link primary on upcoming rows.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K8.01</td><td><strong>Booking detail</strong></td><td>Customer, time, amount received, join link, cancel path.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K8.02</td><td><strong>Creator cancellation</strong></td><td>Always refunds the customer in full including the service fee, regardless of timing. Deliberately asymmetric.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K9.01</td><td><strong>Gated messaging</strong></td><td>A thread exists only after a confirmed booking, enforced server-side rather than by hiding the interface.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">K9.02</td><td><strong>Thread list and composer</strong></td><td>Scoped to a booking. No attachments in Phase 1.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K9.03</td><td><strong>Locked state explanation</strong></td><td>Explains why messaging is gated, because creators will question the restriction.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K10.01</td><td><strong>Profile editor</strong></td><td>Display name, bio, photo with a cropper, since imported social images are rarely square.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K10.02</td><td><strong>Handle change with redirect</strong></td><td>Old handle redirects permanently, because creator links live in bios and old posts.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K10.03</td><td><strong>Live profile preview</strong></td><td>Shows what the audience sees. The thing creators are genuinely anxious about.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K11.01</td><td><strong>Offer editor</strong></td><td>Reuses the onboarding components. Price changes must not affect bookings already paid for.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K12.01</td><td><strong>Availability editor</strong></td><td>Reuses the onboarding slot components in an editing context.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K13.01</td><td><strong>Payout status</strong></td><td>Reflects live provider state rather than a cached copy.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K13.02</td><td><strong>Payout history</strong></td><td>Released payouts with amounts and dates, reconciling with the provider.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K14.01</td><td><strong>Account settings</strong></td><td>Email change with re-verification, password change.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K14.02</td><td><strong>Notification preferences</strong></td><td>Grouped so Phase 2 can add push and SMS channels without restructuring.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K14.03</td><td><strong>Account deletion</strong></td><td>Blocked or cancel-and-refund when future bookings exist. Must state which before confirming.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">K14.04</td><td><strong>Unsaved changes guard</strong></td><td>Warns on navigating away from an edited offer, availability or profile.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">K14.05</td><td><strong>Session handling</strong></td><td>Expiry with return-to-page, and sign out.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Administrator pages</h2></div>
+    <p class="lede">Twenty-two features across five pages. At pilot scale this surface <em>is</em> the trust and safety tooling, which is why the exclusions list is safe.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">A1.01</td><td><strong>Attention list</strong></td><td>Failed payouts, failed refunds, pending verifications, calls where only one party joined. The substitute for a queue.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A1.02</td><td><strong>Monitoring surface</strong></td><td>Uptime and error alerts shown here as well as emailed, so there is one place to look.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A1.03</td><td><strong>Today's calls</strong></td><td>What is scheduled, with join status once the window opens.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">A1.04</td><td><strong>Admin action counter</strong></td><td>Counts actions per week as an operational load proxy, since the manual model has an unknown breaking point.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">A2.01</td><td><strong>Member list and search</strong></td><td>Partial matching across handle, display name and email. An administrator rarely has an exact value.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A2.02</td><td><strong>Member filters</strong></td><td>By verification state and account status.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">A3.01</td><td><strong>Member detail</strong></td><td>Profile, verification evidence, bookings, earnings, account history.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A3.02</td><td><strong>Manual verification</strong></td><td>Evidence beside the action. Records administrator and timestamp on the record, since there is no audit table.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A3.03</td><td><strong>Account suspension</strong></td><td>Immediate, with upcoming bookings cancelled and refunded, and all parties emailed.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">A3.04</td><td><strong>Suspension consequence preview</strong></td><td>Counts affected bookings and totals the refund before confirming.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A4.01</td><td><strong>Payment list and search</strong></td><td>By reference, creator, customer email and amount.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A4.02</td><td><strong>Money state pills</strong></td><td>Held, released, refunded, failed, retained. Semantic colour, never the brand colour.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">A5.01</td><td><strong>Payment detail</strong></td><td>Booking, call outcome, amounts, fee treatment, provider reference.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A5.02</td><td><strong>Refund tier computation</strong></td><td>Derives the applicable tier from the policy and the call outcome. <strong>Blocked on the no-show decision.</strong></td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">A5.03</td><td><strong>Refund execution</strong></td><td>Idempotent, reconciled against the provider, never marked locally before confirmation.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A5.04</td><td><strong>Override with reason</strong></td><td>Allows a manual amount, requires a reason, and records that it was an override.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">A5.05</td><td><strong>Platform fee treatment</strong></td><td>Returned on creator-side failure, retained on customer no-show. Automatic, not a judgement.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A5.06</td><td><strong>Failed refund escalation</strong></td><td>Surfaces on the attention list. A refund that silently fails is the worst outcome in this product.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">A0.01</td><td><strong>Role-gated access</strong></td><td>Enforced server-side on every admin route, not by hiding navigation.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A0.02</td><td><strong>Destructive action confirmations</strong></td><td>Every irreversible action confirms with its consequence stated. The substitute for an audit log.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A0.03</td><td><strong>Action recording on records</strong></td><td>Who did what and when, written onto the affected record.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">A0.04</td><td><strong>Admin shell</strong></td><td>Plain two-item navigation with search. Deliberately minimal.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>Cross-cutting features</h2></div>
+    <p class="lede">Twenty-two features that belong to no single page but touch many. These are the ones most often missed in a page-by-page estimate, and several of them are the most consequential in the build.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>ID</th><th>Feature</th><th>What it does</th><th>Origin</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">X.01</td><td><strong>Design token set</strong></td><td>Colour, type, spacing, radius and focus states applied across every pilot screen. Not a documented design system, which is Phase 2.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.02</td><td><strong>Component library</strong></td><td>Buttons, inputs, slot picker, badges, money pills, avatars, empty states, each with its full state set.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.03</td><td><strong>Three-surface shell</strong></td><td>Separate navigation contexts for public, creator and admin, sharing one visual language.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.04</td><td><strong>Authentication</strong></td><td>Sessions, password hashing, reset tokens, rate limiting. Creators only; customers never sign in.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.05</td><td><strong>Reference-based guest access</strong></td><td>Long unguessable references as the credential for booking, call and review pages.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">X.06</td><td><strong>Time zone engine</strong></td><td>UTC storage, per-viewer rendering, daylight saving correctness. Touches every date in the product.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.07</td><td><strong>Money state machine</strong></td><td>Held, released, refunded in full or part, retained, failed. The spine of the product.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.08</td><td><strong>Cancellation policy engine</strong></td><td>Computes the refund tier from timing and call outcome. <strong>Blocked on the no-show decision.</strong></td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.09</td><td><strong>Commission and fee calculation</strong></td><td>Server-side, configurable, single source of truth for every price shown anywhere.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">X.10</td><td><strong>Currency on every price</strong></td><td>Stored even though Phase 1 is USD only. Retrofitting it later touches every price in the system.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz s">S</span></td></tr>
+          <tr><td class="fid">X.11</td><td><strong>Transactional email delivery</strong></td><td>Eight templates on a verified sending domain, <strong>separate from any marketing domain</strong>.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.12</td><td><strong>Reminder scheduling</strong></td><td>Twenty-four hour and one hour reminders that survive restarts. Carries the completion gate metric.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.13</td><td><strong>Four-event funnel instrumentation</strong></td><td>Profile viewed, slot selected, checkout started, payment succeeded. <strong>The pilot's actual deliverable.</strong></td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">X.14</td><td><strong>Gate metric reporting</strong></td><td>Weekly computation of the four success measures from event data.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">X.15</td><td><strong>Error tracking and uptime monitoring</strong></td><td>Live from launch day. Required for the support window and for admin attention items.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">X.16</td><td><strong>Provider webhook handling</strong></td><td>Payment, payout, Connect account and video call events, processed idempotently.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.17</td><td><strong>Accessibility pass</strong></td><td>Keyboard navigation and visible focus across booking and checkout, with contrast measured not assumed.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">X.18</td><td><strong>Cross-device testing</strong></td><td>iOS Safari, Android Chrome, desktop Chrome and Safari, plus payment edge cases.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz l">L</span></td></tr>
+          <tr><td class="fid">X.19</td><td><strong>Progressive web app shell</strong></td><td>Installable, responsive, offline-aware enough to show a connection banner.</td><td class="w2"><span class="chip keep">Harden</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">X.20</td><td><strong>Production deployment</strong></td><td>Hosting, domain, SSL, verified sending domain, environment separation.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">X.21</td><td><strong>Runbook</strong></td><td>Written operational handover covering the five admin actions and every failure mode.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+          <tr><td class="fid">X.22</td><td><strong>Backups and data retention</strong></td><td>Automated backups, and a retention position for a product holding payment and identity data.</td><td class="w2"><span class="chip new">New</span></td><td class="w2"><span class="sz m">M</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note crit">
+      <h3>Five of these are large and easy to under-estimate</h3>
+      <p><strong>X.06 time zones</strong>, <strong>X.07 money states</strong>, <strong>X.08 the cancellation engine</strong>, <strong>X.12 reminder scheduling</strong> and <strong>X.16 webhook handling</strong> have no screen of their own, so they are invisible on a page-by-page plan. Between them they are the product's actual machinery, and all five are new work with no prototype equivalent.</p>
+      <p>Two of them carry gate metrics directly: reminder scheduling decides call completion, and the funnel instrumentation is what makes any of the four measures readable at all.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>Deferred to Phase 2</h2></div>
+    <p class="lede">Thirty-one features explicitly out of Phase 1, listed so the boundary is visible. If a design or a ticket implies one of these, it has grown past the agreement.</p>
+
+    <div class="g2">
+      <div class="card">
+        <h4>Identity and discovery</h4>
+        <ul class="tiny soft">
+          <li>Second and third platform connections</li>
+          <li>Automated follower refresh</li>
+          <li>Completion of platform app reviews</li>
+          <li>Re-verification and revoked-access automation</li>
+          <li>Ranked search with relevance and filters</li>
+          <li>Promoted category navigation</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Booking and calls</h4>
+        <ul class="tiny soft">
+          <li>Availability rules, buffers, blackout dates</li>
+          <li>Recurring availability</li>
+          <li>Calendar synchronisation</li>
+          <li>Self-serve rescheduling</li>
+          <li>Pre-call device and network check</li>
+          <li>Lobby and waiting room</li>
+          <li>Dial-in fallback</li>
+          <li>Call quality monitoring</li>
+          <li>Real-time <em>available now</em> status</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Money and trust</h4>
+        <ul class="tiny soft">
+          <li>Escrow release automation</li>
+          <li>Dispute and chargeback tooling</li>
+          <li>Fraud screening</li>
+          <li>Tax reporting edge cases</li>
+          <li>Reconciliation and ledger views</li>
+          <li>Multiple currencies and international payouts</li>
+          <li>Moderation queue and reporting</li>
+          <li>Audit log</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Growth and experience</h4>
+        <ul class="tiny soft">
+          <li>Web push and text notifications</li>
+          <li>Notification scheduling queue with retries</li>
+          <li>Review prompts and trust-flywheel mechanics</li>
+          <li>Review moderation</li>
+          <li>Creator analytics and activation nudges</li>
+          <li>Full design system in Figma and code</li>
+          <li>Usability testing and interactive prototyping</li>
+          <li>Customer accounts and saved payment methods</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <h3>Two Phase 2 items have a Phase 1 hook</h3>
+      <p><strong>Multi-currency</strong> and the <strong>referral programme</strong> are not built in Phase 1, but each needs one small thing recorded now: a currency on every price, and a referral code captured at signup. Both are listed as features X.10 and K1.07. Neither does anything in the pilot. Both are genuinely expensive to retrofit, because one touches every price in the system and the other requires reconstructing attribution that was never recorded.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">07</span><h2>Totals, and what they imply</h2></div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Area</th><th>Features</th><th>New</th><th>Harden</th><th>Small</th><th>Medium</th><th>Large</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Customer pages</strong></td><td class="w2">61</td><td class="w2">51</td><td class="w2">10</td><td class="w2">29</td><td class="w2">29</td><td class="w2">3</td></tr>
+          <tr><td><strong>Creator pages</strong></td><td class="w2">62</td><td class="w2">50</td><td class="w2">12</td><td class="w2">27</td><td class="w2">32</td><td class="w2">3</td></tr>
+          <tr><td><strong>Administrator pages</strong></td><td class="w2">22</td><td class="w2">22</td><td class="w2">0</td><td class="w2">7</td><td class="w2">13</td><td class="w2">2</td></tr>
+          <tr><td><strong>Cross-cutting</strong></td><td class="w2">22</td><td class="w2">19</td><td class="w2">3</td><td class="w2">1</td><td class="w2">10</td><td class="w2">11</td></tr>
+          <tr style="background:var(--surface-2)"><td><strong>Phase 1 total</strong></td><td class="w2"><strong>167</strong></td><td class="w2"><strong>142</strong></td><td class="w2"><strong>25</strong></td><td class="w2"><strong>64</strong></td><td class="w2"><strong>84</strong></td><td class="w2"><strong>19</strong></td></tr>
+          <tr><td class="soft">Deferred to Phase 2</td><td class="w2 soft">31</td><td class="w2 soft">&mdash;</td><td class="w2 soft">&mdash;</td><td class="w2 soft">&mdash;</td><td class="w2 soft">&mdash;</td><td class="w2 soft">&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="viz">
+      <h4>Where the 167 features sit</h4>
+      <p class="vcap">By area, by origin, and by size band.</p>
+      <div class="bars">
+        <div class="bar"><span class="bl">Creator pages <small>15 pages</small></span><span class="bt"><i style="width:100%"></i></span><span class="bv">62</span></div>
+        <div class="bar"><span class="bl">Customer pages <small>11 pages</small></span><span class="bt"><i style="width:98.4%"></i></span><span class="bv">61</span></div>
+        <div class="bar"><span class="bl">Administrator <small>5 pages</small></span><span class="bt"><i style="width:35.5%"></i></span><span class="bv">22</span></div>
+        <div class="bar"><span class="bl">Cross-cutting <small>no page of their own</small></span><span class="bt"><i class="warn" style="width:35.5%"></i></span><span class="bv">22</span></div>
+      </div>
+      <p class="vcap" style="margin:20px 0 10px">New work against hardening the existing prototype:</p>
+      <div class="stackbar">
+        <span style="width:85%; background:#b45309">New build, 142</span>
+        <span style="width:15%; background:#15803d">Harden, 25</span>
+      </div>
+      <p class="vcap" style="margin:20px 0 10px">By indicative size band:</p>
+      <div class="stackbar">
+        <span style="width:38.3%; background:#15803d">Small, 64</span>
+        <span style="width:50.3%; background:#b45309">Medium, 84</span>
+        <span style="width:11.4%; background:#b91c1c">Large, 19</span>
+      </div>
+      <p class="vnote">Two things stand out. <strong>Only 15 percent of the work is hardening</strong>, which is the assumption the commercial case rests on, and the cross-cutting bar is the one with no page attached, so it is the one a page-by-page estimate misses entirely. Eleven of the nineteen large features sit there.</p>
+    </div>
+
+    <div class="note crit">
+      <h3>The number this document was written to surface</h3>
+      <p>At the indicative bands, 64 small, 84 medium and 19 large features total somewhere between <strong>570 and 1,170 hours</strong>, against a Phase 1 budget of roughly <strong>156 hours</strong>.</p>
+      <p>That gap is far too large to be a rounding difference, and it means one of three things is true: the bands are too generous for a small senior team reusing an existing codebase, the feature list is finer-grained than the original estimate assumed, or Phase 1 as inventoried here is genuinely larger than what was priced. <strong>It is most likely all three, in that order.</strong></p>
+      <p>What the document can say with confidence is narrower and more useful: the research report's bottom-up reading of "north of 200 hours" is supported, and the <strong>Week 3 scope fix is the right moment to decide what gets cut</strong>. This inventory is the list to cut from, because every item has an ID, a size and a stated purpose.</p>
+    </div>
+
+    <div class="note warn">
+      <h3>Where the hardening assumption carries the most weight</h3>
+      <p>Only 25 of 167 features are classified as hardening existing work: 10 on customer pages, 12 on creator pages, and 3 cross-cutting. <strong>The administrator surface has none at all</strong>, because the prototype has no admin tooling. If the prototype turns out to be unreachable, those 25 items become new work and the eleven large cross-cutting items lose their only existing foundation.</p>
+      <p>The commercial case rests on those 25 being real. It has not been verified.</p>
+    </div>
+
+    <div class="note good">
+      <h3>What to do with this document</h3>
+      <ul style="margin-bottom:0">
+        <li><strong>Before design:</strong> read it as a completeness check. Anything missing is cheaper to add now than in Week 9.</li>
+        <li><strong>At the scope fix:</strong> use it as the cut list. Every feature has an ID and a size, so trades can be made precisely rather than vaguely.</li>
+        <li><strong>During build:</strong> use the IDs on tickets, so a change request can be traced to the feature it displaces under the trade rule.</li>
+        <li><strong>At the end:</strong> it is the test plan. Each feature's description is effectively its acceptance criterion.</li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="foot">LINK page features inventory, issued 1 October 2026 for the Phase 1 pilot. Companion to the navigation and page list, the popups and forms inventory, and the UI design brief of the same date. Sizes are indicative planning bands, not a quote, and are deliberately coarse. The new-versus-harden split assumes the existing prototype is reachable and contains what the earlier audit recorded; that assumption was unverified at the time of writing. Features marked blocked depend on the no-show policy decision. Prepared by Oyolloo for WorkDev Solutions.</p>
+
+</div>
+
+<script>
+  document.getElementById("pdfBtn").addEventListener("click", function(){
+    window.print();
+  });
+</script>

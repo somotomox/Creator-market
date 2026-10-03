@@ -1,0 +1,937 @@
+<meta charset="utf-8">
+<title>LINK SWOT Analysis</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa; --surface-3:#e7eef8;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --s:#15803d; --s-bg:#e4f7ea; --s-ln:#9ad8b4;
+    --w:#b45309; --w-bg:#fdf0d5; --w-ln:#e8c489;
+    --o:#2563eb; --o-bg:#dbe6fe; --o-ln:#a8c4f5;
+    --t:#b91c1c; --t-bg:#fbe4e4; --t-ln:#eeabab;
+    --shadow:0 1px 2px rgba(11,31,58,.05);
+    --f-body:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --f-mono:"IBM Plex Mono","SFMono-Regular",ui-monospace,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--f-body);
+       font-size:16px; line-height:1.78; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px; margin:0 auto; padding-inline:22px; padding-block:30px 90px}
+  p{margin:0 0 15px}
+  strong{font-weight:600}
+  h1,h2,h3,h4{margin:0; line-height:1.3; text-wrap:balance; color:var(--ink)}
+  h1{font-size:clamp(28px,4.6vw,40px); font-weight:600; letter-spacing:-.025em; line-height:1.26}
+  h1 em{font-style:normal; color:var(--accent)}
+  h2{font-size:26px; font-weight:600; letter-spacing:-.018em}
+  h3{font-size:17px; font-weight:600; margin-top:26px; letter-spacing:-.008em}
+  h4{font-size:15px; font-weight:600; margin-top:0}
+  ul,ol{margin:12px 0 15px; padding-left:22px}
+  li{margin:7px 0; padding-left:3px}
+  .lab{font-family:var(--f-body); font-size:11.5px; font-weight:600; letter-spacing:.07em;
+       text-transform:uppercase; color:var(--muted)}
+  .soft{color:var(--ink-soft)}
+  .tiny{font-size:14px; line-height:1.68}
+
+  .dochead{border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:12px;
+           padding:24px 26px; background:var(--surface); box-shadow:var(--shadow)}
+  .dochead .kicker{font-family:var(--f-body); font-size:11.5px; letter-spacing:.09em; text-transform:uppercase;
+                   color:var(--accent); font-weight:600; margin-bottom:12px; display:block}
+  .dochead h1{margin:0 0 12px}
+  .dochead .sub{font-size:17px; color:var(--ink-soft); line-height:1.7; margin:0}
+  .facts{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line);
+         border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-top:20px}
+  @media (min-width:520px){ .facts{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:760px){ .facts{grid-template-columns:repeat(3,1fr)} }
+  .facts > div{background:var(--bg); padding:12px 15px}
+  .facts .v{font-size:15px; font-weight:600; margin-top:6px; line-height:1.4}
+  .facts .v.accent{color:var(--accent)}
+
+  section{margin-top:52px; padding-top:30px; border-top:1px solid var(--line)}
+  .shead{display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; margin-bottom:10px}
+  .snum{font-family:var(--f-mono); font-size:19px; font-weight:500; color:var(--accent); flex:0 0 auto}
+  .lede{font-size:17px; color:var(--ink-soft); line-height:1.65; margin:8px 0 22px}
+
+  /* quadrant grid */
+  .quad{display:grid; grid-template-columns:1fr; gap:14px; margin:20px 0}
+  @media (min-width:800px){ .quad{grid-template-columns:1fr 1fr} }
+  .qbox{border:1px solid var(--line); border-top:4px solid var(--line-strong); border-radius:12px;
+        padding:18px 20px; background:var(--surface)}
+  .qbox.s{border-top-color:var(--s); background:var(--s-bg)}
+  .qbox.w{border-top-color:var(--w); background:var(--w-bg)}
+  .qbox.o{border-top-color:var(--o); background:var(--o-bg)}
+  .qbox.t{border-top-color:var(--t); background:var(--t-bg)}
+  .qbox > header{display:flex; gap:11px; align-items:baseline; margin-bottom:12px}
+  .qbox .qk{font-family:var(--f-mono); font-size:22px; font-weight:500; line-height:1}
+  .qbox.s .qk{color:var(--s)} .qbox.w .qk{color:var(--w)}
+  .qbox.o .qk{color:var(--o)} .qbox.t .qk{color:var(--t)}
+  .qbox .qt{font-size:18px; font-weight:600; letter-spacing:-.01em}
+  .qbox .qn{font-size:13.5px; color:var(--ink-soft); margin-left:auto; white-space:nowrap}
+  .qbox ul{margin:0; padding-left:20px}
+  .qbox li{font-size:14.5px; line-height:1.6; margin:9px 0}
+
+  .item{border:1px solid var(--line); border-left:4px solid var(--line-strong); border-radius:0 12px 12px 0;
+        padding:18px 21px; background:var(--surface)}
+  .item.s{border-left-color:var(--s)} .item.w{border-left-color:var(--w)}
+  .item.o{border-left-color:var(--o)} .item.t{border-left-color:var(--t)}
+  .item > header{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:8px}
+  .item .iid{font-family:var(--f-mono); font-size:12.5px; font-weight:500; background:var(--surface-3);
+             color:var(--ink-soft); padding:3px 9px; border-radius:5px}
+  .item .it{font-size:16.5px; font-weight:600; letter-spacing:-.01em}
+  .item dl{margin:10px 0 0; display:grid; grid-template-columns:1fr; gap:5px}
+  @media (min-width:620px){ .item dl{grid-template-columns:128px 1fr; gap:9px 16px} }
+  .item dt{font-size:11.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+           color:var(--muted); padding-top:4px}
+  .item dd{margin:0; font-size:14.5px; line-height:1.65}
+  .stack{display:grid; gap:14px}
+
+  .tw{overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--bg); margin:16px 0}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; line-height:1.6; min-width:620px}
+  th,td{text-align:left; padding:13px 15px; border-top:1px solid var(--line); vertical-align:top}
+  thead th{border-top:none; background:var(--surface-2); font-weight:600; font-size:12px;
+           letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap}
+  tbody tr:hover{background:var(--surface)}
+  td.w2{white-space:nowrap; font-variant-numeric:tabular-nums}
+
+  .chip{display:inline-block; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+        padding:3px 9px; border-radius:20px; white-space:nowrap}
+  .chip.hi{background:var(--t-bg); color:var(--t)}
+  .chip.md{background:var(--w-bg); color:var(--w)}
+  .chip.lo{background:var(--surface-3); color:var(--muted)}
+  .chip.now{background:var(--o-bg); color:var(--o)}
+
+  .note{border:1px solid var(--line); border-left:4px solid var(--accent); background:var(--accent-soft);
+        border-radius:0 12px 12px 0; padding:18px 22px; margin:20px 0}
+  .note h3{color:var(--accent-deep); margin:0 0 8px; font-size:16.5px}
+  .note p:last-child{margin-bottom:0}
+  .note.warn{border-left-color:var(--w); background:var(--w-bg)} .note.warn h3{color:var(--w)}
+  .note.crit{border-left-color:var(--t); background:var(--t-bg)} .note.crit h3{color:var(--t)}
+  .note.good{border-left-color:var(--s); background:var(--s-bg)} .note.good h3{color:var(--s)}
+
+  /* data visuals */
+  .viz{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:20px 22px; margin:20px 0}
+  .viz > h4{margin:0 0 5px; font-size:15.5px; font-weight:600}
+  .viz .vcap{font-size:13.5px; color:var(--muted); margin:0 0 18px; line-height:1.55}
+  .viz .vnote{font-size:13px; color:var(--muted); margin:16px 0 0; padding-top:13px;
+              border-top:1px solid var(--line); line-height:1.55}
+  .viz.plain{background:var(--surface)}
+
+  .bars{display:grid; gap:11px}
+  .bar{display:grid; grid-template-columns:minmax(96px,27%) 1fr minmax(58px,auto); gap:14px; align-items:center}
+  @media (max-width:600px){ .bar{grid-template-columns:1fr auto; gap:4px 10px}
+    .bar .bl{grid-column:1/-1} .bar .bv{text-align:right} }
+  .bar .bl{font-size:14px; line-height:1.32}
+  .bar .bl small{display:block; font-size:12px; color:var(--muted); font-weight:400}
+  .bar .bt{background:var(--surface-2); border-radius:6px; height:28px; overflow:hidden}
+  .bar .bt i{display:block; height:100%; border-radius:6px; background:var(--accent)}
+  .bar .bt i.good{background:var(--good)}
+  .bar .bt i.warn{background:var(--warn)}
+  .bar .bt i.crit{background:var(--crit)}
+  .bar .bt i.mute{background:var(--line-strong)}
+  .bar .bt i.deep{background:var(--accent-deep)}
+  .bar .bv{font-family:var(--f-mono); font-size:14px; font-weight:500; white-space:nowrap; text-align:right}
+
+  .stackbar{display:flex; height:50px; border-radius:9px; overflow:hidden; border:1px solid var(--line)}
+  .stackbar > span{display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:600;
+                   color:#fff; white-space:nowrap; overflow:hidden; padding:0 4px; min-width:0}
+  .stackkey{display:flex; flex-wrap:wrap; gap:16px; margin-top:14px; font-size:13.5px}
+  .stackkey span{display:flex; align-items:center; gap:8px; white-space:nowrap}
+  .stackkey i{width:13px; height:13px; border-radius:3px; display:block; flex:0 0 auto}
+
+  .tiles{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .tile{border:1px solid var(--line); border-radius:11px; padding:15px 16px; background:var(--bg)}
+  .tile .tv{font-family:var(--f-mono); font-size:26px; font-weight:500; letter-spacing:-.02em; line-height:1.1}
+  .tile .tk{font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.45}
+  .tile.ok{border-left:4px solid var(--good)} .tile.ok .tv{color:var(--good)}
+  .tile.at{border-left:4px solid var(--warn)} .tile.at .tv{color:var(--warn)}
+  .tile.no{border-left:4px solid var(--crit)} .tile.no .tv{color:var(--crit)}
+  .tile.nu{border-left:4px solid var(--accent)} .tile.nu .tv{color:var(--accent)}
+
+  .funnel{display:grid; gap:7px}
+  .fstep2{display:grid; grid-template-columns:1fr; gap:4px}
+  .fstep2 .fbar{height:38px; border-radius:7px; background:var(--accent); display:flex; align-items:center;
+                padding:0 14px; color:#fff; font-size:14px; font-weight:600}
+  .fstep2 .fmeta{font-size:12.5px; color:var(--muted); padding-left:2px}
+  .fdrop{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--crit);
+         padding-left:14px; font-weight:600}
+
+  svg.dia{display:block; width:100%; height:auto; max-width:100%}
+  .diawrap{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:18px;
+           margin:20px 0; overflow-x:auto}
+  .diawrap h4{margin:0 0 14px; font-size:15.5px}
+
+  @media print{
+    .viz,.diawrap{break-inside:avoid; page-break-inside:avoid}
+    .bar .bt i,.stackbar > span,.tile,.fstep2 .fbar{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* cross-document navigation */
+  .docnav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.94);
+          -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+          border-bottom:1px solid var(--line)}
+  .docnav .dn{max-width:1080px; margin:0 auto; padding:0 22px; display:flex; align-items:center; gap:20px}
+  .docnav .dnbrand{font-weight:600; font-size:15px; letter-spacing:-.012em; color:var(--ink);
+                   white-space:nowrap; padding:14px 0; flex:0 0 auto; text-decoration:none}
+  .docnav .dnbrand b{color:var(--accent); font-weight:600}
+  .docnav .dnbrand:hover b{color:var(--accent-deep)}
+  .docnav .dnlinks{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .docnav .dnlinks::-webkit-scrollbar{display:none}
+  .docnav .dnlinks a{display:block; padding:14px 12px; font-size:14px; color:var(--ink-soft);
+            text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; font-weight:400}
+  .docnav .dnlinks a:hover{color:var(--accent-deep)}
+  .docnav .dnlinks a.on{color:var(--accent-deep); font-weight:600; border-bottom-color:var(--accent)}
+  .docnav .dnlinks a:focus-visible{outline:2px solid var(--accent); outline-offset:-3px; border-radius:4px}
+  @media (max-width:680px){
+    .docnav .dn{gap:12px; padding:0 14px}
+    .docnav .dnbrand{font-size:13.5px; padding:12px 0}
+    .docnav .dnlinks a{padding:12px 9px; font-size:13.5px}
+  }
+  section, [id^="s"], [id^="p-"]{scroll-margin-top:76px}
+  @media print{ .docnav{display:none !important} }
+
+  .dock{position:fixed; right:16px; bottom:16px; z-index:20}
+  .dockbtn{background:var(--surface); border:1px solid var(--line-strong); border-radius:22px;
+           box-shadow:0 4px 18px rgba(11,31,58,.14); padding:10px 17px; font-size:14px; font-weight:600;
+           font-family:var(--f-body); color:var(--ink); cursor:pointer; min-height:42px; line-height:1;
+           display:inline-flex; align-items:center; gap:8px}
+  .dockbtn:hover{border-color:var(--accent); color:var(--accent-deep)}
+  .dockbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .foot{margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+  @page{ margin:14mm }
+  @media print{
+    .dock{display:none !important}
+    body{background:#fff; font-size:10.5pt; line-height:1.6}
+    .wrap{max-width:none; padding:0}
+    .qbox,.item,.note,.tw,.dochead,.facts{break-inside:avoid; page-break-inside:avoid}
+    h1,h2,h3,h4{break-after:avoid}
+    table{min-width:0}
+    .chip,.qbox{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* ---- black and white print ---- */
+  @media print{
+    :root{
+      --bg:#ffffff; --surface:#f7f7f7; --surface-2:#f0f0f0; --surface-3:#e8e8e8;
+      --ink:#000000; --ink-soft:#2b2b2b; --muted:#5a5a5a;
+      --line:#d0d0d0; --line-strong:#9a9a9a;
+      --accent:#1a1a1a; --accent-deep:#000000; --accent-soft:#f0f0f0; --navy:#000000;
+      --good:#1a1a1a; --good-bg:#f2f2f2;
+      --warn:#1a1a1a; --warn-bg:#ededed;
+      --crit:#000000; --crit-bg:#e6e6e6;
+      --coral:#1a1a1a;
+      --l1:#1a1a1a; --l1-bg:#f2f2f2; --l2:#1a1a1a; --l2-bg:#ededed; --l3:#5a5a5a; --l3-bg:#e8e8e8;
+      --s:#1a1a1a; --s-bg:#f4f4f4; --w:#1a1a1a; --w-bg:#ededed;
+      --o:#1a1a1a; --o-bg:#f0f0f0; --t:#000000; --t-bg:#e6e6e6;
+      --ev-a:#1a1a1a; --ev-a-bg:#f0f0f0; --ev-b:#1a1a1a; --ev-b-bg:#eaeaea;
+      --ev-c:#1a1a1a; --ev-c-bg:#eeeeee; --ev-d:#1a1a1a; --ev-d-bg:#e9e9e9;
+      --ev-e:#1a1a1a; --ev-e-bg:#e4e4e4;
+      --shadow:none;
+    }
+    body{background:#fff; color:#000}
+    a{color:#000; text-decoration:underline}
+    svg.dia, .stackbar, .tile, .bar .bt, .qbox, .seg, .nav .ncta, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .chip, .ev, .sev, .pill, .dcode, .pid, .xid, .rid, .sid, .fid, .iid, .dnum, .tag, .path, code{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .note, .find, .rule, .card, .viz, .diawrap, .pop, .scr, .pg, .item, .lvl{
+      border-color:#bdbdbd !important;
+    }
+    .stackbar > span{color:#fff !important}
+    .dock, .docnav, .chkbar button{display:none !important}
+  }
+
+  /* ---- plain print: no panels, cards or chips. charts and diagrams stay ---- */
+  @media print{
+    /* every decorative container becomes plain typography */
+    .dochead, .hero, .doc, .card, .note, .find, .rule, .item, .pgroup, .qbox,
+    .scr, .pg, .pg > header, .pg .pbody, .pop, .pop > header, .lvl, .viz, .viz.plain,
+    .diawrap, .tw, .chk, .chk label, .tree, .forwho, .forwho.design, .forwho.dev,
+    .tile, .facts, .facts > div, .toc a, .pmeta, .ppath, .chkbar, .dmeta, .seg{
+      background:transparent !important;
+      border:0 !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      overflow:visible !important;
+      filter:none !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+    }
+    .note, .find, .rule, .item, .pgroup, .qbox, .scr, .pg, .pop, .lvl, .card, .viz, .diawrap{
+      margin:15pt 0 !important;
+      padding-top:0 !important;
+      padding-bottom:0 !important;
+    }
+    .dochead, .hero{padding:0 !important; margin:0 0 16pt !important}
+    .forwho{padding:0 !important; margin-top:10pt !important}
+    .tree{padding:0 !important; font-size:9pt !important}
+    .tile{padding:0 !important}
+    .doc{padding:0 !important; margin:0 0 12pt !important}
+
+    /* headings and ids carry the structure now that the boxes are gone */
+    .note h3, .find .ft, .rule .rt, .viz > h4, .diawrap h4, .card h4, .item .itxt strong,
+    .pop .xt, .scr .st2, .scr h4, .pg .ptitle, .lvl .lvname, .qbox .qt, .doc .dt,
+    .forwho h5, .shead h2{ color:#000 !important }
+    .qbox header, .pg > header, .pop > header, .lvl > header, .scr header{
+      border-bottom:0.5pt solid #b4b4b4 !important; padding-bottom:5pt !important;
+      margin-bottom:8pt !important;
+    }
+    .forwho h5{border-bottom:0.5pt solid #d4d4d4 !important; padding-bottom:3pt !important}
+
+    /* badges, pills and code chips become plain text */
+    .chip, .ev, .sev, .pill, .tag, .dcode, .dnum, .pid, .xid, .rid, .sid, .fid, .iid,
+    .lvtag, .qk, .qn, .sz, .cnt, .path, code, .fscr, .bk, .tv{
+      background:transparent !important; border:0 !important; padding:0 !important;
+      border-radius:0 !important; color:#000 !important; filter:none !important;
+      box-shadow:none !important; width:auto !important; height:auto !important;
+    }
+    .chip, .ev, .sev, .pill, .tag, .lvtag, .qk, .bk{font-weight:600 !important; margin-right:6pt}
+    .tile .tv{font-size:19pt !important; color:#000 !important}
+    .swatch i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+
+    /* hairlines where a list needs separating, instead of panels */
+    .facts > div{border-bottom:0.5pt solid #d2d2d2 !important; padding:5pt 0 !important}
+    .chk label{border-bottom:0.5pt solid #dcdcdc !important; padding:4pt 0 !important}
+    .pop .say{border-left:1pt solid #8a8a8a !important; padding:2pt 0 2pt 9pt !important;
+              background:transparent !important; border-radius:0 !important}
+    .cprog{display:none !important}
+
+    /* tables: horizontal rules only */
+    table{width:100% !important; min-width:0 !important}
+    thead th{background:transparent !important; color:#000 !important;
+             border-bottom:1pt solid #000 !important; padding:0 9pt 5pt 0 !important}
+    th, td{border-top:0 !important; border-bottom:0.5pt solid #cfcfcf !important;
+           padding:5pt 9pt 5pt 0 !important; background:transparent !important}
+    tr.tot td, tr.tot th{border-top:1pt solid #000 !important; font-weight:600 !important}
+
+    /* the charts stay */
+    .bar .bt{background:#ededed !important; border:0.5pt solid #c4c4c4 !important;
+             border-radius:0 !important; filter:grayscale(100%) !important;
+             -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .bar .bt i{border-radius:0 !important; filter:grayscale(100%) !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+              filter:grayscale(100%) !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar > span{color:#fff !important}
+    .stackkey i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+                -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep2 .fbar{border-radius:0 !important; filter:grayscale(100%) !important;
+                  -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    svg.dia{filter:grayscale(100%) !important; max-width:100% !important; height:auto !important}
+
+    /* the user-flow diagram stays: numbered nodes, rails, decision points */
+    .fstep .fn{filter:grayscale(100%) !important; width:26px !important; height:26px !important;
+               border-radius:50% !important; padding:0 !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep.exit .fn{color:#fff !important}
+    .frail .fline i{background:#6a6a6a !important}
+    .fdec{border:0.5pt dashed #8a8a8a !important; background:transparent !important;
+          border-radius:0 !important}
+    .fbr{border-top:0.5pt solid #e0e0e0 !important}
+
+    /* the navigation mock-ups are wireframes, not decoration */
+    .nav{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+         background:transparent !important; overflow:hidden !important}
+    .nav .nbar, .nav .ncta, .nav .nghost, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .nav .ncap{border-top:0.5pt dashed #8a8a8a !important}
+
+    .dock, .docnav, .chkbar button{display:none !important}
+    .g2, .g3, .tiles, .docs, .quad, .split{gap:10pt !important}
+  }
+
+  /* ---- plain print corrections ---- */
+  @media print{
+    /* an id that is a table cell still needs its column gap */
+    td.fid, td.pid, td.iid, td.xid, td.rid, td.sid, td.dcode, td.cnt, td.sz{
+      padding:5pt 12pt 5pt 0 !important; white-space:nowrap !important;
+    }
+    /* an inline tag needs a delimiter once the chip is gone */
+    .ev::before, .sev::before{content:"["}
+    .ev::after, .sev::after{content:"] "}
+    td .ev::before, td .sev::before, th .ev::before, th .sev::before{content:""}
+    td .ev::after, td .sev::after, th .ev::after, th .sev::after{content:""}
+    .ev, .sev{white-space:nowrap !important; margin-left:3pt !important}
+  }
+</style>
+
+<div class="dock">
+  <button class="dockbtn" id="pdfBtn" type="button"><span aria-hidden="true">⇩</span> Download PDF</button>
+</div>
+
+<nav class="docnav">
+  <div class="dn">
+    <a class="dnbrand" href="index.html">LINK <b>UX</b></a>
+    <div class="dnlinks">
+      <a href="LINK-UX-Research.html">Research</a>
+      <a href="LINK-SWOT.html" class="on" aria-current="page">SWOT</a>
+      <a href="LINK-Revenue-Policy.html">Revenue &amp; Policy</a>
+      <a href="LINK-UI-Design-Brief.html">Design Brief</a>
+      <a href="LINK-Navigation-Pages.html">Navigation</a>
+      <a href="LINK-Page-Features.html">Features</a>
+      <a href="LINK-Popups-Forms.html">Popups &amp; Forms</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="dochead">
+    <span class="kicker">LINK · Phase 1 pilot · strategic analysis</span>
+    <h1>SWOT analysis: <em>where this product can win, and where it can quietly fail</em></h1>
+    <p class="sub">A structured assessment of the LINK creator-calls marketplace as it stands on 1 October 2026, day 15 of a 91-day build. Strengths and weaknesses are internal and largely within our control. Opportunities and threats are external and mostly are not. The final sections convert the four quadrants into strategies, because a SWOT that stops at four lists is a description rather than a decision tool.</p>
+    <div class="facts">
+      <div><span class="lab">Prepared by</span><div class="v">Oyolloo</div></div>
+      <div><span class="lab">Prepared for</span><div class="v">WorkDev Solutions</div></div>
+      <div><span class="lab">Issued</span><div class="v">1 October 2026</div></div>
+      <div><span class="lab">Basis</span><div class="v">Desk research, no user data</div></div>
+      <div><span class="lab">Items assessed</span><div class="v accent">24 across 4 quadrants</div></div>
+      <div><span class="lab">Companion</span><div class="v">UX Research Report</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>At a glance</h2></div>
+    <p class="lede">The short version, before the detail.</p>
+
+    <div class="diawrap">
+      <h4>The four quadrants, sized by what sits in them</h4>
+      <svg class="dia" viewBox="0 0 760 420" role="img" aria-label="SWOT matrix showing internal versus external and helpful versus harmful axes with item counts">
+        <text x="380" y="20" text-anchor="middle" font-size="12.5" font-weight="600" fill="#6b7789" letter-spacing="1">HELPFUL</text>
+        <text x="380" y="412" text-anchor="middle" font-size="12.5" font-weight="600" fill="#6b7789" letter-spacing="1">HARMFUL</text>
+        <text x="16" y="200" font-size="12.5" font-weight="600" fill="#6b7789" letter-spacing="1" transform="rotate(-90 16 200)">INTERNAL</text>
+        <text x="750" y="222" font-size="12.5" font-weight="600" fill="#6b7789" letter-spacing="1" transform="rotate(90 750 222)">EXTERNAL</text>
+
+        <rect x="40" y="34" width="330" height="172" rx="12" fill="#e4f7ea" stroke="#15803d" stroke-width="2"/>
+        <text x="60" y="64" font-size="15" font-weight="600" fill="#15803d">Strengths</text>
+        <text x="350" y="64" text-anchor="end" font-size="26" font-weight="600" fill="#15803d" font-family="monospace">6</text>
+        <text x="60" y="90" font-size="12.5" fill="#16202e">A working prototype worth hardening</text>
+        <text x="60" y="110" font-size="12.5" fill="#16202e">An unoccupied market position</text>
+        <text x="60" y="130" font-size="12.5" fill="#16202e">A competitive, honest take rate</text>
+        <text x="60" y="150" font-size="12.5" fill="#16202e">Founder-led distribution</text>
+        <text x="60" y="170" font-size="12.5" fill="#16202e">Evidence bought before platform spend</text>
+        <text x="60" y="190" font-size="12.5" fill="#16202e">Metrics defined before the build</text>
+
+        <rect x="390" y="34" width="330" height="172" rx="12" fill="#fdf0d5" stroke="#b45309" stroke-width="2"/>
+        <text x="410" y="64" font-size="15" font-weight="600" fill="#b45309">Weaknesses</text>
+        <text x="700" y="64" text-anchor="end" font-size="26" font-weight="600" fill="#b45309" font-family="monospace">7</text>
+        <text x="410" y="90" font-size="12.5" fill="#16202e">The core concept is not built</text>
+        <text x="410" y="110" font-size="12.5" fill="#16202e">No creator onboarding or dashboard</text>
+        <text x="410" y="130" font-size="12.5" fill="#16202e">Invented statistics on a payment page</text>
+        <text x="410" y="150" font-size="12.5" fill="#16202e">Hours thin against a capped fee</text>
+        <text x="410" y="170" font-size="12.5" fill="#16202e">Client response latency</text>
+        <text x="410" y="190" font-size="12.5" fill="#16202e">Prototype access unconfirmed</text>
+
+        <rect x="40" y="216" width="330" height="172" rx="12" fill="#dbe6fe" stroke="#2563eb" stroke-width="2"/>
+        <text x="60" y="246" font-size="15" font-weight="600" fill="#1e3a8a">Opportunities</text>
+        <text x="350" y="246" text-anchor="end" font-size="26" font-weight="600" fill="#1e3a8a" font-family="monospace">6</text>
+        <text x="60" y="272" font-size="12.5" fill="#16202e">Two conversion wins, free this week</text>
+        <text x="60" y="292" font-size="12.5" fill="#16202e">Attribution-tiered pricing later</text>
+        <text x="60" y="312" font-size="12.5" fill="#16202e">A category nobody has sized</text>
+        <text x="60" y="332" font-size="12.5" fill="#16202e">Repeat booking entirely untouched</text>
+        <text x="60" y="352" font-size="12.5" fill="#16202e">A large, growing surrounding market</text>
+        <text x="60" y="372" font-size="12.5" fill="#16202e">Phase 2 already scoped and costed</text>
+
+        <rect x="390" y="216" width="330" height="172" rx="12" fill="#fbe4e4" stroke="#b91c1c" stroke-width="2"/>
+        <text x="410" y="246" font-size="15" font-weight="600" fill="#b91c1c">Threats</text>
+        <text x="700" y="246" text-anchor="end" font-size="26" font-weight="600" fill="#b91c1c" font-family="monospace">5</text>
+        <text x="410" y="272" font-size="12.5" fill="#16202e">The cold start, niche unresolved</text>
+        <text x="410" y="292" font-size="12.5" fill="#16202e">Disintermediation</text>
+        <text x="410" y="312" font-size="12.5" fill="#16202e">Platform dependency for verification</text>
+        <text x="410" y="332" font-size="12.5" fill="#16202e">Name collision and trademark risk</text>
+        <text x="410" y="352" font-size="12.5" fill="#16202e">A gate metric on the weaker channel</text>
+      </svg>
+      <p class="vnote">Reading it diagonally is where the decisions are. Strengths against threats is where containment happens. Weaknesses against threats, the bottom-right pairing, is where projects actually fail, and Section 06 treats that quadrant separately.</p>
+    </div>
+
+    <div class="quad">
+      <div class="qbox s">
+        <header><span class="qk">S</span><span class="qt">Strengths</span><span class="qn">6 items</span></header>
+        <ul>
+          <li><strong>A working prototype exists</strong>, stronger than a typical throwaway, with a functioning booking surface and Stripe-ready settings.</li>
+          <li><strong>An unoccupied market position</strong>: self-serve for small creators and end-to-end for the transaction. No comparator does both.</li>
+          <li><strong>A competitive take rate</strong> at 15 percent, below Fiverr, Cameo and Intro's marketplace tier.</li>
+          <li><strong>Founder-led distribution</strong>, with a personal network and a large contact list, removing the usual cold-start spend.</li>
+          <li><strong>A staged commercial structure</strong> that buys evidence for $9,000 before committing $47,000 to $65,000.</li>
+          <li><strong>Decisions documented and instrumented</strong>: four gate metrics defined before build, not after.</li>
+        </ul>
+      </div>
+      <div class="qbox w">
+        <header><span class="qk">W</span><span class="qt">Weaknesses</span><span class="qn">7 items</span></header>
+        <ul>
+          <li><strong>The core concept is unbuilt.</strong> No social sign-in, no verified following, which is the only trust mechanism available at launch.</li>
+          <li><strong>No creator onboarding or dashboard</strong>, against an activation gate of 55 percent.</li>
+          <li><strong>Invented statistics</strong> on a page that takes card payments.</li>
+          <li><strong>Hours are thin.</strong> 156 budgeted, a bottom-up reading exceeds 200, and the fee is capped at $10,000.</li>
+          <li><strong>Client responsiveness</strong>: six reschedules in seven weeks against a plan needing one-day approvals.</li>
+          <li><strong>Prototype access unconfirmed</strong>, and the whole commercial premise rests on it.</li>
+          <li><strong>No primary user research</strong> behind any design decision.</li>
+        </ul>
+      </div>
+      <div class="qbox o">
+        <header><span class="qk">O</span><span class="qt">Opportunities</span><span class="qn">6 items</span></header>
+        <ul>
+          <li><strong>A category nobody has sized.</strong> Paid one-to-one calls are not broken out in any major creator economy report.</li>
+          <li><strong>Attribution-tiered pricing</strong>, following Intro's model, as a Phase 2 revenue lever that grows rather than taxes.</li>
+          <li><strong>Two free conversion wins</strong> available right now: early price disclosure and guest checkout.</li>
+          <li><strong>A growing market</strong>, variously sized $205bn to $387bn for 2026 with over 207 million participants.</li>
+          <li><strong>Repeat booking is untouched</strong>, and recurrence is what makes the take rate viable.</li>
+          <li><strong>Phase 2 is pre-scoped</strong>, so a successful pilot converts without re-procurement.</li>
+        </ul>
+      </div>
+      <div class="qbox t">
+        <header><span class="qk">T</span><span class="qt">Threats</span><span class="qn">5 items</span></header>
+        <ul>
+          <li><strong>The cold start.</strong> The documented primary cause of marketplace failure, and the niche decision is unresolved.</li>
+          <li><strong>Disintermediation</strong>: the pair meet on LINK and transact off it.</li>
+          <li><strong>Platform dependency.</strong> Verification relies on third-party APIs and their review processes.</li>
+          <li><strong>Name collision and trademark risk</strong> around a generic word in the same category as Stripe's own product.</li>
+          <li><strong>A gate metric measured on the weaker channel</strong>, which could fail the pilot for non-product reasons.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>Strengths, in detail</h2></div>
+    <p class="lede">Internal, present, and defensible. Each one is an asset to spend deliberately rather than a fact to feel good about.</p>
+
+    <div class="stack">
+      <div class="item s">
+        <header><span class="iid">S1</span><span class="it">A working prototype, better than expected</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>The prior audit across roughly 21 screens recorded a working booking surface with tiered offers and availability, thorough settings including Stripe payout configuration, functional browse and categories, and a coherent coral identity. It characterised the build as stronger than a typical throwaway prototype.</dd>
+          <dt>Why it matters</dt><dd>It is the entire reason a six to thirteen week pilot at $9,000 is credible rather than optimistic. A rebuild is the sixteen-week, $55,000 to $75,000 document.</dd>
+          <dt>How to spend it</dt><dd>Protect it. Confirm transferable access immediately, since this strength is unverified and conditional.</dd>
+        </dl>
+      </div>
+
+      <div class="item s">
+        <header><span class="iid">S2</span><span class="it">A genuinely unoccupied market position</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Curated expert networks exclude the long tail. Shout-out platforms sell asynchronous content, not access. Scheduling and link-in-bio tools handle neither payment custody nor trust. Membership platforms monetise an audience without selling time.</dd>
+          <dt>Why it matters</dt><dd>The intersection of self-serve for small creators and end-to-end for the transaction is unoccupied by any of the five comparators examined.</dd>
+          <dt>How to spend it</dt><dd>It is also the hardest position to hold, because it means solving trust without gatekeeping. That is what the verified follower count is for, and why W1 is the most urgent weakness.</dd>
+        </dl>
+      </div>
+
+      <div class="item s">
+        <header><span class="iid">S3</span><span class="it">A take rate that is competitive and honest</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>15 percent sits above Upwork's 10 and Patreon's 10, below Fiverr's 20, and well below Cameo's 25 to 30 and Intro's 30 percent marketplace tier. Charging processing to the customer makes "creators keep 85 percent" literally true, which is the same structure Patreon uses.</dd>
+          <dt>Why it matters</dt><dd>Take rate is the first thing a creator evaluates and the easiest thing for a competitor to attack. This one survives comparison.</dd>
+          <dt>How to spend it</dt><dd>State it prominently and precisely in creator-facing copy. It is a recruiting asset, not a pricing detail. Conditional on the service fee being approved.</dd>
+        </dl>
+      </div>
+
+      <div class="item s">
+        <header><span class="iid">S4</span><span class="it">Founder-led distribution</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>A personal network reaching into sports and entertainment, a stated contact list of around 500,000, and a willingness to hand-recruit the first cohort.</dd>
+          <dt>Why it matters</dt><dd>Most marketplaces die buying their first users. This one has a route that costs attention rather than money, which is the single most expensive problem in the category solved for free.</dd>
+          <dt>How to spend it</dt><dd>Carefully. A list is a one-shot asset: a poor first impression across half a million contacts cannot be bought back. Send in tranches, from a separate domain, after the product works.</dd>
+        </dl>
+      </div>
+
+      <div class="item s">
+        <header><span class="iid">S5</span><span class="it">A staged commercial structure</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>$9,000 for the pilot against $47,000 to $65,000 for the platform, with a gate four weeks after launch and no obligation attached.</dd>
+          <dt>Why it matters</dt><dd>In a category with no reliable sizing data, buying evidence before buying the platform is the correct sequence. If the pilot misses, that is learned for $9,000 rather than $75,000.</dd>
+          <dt>How to spend it</dt><dd>Only works if the gate is read honestly. A spike from one bulk send is not a trend, and the gate review should exclude or annotate any week containing one.</dd>
+        </dl>
+      </div>
+
+      <div class="item s">
+        <header><span class="iid">S6</span><span class="it">Metrics defined before the build, not after</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Four gate criteria agreed and instrumented during build: calls trending up, activation above 55 percent, completion above 80 percent, rating above 4.6. The bookable state is specified as a field on the record rather than a report assembled later.</dd>
+          <dt>Why it matters</dt><dd>Most pilots fail to answer their own question because nobody instrumented it. This one will produce a readable answer.</dd>
+          <dt>How to spend it</dt><dd>Protect the instrumentation if scope comes under pressure. It is the pilot's actual deliverable.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>Weaknesses, in detail</h2></div>
+    <p class="lede">Internal and within our control, which is the point: every one of these has an owner and a date.</p>
+
+    <div class="stack">
+      <div class="item w">
+        <header><span class="iid">W1</span><span class="it">The core concept is not built</span><span class="chip hi">Critical</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>The prior audit records no social sign-in and no verified follower count in the prototype.</dd>
+          <dt>Consequence</dt><dd>Every comparator solves trust through curation, fame or accumulated history. LINK can use none of these at launch and has no reviews on day one. Verified following is effectively the only trust mechanism available, and it is missing.</dd>
+          <dt>Severity</dt><dd>Without it the product is a scheduling link with a card form attached, which is precisely the stitched-together alternative it exists to replace.</dd>
+          <dt>Resolution</dt><dd>Scheduled for Weeks 7 to 8. Correctly prioritised. The remaining risk is the platform choice, which is still open.</dd>
+        </dl>
+      </div>
+
+      <div class="item w">
+        <header><span class="iid">W2</span><span class="it">No creator onboarding flow or dashboard</span><span class="chip hi">Critical</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Settings exist in the prototype; a guided path to a live profile does not.</dd>
+          <dt>Consequence</dt><dd>Creator activation above 55 percent is a gate metric with no mechanism behind it. The marketplace literature identifies supply as the hard side, which makes this the weakness most likely to decide the pilot.</dd>
+          <dt>Compounding factor</dt><dd>Of the four steps to bookable, three have an obviously correct answer. Setting a price does not; it is a self-valuation under uncertainty and the likeliest abandonment point.</dd>
+          <dt>Resolution</dt><dd>Designed Week 5, built Week 8. Mitigate with a suggested price and a visibly deferrable payout step.</dd>
+        </dl>
+      </div>
+
+      <div class="item w">
+        <header><span class="iid">W3</span><span class="it">Invented statistics on a payment page</span><span class="chip hi">Critical</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>The prior audit recorded fabricated, inconsistent numbers across the product and flagged it as a legal risk.</dd>
+          <dt>Consequence</dt><dd>A visitor who spots one fabricated figure discounts everything else on the page, including the price and the refund policy. On a page that takes card details this is also an exposure, not only a trust problem.</dd>
+          <dt>Resolution</dt><dd>Removal is a precondition of launch, not an improvement. Cheap to fix, expensive to leave.</dd>
+        </dl>
+      </div>
+
+      <div class="item w">
+        <header><span class="iid">W4</span><span class="it">The hours are thin against a capped fee</span><span class="chip hi">Critical</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>156 hours budgeted. A bottom-up reading of what remains, crediting everything the prototype already provides, exceeds 200. The contract caps the range at $10,000.</dd>
+          <dt>Consequence</dt><dd>Either scope depth gets cut quietly during build, which produces a weak pilot, or hours are absorbed, which erodes the margin on a project that already carries a ten-week support extension at no charge.</dd>
+          <dt>Resolution</dt><dd>The Week 3 scope fix is the contractual moment to resolve it, either by cutting depth deliberately or by reopening the range if the universal-platform reading is confirmed. Raising it later means raising it as a change request, which is a worse conversation for both sides.</dd>
+        </dl>
+      </div>
+
+      <div class="item w">
+        <header><span class="iid">W5</span><span class="it">Client response latency against a plan that assumes the opposite</span><span class="chip md">High</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Six reschedules across the seven weeks before first payment, and 47 days from first contact to funds. Five decisions remain open at day 15 of 91.</dd>
+          <dt>Consequence</dt><dd>The fixed fee is only possible because the duration is fixed, and the duration is only achievable if approvals return inside one working day.</dd>
+          <dt>Mitigation in place</dt><dd>The schedule was revised from six weeks to thirteen specifically to carry this float, and the three-working-day rule moves a milestone rather than compressing the work. Both are documented.</dd>
+          <dt>Residual risk</dt><dd>Float absorbs delay; it does not absorb indefinite delay. Two decisions are now on the critical path.</dd>
+        </dl>
+      </div>
+
+      <div class="item w">
+        <header><span class="iid">W6</span><span class="it">Prototype access is unconfirmed</span><span class="chip hi">Critical</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>The build is on Replit with Stripe auto-wired, but transferable admin access has never been confirmed, and the client's previous developers left unexpectedly.</dd>
+          <dt>Consequence</dt><dd>Strength S1 is conditional on this. If the repository is not reachable, the harden-what-exists premise collapses and the engagement becomes a rebuild at four to eight times the fee.</dd>
+          <dt>Resolution</dt><dd>Immediate. This is the single item in this document with no acceptable deferral.</dd>
+        </dl>
+      </div>
+
+      <div class="item w">
+        <header><span class="iid">W7</span><span class="it">No primary user research behind any design decision</span><span class="chip md">High</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Zero interviews, usability tests, surveys or analytics. The personas are unvalidated composites.</dd>
+          <dt>Consequence</dt><dd>Every statement about what creators and customers will do is inference or hypothesis. The riskiest is the foundational one: that modest-following creators want to charge for access and that their audiences will pay.</dd>
+          <dt>Mitigation</dt><dd>Deliberate rather than accidental. The pilot is the test, which is a defensible choice at this budget. Eight validation studies are specified in the research report, four of which can run during the build.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Opportunities, in detail</h2></div>
+    <p class="lede">External and available. Two of these are free and expire in days.</p>
+
+    <div class="stack">
+      <div class="item o">
+        <header><span class="iid">O1</span><span class="it">Two conversion wins that cost nothing and expire at design approval</span><span class="chip now">Act this week</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Baymard's synthesis of 50 studies puts average cart abandonment at 70.2 percent, with 48 percent of abandoners citing unexpected extra costs and 26 percent citing forced account creation.</dd>
+          <dt>The opportunity</dt><dd>Both causes map onto decisions open right now. Showing the all-in total at slot selection addresses the first; allowing guest checkout addresses the second.</dd>
+          <dt>Window</dt><dd>Free until the checkout screen is drawn in Week 6. Change requests afterwards, under Section 14 of the agreement.</dd>
+          <dt>Why it is an opportunity and not a fix</dt><dd>Most products inherit these problems and pay to undo them. This one can simply never have them.</dd>
+        </dl>
+      </div>
+
+      <div class="item o">
+        <header><span class="iid">O2</span><span class="it">An attribution-tiered take rate for Phase 2</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Intro charges roughly 10 percent when the expert's own link brought the customer, around 30 percent through its marketplace, and up to 50 percent on a paid-ad booking.</dd>
+          <dt>The opportunity</dt><dd>That logic maps precisely onto how LINK grows. In the pilot nearly every booking arrives via a creator link, which under Intro's model is the cheapest tier, so 15 percent flat is already generous to the platform. Once search and paid acquisition bring customers, a tiered rate becomes available.</dd>
+          <dt>What it requires now</dt><dd>Only that booking source is captured from day one. Very small build cost; expensive to reconstruct later.</dd>
+          <dt>Why it matters</dt><dd>It is a revenue lever that grows with the platform rather than taxing creators for their own audience, and it is the honest answer to how LINK earns more over time without raising the headline number.</dd>
+        </dl>
+      </div>
+
+      <div class="item o">
+        <header><span class="iid">O3</span><span class="it">A category nobody has sized</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Paid one-to-one video consultation is not broken out as a distinct category in any major creator economy sizing report.</dd>
+          <dt>Two readings</dt><dd>Either the category is too nascent to measure or too small to separate. Desk research cannot distinguish between them.</dd>
+          <dt>The opportunity</dt><dd>If the first reading is correct, there is no incumbent and no established benchmark to be measured against. First credible entrant sets the convention.</dd>
+          <dt>Caveat</dt><dd>This is also a threat in disguise. An unmeasured category may be unmeasured because it does not convert. The pilot is the only way to tell, which is an argument for the staged structure.</dd>
+        </dl>
+      </div>
+
+      <div class="item o">
+        <header><span class="iid">O4</span><span class="it">Repeat booking is completely untouched</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Nothing in Phase 1 scope prompts a second booking. At roughly $6 per completed call, the model only works at volume, and volume at this price point comes from recurrence.</dd>
+          <dt>The opportunity</dt><dd>A single "book again" affordance on the post-call screen, beside the review prompt. Very small build cost, directly serving the primary gate metric, which is defined as trending up.</dd>
+          <dt>Why it has been missed</dt><dd>Pilot scopes optimise for proving the first transaction. The business model depends on the second.</dd>
+        </dl>
+      </div>
+
+      <div class="item o">
+        <header><span class="iid">O5</span><span class="it">A large and growing surrounding market</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>The creator economy is variously sized between roughly $205 billion and $387 billion for 2026, with one widely cited projection at $323 billion growing around 26 percent annually. Over 207 million participants, of whom roughly 50 million are professional or semi-professional.</dd>
+          <dt>The opportunity</dt><dd>The target creator, at 20,000 to 80,000 followers, sits in the largest and least served band. Too small for curated networks, too large to be invisible.</dd>
+          <dt>Caveat</dt><dd>Market size is not demand. These figures describe the surrounding economy, not the willingness to pay for one-to-one calls, which remains the untested assumption.</dd>
+        </dl>
+      </div>
+
+      <div class="item o">
+        <header><span class="iid">O6</span><span class="it">Phase 2 is already scoped and costed</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>A fourteen-week, roughly 1,479-hour plan at $47,000 to $65,000, with stage-level breakdown, quoted at the gate.</dd>
+          <dt>The opportunity</dt><dd>A successful pilot converts without re-pitching, re-procurement or a restart. Every Phase 1 technical decision carries forward, so no engineering hour is spent on something later thrown away.</dd>
+          <dt>What protects it</dt><dd>Reading the gate honestly. A pilot that passes on a marketing spike rather than on recurrence converts into a platform build with a false premise underneath it.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>Threats, in detail</h2></div>
+    <p class="lede">External and largely outside our control. The response to each is containment, not elimination.</p>
+
+    <div class="stack">
+      <div class="item t">
+        <header><span class="iid">T1</span><span class="it">The cold start, and an unresolved niche decision</span><span class="chip hi">Critical</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Marketplace research converges: the cold start is the primary cause of two-sided marketplace failure, and every major survivor constrained its initial market to reach density faster. Uber, Airbnb and DoorDash launched city by city.</dd>
+          <dt>Mechanism</dt><dd>Thirty creators in one category looks like a functioning marketplace. The same thirty across ten categories looks like three people in each. A customer who concludes the platform is empty does not return to check later.</dd>
+          <dt>Current status</dt><dd>Tabled in genuine disagreement. The client reads a narrow launch as pigeonholing and compares it to Instagram launching only for photographers.</dd>
+          <dt>Containment</dt><dd>Separate the two decisions. The product stays universal; the recruiting list concentrates. Settle it with the ten-names test rather than with argument, since a single person's network usually clusters anyway.</dd>
+        </dl>
+      </div>
+
+      <div class="item t">
+        <header><span class="iid">T2</span><span class="it">Disintermediation</span><span class="chip md">High</span></header>
+        <dl>
+          <dt>Mechanism</dt><dd>Creator and customer meet through LINK, then arrange the next call directly to avoid the fee. Severe for a platform whose only asset is the transaction.</dd>
+          <dt>Why it is acute here</dt><dd>The relationship predates the platform. The customer already follows the creator and has other ways to reach them, which is not true of a taxi or a room.</dd>
+          <dt>Containment</dt><dd>Make staying the easy and protected choice: gated messaging that opens only after payment, held funds framed as the customer's protection, reviews that exist only on-platform, and a rebooking affordance that makes the second booking easier than a direct message.</dd>
+          <dt>Residual</dt><dd>Cannot be eliminated. Should be measured: a falling repeat rate alongside a healthy first-booking rate is the signature.</dd>
+        </dl>
+      </div>
+
+      <div class="item t">
+        <header><span class="iid">T3</span><span class="it">Platform dependency for the only trust mechanism</span><span class="chip md">High</span></header>
+        <dl>
+          <dt>Mechanism</dt><dd>Verified follower counts depend on third-party APIs. Instagram requires Business or Creator accounts plus Meta app review, several weeks. TikTok follower data sits behind scope approval. YouTube is the most permissive, with public subscriber counts via Google OAuth.</dd>
+          <dt>Consequence</dt><dd>The product's central trust signal is controlled by companies with no obligation to LINK, whose terms and review processes change without notice.</dd>
+          <dt>Containment</dt><dd>Already designed for: one automated connection plus manual verification fallback, with app reviews submitted early so approvals land during Phase 2 rather than blocking launch. The manual path means an API refusal degrades the badge rather than blocking onboarding.</dd>
+        </dl>
+      </div>
+
+      <div class="item t">
+        <header><span class="iid">T4</span><span class="it">Name collision and trademark exposure</span><span class="chip md">High</span></header>
+        <dl>
+          <dt>Mechanism</dt><dd>Stripe's own one-click checkout product is called Link, and LINK is built on Stripe. A customer meets the word twice in one checkout. Separately, a common dictionary word is close to unregistrable as a standalone mark in software.</dd>
+          <dt>Consequence</dt><dd>A rename after design begins is a change request. A rename after launch costs the domain, the creator links already shared, and whatever recognition the pilot built.</dd>
+          <dt>Containment</dt><dd>Trademark result required before Week 5. Compound forms such as a name plus the product word are materially more defensible than the bare word and preserve the spoken brand.</dd>
+        </dl>
+      </div>
+
+      <div class="item t">
+        <header><span class="iid">T5</span><span class="it">A gate metric measured on the weaker channel</span><span class="chip hi">Critical</span></header>
+        <dl>
+          <dt>Evidence</dt><dd>Automated reminders cut non-attendance by a weighted mean of about 29 percent across 29 studies. Text reminders raise attendance odds by roughly 62 percent against none. Email response rates in healthcare run 5 to 10 percent against 45 percent for SMS. Phase 1 ships email only.</dd>
+          <dt>Mechanism</dt><dd>Call completion above 80 percent decides Phase 2 funding. If it falls short it will be read as the product failing, when the cause may be channel selection.</dd>
+          <dt>Why this is a threat rather than a weakness</dt><dd>It would cause the pilot to return the wrong answer. A pilot that fails for a fixable, unrelated reason is worse than one that fails honestly, because it ends the programme on false evidence.</dd>
+          <dt>Containment</dt><dd>Add SMS for the one-hour reminder only, the smallest addition at the highest-leverage moment. If declined, restate the gate threshold in writing before launch rather than after.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>Cross-quadrant strategies</h2></div>
+    <p class="lede">The part that makes a SWOT useful. Four lists describe a situation; pairing them produces decisions. Each strategy below names the items it combines and what to actually do.</p>
+
+    <h3>SO &mdash; use strengths to capture opportunities</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Strategy</th><th>Combines</th><th>Action</th><th>When</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Launch concentrated, using the founder network</strong></td>
+            <td class="w2">S4 + O3</td>
+            <td>Point the personal network at one or two adjacent categories so at least one reaches visible density. The network makes concentration cheap; concentration makes the network effective.</td>
+            <td class="w2">Week 3</td>
+          </tr>
+          <tr>
+            <td><strong>Lead creator recruitment with the take rate</strong></td>
+            <td class="w2">S3 + O5</td>
+            <td>85 percent is the strongest line available to a creator weighing LINK against Cameo or Intro. Put it in the outreach template, not only on the marketing page.</td>
+            <td class="w2">Week 4</td>
+          </tr>
+          <tr>
+            <td><strong>Capture attribution while the build is open</strong></td>
+            <td class="w2">S6 + O2</td>
+            <td>The instrumentation discipline already exists. Add booking source to it. Costs very little now, unlocks tiered pricing at Phase 2.</td>
+            <td class="w2">Weeks 9&ndash;10</td>
+          </tr>
+          <tr>
+            <td><strong>Spend the prototype advantage on the loop, not on breadth</strong></td>
+            <td class="w2">S1 + O4</td>
+            <td>Because browse, categories and settings already exist, the saved hours should go into onboarding, checkout and rebooking rather than into more surface area.</td>
+            <td class="w2">Weeks 5&ndash;11</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>WO &mdash; fix weaknesses to unlock opportunities</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Strategy</th><th>Combines</th><th>Action</th><th>When</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Settle the open decisions before design, not during it</strong></td>
+            <td class="w2">W5 + O1</td>
+            <td>The two free conversion wins expire at design approval. Client latency is the thing most likely to let them expire. Put them in the scope-fix agenda as decisions, not discussion items.</td>
+            <td class="w2">By 7 Oct</td>
+          </tr>
+          <tr>
+            <td><strong>Resolve the hours question at the contractual moment</strong></td>
+            <td class="w2">W4 + O6</td>
+            <td>The Week 3 scope fix exists for exactly this. Either cut depth deliberately or reopen the range if the universal reading is confirmed. A pilot starved of hours produces a weak gate reading, which forfeits the Phase 2 opportunity.</td>
+            <td class="w2">By 7 Oct</td>
+          </tr>
+          <tr>
+            <td><strong>Run the cheap validation studies during the build</strong></td>
+            <td class="w2">W7 + O3</td>
+            <td>Four of the eight proposed studies can run before launch at low cost. In an unmeasured category, early qualitative signal is disproportionately valuable.</td>
+            <td class="w2">Weeks 6&ndash;10</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>ST &mdash; use strengths to contain threats</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Strategy</th><th>Combines</th><th>Action</th><th>When</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Stage the list send rather than firing it</strong></td>
+            <td class="w2">S4 + T1</td>
+            <td>Send in tranches of roughly 50,000 after launch, from a separate marketing domain, so the funnel can be read and fixed between them and the transactional domain stays clean.</td>
+            <td class="w2">Post-launch</td>
+          </tr>
+          <tr>
+            <td><strong>Make held funds the answer to disintermediation</strong></td>
+            <td class="w2">S1 + T2</td>
+            <td>The booking surface already exists. Surface payment protection and the refund policy at the pay button so that staying on-platform is visibly the safer choice for the customer.</td>
+            <td class="w2">Week 6</td>
+          </tr>
+          <tr>
+            <td><strong>Use the staged structure to absorb a platform refusal</strong></td>
+            <td class="w2">S5 + T3</td>
+            <td>Manual verification already means an API refusal degrades the badge rather than blocking onboarding. Submit app reviews in Week 7 so approvals land in Phase 2 regardless of the pilot outcome.</td>
+            <td class="w2">Week 7</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>WT &mdash; the defensive quadrant, where weaknesses meet threats</h3>
+    <p>These are the combinations that end projects. Each one is a weakness that removes the ability to contain a threat.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Combination</th><th>Failure mode</th><th>Defence</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>W6 + S1</strong><div class="tiny soft">Unconfirmed access against a premise that depends on it</div></td>
+            <td>The repository is unreachable. The harden-what-exists approach collapses and the engagement becomes a rebuild at four to eight times the fee.</td>
+            <td>Confirm transferable Replit admin immediately. Until then, present every date as conditional on it.</td>
+            <td class="w2"><span class="chip hi">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>W1 + T3</strong><div class="tiny soft">Unbuilt trust mechanism against platform dependency</div></td>
+            <td>The only trust signal is both missing and controlled by third parties. A late API refusal leaves the product with no credibility mechanism at all.</td>
+            <td>Manual fallback is designed in and must not be cut under scope pressure. It is the insurance policy on the entire trust model.</td>
+            <td class="w2"><span class="chip md">Managed</span></td>
+          </tr>
+          <tr>
+            <td><strong>W5 + T1</strong><div class="tiny soft">Client latency against an unresolved niche</div></td>
+            <td>The niche stays open past design. Recruiting cannot start, intake forms cannot be built, and the cohort arrives late and scattered. All four gate metrics degrade together.</td>
+            <td>The ten-names test. It converts an argument into a data request and can be answered in one message.</td>
+            <td class="w2"><span class="chip hi">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>W4 + T5</strong><div class="tiny soft">Thin hours against a channel risk needing a small addition</div></td>
+            <td>The SMS reminder is cut as a scope saving, completion comes in below 80 percent, and the pilot fails the gate for a reason unrelated to whether the marketplace works.</td>
+            <td>Resolve at the scope fix so it sits inside the agreed figure rather than arriving later as a change request.</td>
+            <td class="w2"><span class="chip hi">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>W7 + T2</strong><div class="tiny soft">No user data against disintermediation</div></td>
+            <td>Bookings move off-platform and nobody notices, because there is no baseline for what repeat behaviour should look like.</td>
+            <td>Track repeat bookings as a share of completed calls from week one. A falling repeat rate alongside a healthy first-booking rate is the signature.</td>
+            <td class="w2"><span class="chip md">Managed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">07</span><h2>What this adds up to</h2></div>
+
+    <div class="note good">
+      <h3>The honest overall position</h3>
+      <p>This is a <strong>credible product in an unproven category with a well-structured commercial arrangement and three live execution risks</strong>, two of which are the client's to resolve and one of which is ours.</p>
+      <p>The strengths are real and unusually concentrated: an existing build, an unoccupied position, a competitive take rate, and a distribution route that most startups pay heavily for. The weaknesses are mostly scheduled work rather than structural flaws. The threats are the standard marketplace threats plus one self-inflicted measurement risk.</p>
+      <p>What makes the position genuinely good is the staging. The programme buys evidence for $9,000 before committing to $47,000 to $65,000, and the evidence it buys is instrumented in advance. Very few projects at this size are set up to answer their own question.</p>
+    </div>
+
+    <div class="note crit">
+      <h3>The three things that would actually sink it</h3>
+      <ol style="margin-bottom:0">
+        <li><strong>The prototype turns out to be unreachable.</strong> Every estimate, date and price in the programme rests on an assumption nobody has verified. This is the only item with no acceptable deferral.</li>
+        <li><strong>The niche stays open past design.</strong> It blocks recruiting, intake, pricing, verification and review comparability simultaneously. One unresolved decision degrades all four gate metrics at once.</li>
+        <li><strong>The pilot passes or fails for the wrong reason.</strong> A completion shortfall caused by email-only reminders, or a spike caused by one bulk send, both produce a confident conclusion from bad evidence. The gate is only worth having if it is read honestly.</li>
+      </ol>
+    </div>
+
+    <h3>The five actions this analysis argues for</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Action</th><th>Addresses</th><th>Owner</th><th>By</th></tr></thead>
+        <tbody>
+          <tr><td class="w2">1</td><td><strong>Confirm transferable Replit access</strong></td><td class="w2">W6, S1</td><td class="w2">Client</td><td class="w2">Immediately</td></tr>
+          <tr><td class="w2">2</td><td><strong>Settle the niche with ten names, not argument</strong></td><td class="w2">T1, W5</td><td class="w2">Client</td><td class="w2">7 Oct</td></tr>
+          <tr><td class="w2">3</td><td><strong>Decide guest checkout and early fee disclosure</strong></td><td class="w2">O1</td><td class="w2">Client</td><td class="w2">7 Oct</td></tr>
+          <tr><td class="w2">4</td><td><strong>Resolve hours and the SMS reminder at the scope fix</strong></td><td class="w2">W4, T5</td><td class="w2">Both</td><td class="w2">7 Oct</td></tr>
+          <tr><td class="w2">5</td><td><strong>Add booking-source capture and a rebooking affordance</strong></td><td class="w2">O2, O4, T2</td><td class="w2">Oyolloo</td><td class="w2">Weeks 9&ndash;11</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>A note on who wrote this</h3>
+      <p>Oyolloo is the delivery party, not an independent assessor. Two biases follow and both are visible in this document: an incentive to find the prototype salvageable, since the commercial model depends on it, and an incentive to recommend a narrow launch, since it reduces our delivery risk. Both are flagged where they arise. The ten-names test in action 2 is specifically designed to settle the niche question with the client's own data rather than with our argument.</p>
+    </div>
+  </section>
+
+  <p class="foot">LINK SWOT analysis, issued 1 October 2026. Companion to the LINK UX Research Report of the same date. Built from the project record, the prior prototype audit, and secondary research into marketplace liquidity, checkout abandonment, appointment reminders and competitor commercial models. No primary user research underpins this analysis; see Section 28 of the research report for the full limitations. External figures gathered September and October 2026 and worth re-verifying before use in public-facing claims. Prepared by Oyolloo for WorkDev Solutions.</p>
+
+</div>
+
+<script>
+  document.getElementById("pdfBtn").addEventListener("click", function(){
+    window.print();
+  });
+</script>

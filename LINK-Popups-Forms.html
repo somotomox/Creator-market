@@ -1,0 +1,1116 @@
+<meta charset="utf-8">
+<title>LINK Popups and Forms</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa; --surface-3:#e7eef8;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --good:#15803d; --good-bg:#e4f7ea; --warn:#b45309; --warn-bg:#fdf0d5;
+    --crit:#b91c1c; --crit-bg:#fbe4e4; --coral:#ff6b5a;
+    --shadow:0 1px 2px rgba(11,31,58,.05);
+    --f-body:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --f-mono:"IBM Plex Mono","SFMono-Regular",ui-monospace,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--f-body);
+       font-size:16px; line-height:1.78; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px; margin:0 auto; padding-inline:22px; padding-block:30px 90px}
+  p{margin:0 0 15px}
+  strong{font-weight:600}
+  h1,h2,h3,h4{margin:0; line-height:1.3; text-wrap:balance; color:var(--ink)}
+  h1{font-size:clamp(28px,4.6vw,40px); font-weight:600; letter-spacing:-.025em; line-height:1.26}
+  h1 em{font-style:normal; color:var(--accent)}
+  h2{font-size:26px; font-weight:600; letter-spacing:-.018em}
+  h3{font-size:17px; font-weight:600; margin-top:28px; letter-spacing:-.008em}
+  h4{font-size:15px; font-weight:600; margin-top:0}
+  ul,ol{margin:12px 0 15px; padding-left:22px}
+  li{margin:7px 0; padding-left:3px}
+  .lab{font-size:11.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+  .soft{color:var(--ink-soft)}
+  .tiny{font-size:14px; line-height:1.68}
+  code,.path{font-family:var(--f-mono); font-size:13.5px; background:var(--surface-2); color:var(--accent-deep);
+       padding:2px 7px; border-radius:5px; white-space:nowrap}
+
+  .dochead{border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:12px;
+           padding:24px 26px; background:var(--surface); box-shadow:var(--shadow)}
+  .dochead .kicker{font-size:11.5px; letter-spacing:.09em; text-transform:uppercase;
+                   color:var(--accent); font-weight:600; margin-bottom:12px; display:block}
+  .dochead h1{margin:0 0 12px}
+  .dochead .sub{font-size:17px; color:var(--ink-soft); line-height:1.7; margin:0}
+  .facts{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line);
+         border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-top:20px}
+  @media (min-width:520px){ .facts{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:760px){ .facts{grid-template-columns:repeat(3,1fr)} }
+  .facts > div{background:var(--bg); padding:12px 15px}
+  .facts .v{font-size:15px; font-weight:600; margin-top:6px; line-height:1.4}
+  .facts .v.accent{color:var(--accent)}
+
+  section{margin-top:52px; padding-top:30px; border-top:1px solid var(--line)}
+  .shead{display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; margin-bottom:10px}
+  .snum{font-family:var(--f-mono); font-size:19px; font-weight:500; color:var(--accent); flex:0 0 auto}
+  .lede{font-size:17px; color:var(--ink-soft); line-height:1.65; margin:8px 0 22px}
+
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:19px 21px}
+  .g2{display:grid; gap:14px; grid-template-columns:1fr}
+  @media (min-width:660px){ .g2{grid-template-columns:repeat(2,1fr)}
+    .g2 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  .g3{display:grid; gap:14px; grid-template-columns:1fr}
+  @media (min-width:560px) and (max-width:879px){ .g3{grid-template-columns:repeat(2,1fr)}
+    .g3 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  @media (min-width:880px){ .g3{grid-template-columns:repeat(3,1fr)} }
+
+  .tw{overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--bg); margin:16px 0}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; line-height:1.6; min-width:680px}
+  th,td{text-align:left; padding:12px 14px; border-top:1px solid var(--line); vertical-align:top}
+  thead th{border-top:none; background:var(--surface-2); font-weight:600; font-size:12px;
+           letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap}
+  tbody tr:hover{background:var(--surface)}
+  td.w2{white-space:nowrap; font-variant-numeric:tabular-nums}
+  .req{color:var(--crit); font-weight:600}
+  .opt{color:var(--muted)}
+
+  .chip{display:inline-block; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+        padding:3px 9px; border-radius:20px; white-space:nowrap}
+  .chip.modal{background:var(--accent-soft); color:var(--accent-deep)}
+  .chip.sheet{background:#e8e0fb; color:#6d28d9}
+  .chip.panel{background:#d6f0f6; color:#0e7490}
+  .chip.toast{background:var(--good-bg); color:var(--good)}
+  .chip.banner{background:var(--warn-bg); color:var(--warn)}
+  .chip.inline{background:var(--surface-3); color:var(--muted)}
+  .chip.p1{background:var(--crit-bg); color:var(--crit)}
+  .chip.p2{background:var(--warn-bg); color:var(--warn)}
+  .chip.p3{background:var(--surface-3); color:var(--muted)}
+  .chip.l1{background:var(--good-bg); color:var(--good)}
+  .chip.l2{background:var(--accent-soft); color:var(--accent-deep)}
+  .chip.l3{background:var(--surface-3); color:var(--muted)}
+
+  /* popup spec cards */
+  .pop{border:1px solid var(--line); border-radius:12px; background:var(--bg); margin:16px 0; overflow:hidden}
+  .pop > header{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; padding:14px 18px;
+                background:var(--surface-2); border-bottom:1px solid var(--line)}
+  .pop .xid{font-family:var(--f-mono); font-size:12.5px; font-weight:500; background:var(--accent);
+            color:#fff; padding:3px 10px; border-radius:5px}
+  .pop .xt{font-size:17px; font-weight:600; letter-spacing:-.012em}
+  .pop .xr{margin-left:auto; display:flex; gap:7px; flex-wrap:wrap}
+  .pop .xb{padding:15px 18px 17px}
+  .pop dl{margin:0; display:grid; grid-template-columns:1fr; gap:7px}
+  @media (min-width:680px){ .pop dl{grid-template-columns:112px 1fr; gap:9px 16px} }
+  .pop dt{font-size:11.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+          color:var(--muted); padding-top:3px}
+  .pop dd{margin:0; font-size:14.5px; line-height:1.65}
+  .pop .say{background:var(--surface); border-left:3px solid var(--line-strong); padding:9px 13px;
+            border-radius:0 7px 7px 0; font-size:14px; margin:4px 0 0}
+
+  .note{border:1px solid var(--line); border-left:4px solid var(--accent); background:var(--accent-soft);
+        border-radius:0 12px 12px 0; padding:18px 22px; margin:20px 0}
+  .note h3{color:var(--accent-deep); margin:0 0 8px; font-size:16.5px}
+  .note p:last-child{margin-bottom:0}
+  .note.warn{border-left-color:var(--warn); background:var(--warn-bg)} .note.warn h3{color:var(--warn)}
+  .note.crit{border-left-color:var(--crit); background:var(--crit-bg)} .note.crit h3{color:var(--crit)}
+  .note.good{border-left-color:var(--good); background:var(--good-bg)} .note.good h3{color:var(--good)}
+
+  /* data visuals */
+  .viz{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:20px 22px; margin:20px 0}
+  .viz > h4{margin:0 0 5px; font-size:15.5px; font-weight:600}
+  .viz .vcap{font-size:13.5px; color:var(--muted); margin:0 0 18px; line-height:1.55}
+  .viz .vnote{font-size:13px; color:var(--muted); margin:16px 0 0; padding-top:13px;
+              border-top:1px solid var(--line); line-height:1.55}
+  .viz.plain{background:var(--surface)}
+
+  .bars{display:grid; gap:11px}
+  .bar{display:grid; grid-template-columns:minmax(96px,27%) 1fr minmax(58px,auto); gap:14px; align-items:center}
+  @media (max-width:600px){ .bar{grid-template-columns:1fr auto; gap:4px 10px}
+    .bar .bl{grid-column:1/-1} .bar .bv{text-align:right} }
+  .bar .bl{font-size:14px; line-height:1.32}
+  .bar .bl small{display:block; font-size:12px; color:var(--muted); font-weight:400}
+  .bar .bt{background:var(--surface-2); border-radius:6px; height:28px; overflow:hidden}
+  .bar .bt i{display:block; height:100%; border-radius:6px; background:var(--accent)}
+  .bar .bt i.good{background:var(--good)}
+  .bar .bt i.warn{background:var(--warn)}
+  .bar .bt i.crit{background:var(--crit)}
+  .bar .bt i.mute{background:var(--line-strong)}
+  .bar .bt i.deep{background:var(--accent-deep)}
+  .bar .bv{font-family:var(--f-mono); font-size:14px; font-weight:500; white-space:nowrap; text-align:right}
+
+  .stackbar{display:flex; height:50px; border-radius:9px; overflow:hidden; border:1px solid var(--line)}
+  .stackbar > span{display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:600;
+                   color:#fff; white-space:nowrap; overflow:hidden; padding:0 4px; min-width:0}
+  .stackkey{display:flex; flex-wrap:wrap; gap:16px; margin-top:14px; font-size:13.5px}
+  .stackkey span{display:flex; align-items:center; gap:8px; white-space:nowrap}
+  .stackkey i{width:13px; height:13px; border-radius:3px; display:block; flex:0 0 auto}
+
+  .tiles{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .tile{border:1px solid var(--line); border-radius:11px; padding:15px 16px; background:var(--bg)}
+  .tile .tv{font-family:var(--f-mono); font-size:26px; font-weight:500; letter-spacing:-.02em; line-height:1.1}
+  .tile .tk{font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.45}
+  .tile.ok{border-left:4px solid var(--good)} .tile.ok .tv{color:var(--good)}
+  .tile.at{border-left:4px solid var(--warn)} .tile.at .tv{color:var(--warn)}
+  .tile.no{border-left:4px solid var(--crit)} .tile.no .tv{color:var(--crit)}
+  .tile.nu{border-left:4px solid var(--accent)} .tile.nu .tv{color:var(--accent)}
+
+  .funnel{display:grid; gap:7px}
+  .fstep2{display:grid; grid-template-columns:1fr; gap:4px}
+  .fstep2 .fbar{height:38px; border-radius:7px; background:var(--accent); display:flex; align-items:center;
+                padding:0 14px; color:#fff; font-size:14px; font-weight:600}
+  .fstep2 .fmeta{font-size:12.5px; color:var(--muted); padding-left:2px}
+  .fdrop{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--crit);
+         padding-left:14px; font-weight:600}
+
+  svg.dia{display:block; width:100%; height:auto; max-width:100%}
+  .diawrap{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:18px;
+           margin:20px 0; overflow-x:auto}
+  .diawrap h4{margin:0 0 14px; font-size:15.5px}
+
+  @media print{
+    .viz,.diawrap{break-inside:avoid; page-break-inside:avoid}
+    .bar .bt i,.stackbar > span,.tile,.fstep2 .fbar{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* cross-document navigation */
+  .docnav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.94);
+          -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+          border-bottom:1px solid var(--line)}
+  .docnav .dn{max-width:1080px; margin:0 auto; padding:0 22px; display:flex; align-items:center; gap:20px}
+  .docnav .dnbrand{font-weight:600; font-size:15px; letter-spacing:-.012em; color:var(--ink);
+                   white-space:nowrap; padding:14px 0; flex:0 0 auto; text-decoration:none}
+  .docnav .dnbrand b{color:var(--accent); font-weight:600}
+  .docnav .dnbrand:hover b{color:var(--accent-deep)}
+  .docnav .dnlinks{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .docnav .dnlinks::-webkit-scrollbar{display:none}
+  .docnav .dnlinks a{display:block; padding:14px 12px; font-size:14px; color:var(--ink-soft);
+            text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; font-weight:400}
+  .docnav .dnlinks a:hover{color:var(--accent-deep)}
+  .docnav .dnlinks a.on{color:var(--accent-deep); font-weight:600; border-bottom-color:var(--accent)}
+  .docnav .dnlinks a:focus-visible{outline:2px solid var(--accent); outline-offset:-3px; border-radius:4px}
+  @media (max-width:680px){
+    .docnav .dn{gap:12px; padding:0 14px}
+    .docnav .dnbrand{font-size:13.5px; padding:12px 0}
+    .docnav .dnlinks a{padding:12px 9px; font-size:13.5px}
+  }
+  section, [id^="s"], [id^="p-"]{scroll-margin-top:76px}
+  @media print{ .docnav{display:none !important} }
+
+  .dock{position:fixed; right:16px; bottom:16px; z-index:20}
+  .dockbtn{background:var(--surface); border:1px solid var(--line-strong); border-radius:22px;
+           box-shadow:0 4px 18px rgba(11,31,58,.14); padding:10px 17px; font-size:14px; font-weight:600;
+           font-family:var(--f-body); color:var(--ink); cursor:pointer; min-height:42px; line-height:1;
+           display:inline-flex; align-items:center; gap:8px}
+  .dockbtn:hover{border-color:var(--accent); color:var(--accent-deep)}
+  .dockbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .foot{margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+  @page{ margin:14mm }
+  @media print{
+    .dock{display:none !important}
+    body{background:#fff; font-size:10.5pt; line-height:1.6}
+    .wrap{max-width:none; padding:0}
+    .card,.note,.tw,.pop,.dochead,.facts{break-inside:avoid; page-break-inside:avoid}
+    h1,h2,h3,h4{break-after:avoid}
+    table{min-width:0}
+    .chip{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* ---- black and white print ---- */
+  @media print{
+    :root{
+      --bg:#ffffff; --surface:#f7f7f7; --surface-2:#f0f0f0; --surface-3:#e8e8e8;
+      --ink:#000000; --ink-soft:#2b2b2b; --muted:#5a5a5a;
+      --line:#d0d0d0; --line-strong:#9a9a9a;
+      --accent:#1a1a1a; --accent-deep:#000000; --accent-soft:#f0f0f0; --navy:#000000;
+      --good:#1a1a1a; --good-bg:#f2f2f2;
+      --warn:#1a1a1a; --warn-bg:#ededed;
+      --crit:#000000; --crit-bg:#e6e6e6;
+      --coral:#1a1a1a;
+      --l1:#1a1a1a; --l1-bg:#f2f2f2; --l2:#1a1a1a; --l2-bg:#ededed; --l3:#5a5a5a; --l3-bg:#e8e8e8;
+      --s:#1a1a1a; --s-bg:#f4f4f4; --w:#1a1a1a; --w-bg:#ededed;
+      --o:#1a1a1a; --o-bg:#f0f0f0; --t:#000000; --t-bg:#e6e6e6;
+      --ev-a:#1a1a1a; --ev-a-bg:#f0f0f0; --ev-b:#1a1a1a; --ev-b-bg:#eaeaea;
+      --ev-c:#1a1a1a; --ev-c-bg:#eeeeee; --ev-d:#1a1a1a; --ev-d-bg:#e9e9e9;
+      --ev-e:#1a1a1a; --ev-e-bg:#e4e4e4;
+      --shadow:none;
+    }
+    body{background:#fff; color:#000}
+    a{color:#000; text-decoration:underline}
+    svg.dia, .stackbar, .tile, .bar .bt, .qbox, .seg, .nav .ncta, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .chip, .ev, .sev, .pill, .dcode, .pid, .xid, .rid, .sid, .fid, .iid, .dnum, .tag, .path, code{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .note, .find, .rule, .card, .viz, .diawrap, .pop, .scr, .pg, .item, .lvl{
+      border-color:#bdbdbd !important;
+    }
+    .stackbar > span{color:#fff !important}
+    .dock, .docnav, .chkbar button{display:none !important}
+  }
+
+  /* ---- plain print: no panels, cards or chips. charts and diagrams stay ---- */
+  @media print{
+    /* every decorative container becomes plain typography */
+    .dochead, .hero, .doc, .card, .note, .find, .rule, .item, .pgroup, .qbox,
+    .scr, .pg, .pg > header, .pg .pbody, .pop, .pop > header, .lvl, .viz, .viz.plain,
+    .diawrap, .tw, .chk, .chk label, .tree, .forwho, .forwho.design, .forwho.dev,
+    .tile, .facts, .facts > div, .toc a, .pmeta, .ppath, .chkbar, .dmeta, .seg{
+      background:transparent !important;
+      border:0 !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      overflow:visible !important;
+      filter:none !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+    }
+    .note, .find, .rule, .item, .pgroup, .qbox, .scr, .pg, .pop, .lvl, .card, .viz, .diawrap{
+      margin:15pt 0 !important;
+      padding-top:0 !important;
+      padding-bottom:0 !important;
+    }
+    .dochead, .hero{padding:0 !important; margin:0 0 16pt !important}
+    .forwho{padding:0 !important; margin-top:10pt !important}
+    .tree{padding:0 !important; font-size:9pt !important}
+    .tile{padding:0 !important}
+    .doc{padding:0 !important; margin:0 0 12pt !important}
+
+    /* headings and ids carry the structure now that the boxes are gone */
+    .note h3, .find .ft, .rule .rt, .viz > h4, .diawrap h4, .card h4, .item .itxt strong,
+    .pop .xt, .scr .st2, .scr h4, .pg .ptitle, .lvl .lvname, .qbox .qt, .doc .dt,
+    .forwho h5, .shead h2{ color:#000 !important }
+    .qbox header, .pg > header, .pop > header, .lvl > header, .scr header{
+      border-bottom:0.5pt solid #b4b4b4 !important; padding-bottom:5pt !important;
+      margin-bottom:8pt !important;
+    }
+    .forwho h5{border-bottom:0.5pt solid #d4d4d4 !important; padding-bottom:3pt !important}
+
+    /* badges, pills and code chips become plain text */
+    .chip, .ev, .sev, .pill, .tag, .dcode, .dnum, .pid, .xid, .rid, .sid, .fid, .iid,
+    .lvtag, .qk, .qn, .sz, .cnt, .path, code, .fscr, .bk, .tv{
+      background:transparent !important; border:0 !important; padding:0 !important;
+      border-radius:0 !important; color:#000 !important; filter:none !important;
+      box-shadow:none !important; width:auto !important; height:auto !important;
+    }
+    .chip, .ev, .sev, .pill, .tag, .lvtag, .qk, .bk{font-weight:600 !important; margin-right:6pt}
+    .tile .tv{font-size:19pt !important; color:#000 !important}
+    .swatch i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+
+    /* hairlines where a list needs separating, instead of panels */
+    .facts > div{border-bottom:0.5pt solid #d2d2d2 !important; padding:5pt 0 !important}
+    .chk label{border-bottom:0.5pt solid #dcdcdc !important; padding:4pt 0 !important}
+    .pop .say{border-left:1pt solid #8a8a8a !important; padding:2pt 0 2pt 9pt !important;
+              background:transparent !important; border-radius:0 !important}
+    .cprog{display:none !important}
+
+    /* tables: horizontal rules only */
+    table{width:100% !important; min-width:0 !important}
+    thead th{background:transparent !important; color:#000 !important;
+             border-bottom:1pt solid #000 !important; padding:0 9pt 5pt 0 !important}
+    th, td{border-top:0 !important; border-bottom:0.5pt solid #cfcfcf !important;
+           padding:5pt 9pt 5pt 0 !important; background:transparent !important}
+    tr.tot td, tr.tot th{border-top:1pt solid #000 !important; font-weight:600 !important}
+
+    /* the charts stay */
+    .bar .bt{background:#ededed !important; border:0.5pt solid #c4c4c4 !important;
+             border-radius:0 !important; filter:grayscale(100%) !important;
+             -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .bar .bt i{border-radius:0 !important; filter:grayscale(100%) !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+              filter:grayscale(100%) !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar > span{color:#fff !important}
+    .stackkey i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+                -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep2 .fbar{border-radius:0 !important; filter:grayscale(100%) !important;
+                  -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    svg.dia{filter:grayscale(100%) !important; max-width:100% !important; height:auto !important}
+
+    /* the user-flow diagram stays: numbered nodes, rails, decision points */
+    .fstep .fn{filter:grayscale(100%) !important; width:26px !important; height:26px !important;
+               border-radius:50% !important; padding:0 !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep.exit .fn{color:#fff !important}
+    .frail .fline i{background:#6a6a6a !important}
+    .fdec{border:0.5pt dashed #8a8a8a !important; background:transparent !important;
+          border-radius:0 !important}
+    .fbr{border-top:0.5pt solid #e0e0e0 !important}
+
+    /* the navigation mock-ups are wireframes, not decoration */
+    .nav{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+         background:transparent !important; overflow:hidden !important}
+    .nav .nbar, .nav .ncta, .nav .nghost, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .nav .ncap{border-top:0.5pt dashed #8a8a8a !important}
+
+    .dock, .docnav, .chkbar button{display:none !important}
+    .g2, .g3, .tiles, .docs, .quad, .split{gap:10pt !important}
+  }
+
+  /* ---- plain print corrections ---- */
+  @media print{
+    /* an id that is a table cell still needs its column gap */
+    td.fid, td.pid, td.iid, td.xid, td.rid, td.sid, td.dcode, td.cnt, td.sz{
+      padding:5pt 12pt 5pt 0 !important; white-space:nowrap !important;
+    }
+    /* an inline tag needs a delimiter once the chip is gone */
+    .ev::before, .sev::before{content:"["}
+    .ev::after, .sev::after{content:"] "}
+    td .ev::before, td .sev::before, th .ev::before, th .sev::before{content:""}
+    td .ev::after, td .sev::after, th .ev::after, th .sev::after{content:""}
+    .ev, .sev{white-space:nowrap !important; margin-left:3pt !important}
+  }
+</style>
+
+<div class="dock">
+  <button class="dockbtn" id="pdfBtn" type="button"><span aria-hidden="true">⇩</span> Download PDF</button>
+</div>
+
+<nav class="docnav">
+  <div class="dn">
+    <a class="dnbrand" href="index.html">LINK <b>UX</b></a>
+    <div class="dnlinks">
+      <a href="LINK-UX-Research.html">Research</a>
+      <a href="LINK-SWOT.html">SWOT</a>
+      <a href="LINK-Revenue-Policy.html">Revenue &amp; Policy</a>
+      <a href="LINK-UI-Design-Brief.html">Design Brief</a>
+      <a href="LINK-Navigation-Pages.html">Navigation</a>
+      <a href="LINK-Page-Features.html">Features</a>
+      <a href="LINK-Popups-Forms.html" class="on" aria-current="page">Popups &amp; Forms</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="dochead">
+    <span class="kicker">LINK · Phase 1 pilot · component inventory · Week 4</span>
+    <h1>Popups and forms: <em>every overlay, every field, every error message</em></h1>
+    <p class="sub">The surfaces that are not pages. Twenty-six overlays and twenty forms, specified with their trigger, their dismissal rules, their exact copy where the copy matters, and for every form a field-level table with validation and error messages. Companion to the navigation and page list document.</p>
+    <div class="facts">
+      <div><span class="lab">Overlays</span><div class="v accent">26</div></div>
+      <div><span class="lab">Forms</span><div class="v accent">20</div></div>
+      <div><span class="lab">Toasts and banners</span><div class="v">11</div></div>
+      <div><span class="lab">Issued</span><div class="v">1 October 2026</div></div>
+      <div><span class="lab">For</span><div class="v">Design and build</div></div>
+      <div><span class="lab">Companion</span><div class="v">Navigation and Pages</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>Six component types, and when to use which</h2></div>
+    <p class="lede">The most common failure in this category is using a modal for something that should have been inline. Each type below has a rule, and the rule is about consequence and focus, not about aesthetics.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Type</th><th>Use when</th><th>Dismissal</th><th>Focus</th><th>Mobile</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="chip modal">Modal</span></td>
+            <td>An irreversible or financial action needs confirmation, or a decision must be made before continuing.</td>
+            <td>Explicit action only. Not by clicking the backdrop.</td>
+            <td>Trapped. Returns to the trigger on close.</td>
+            <td>Centred, full width minus gutters</td>
+          </tr>
+          <tr>
+            <td><span class="chip sheet">Bottom sheet</span></td>
+            <td>A mobile input needing room, such as picking a time or editing availability.</td>
+            <td>Swipe down, backdrop tap, or Cancel.</td>
+            <td>Trapped while open.</td>
+            <td>The primary form. Becomes a modal on desktop.</td>
+          </tr>
+          <tr>
+            <td><span class="chip panel">Side panel</span></td>
+            <td>Supporting information the visitor must not leave the page to read.</td>
+            <td>Backdrop, close button, or Escape.</td>
+            <td>Trapped, but low consequence.</td>
+            <td>Slides from the bottom, full height</td>
+          </tr>
+          <tr>
+            <td><span class="chip inline">Inline confirm</span></td>
+            <td>A low-consequence, reversible action in a list or a row.</td>
+            <td>Acting, or clicking elsewhere.</td>
+            <td>Not trapped.</td>
+            <td>Expands in place</td>
+          </tr>
+          <tr>
+            <td><span class="chip toast">Toast</span></td>
+            <td>Confirming something that already succeeded. Never for errors needing a decision.</td>
+            <td>Auto after 4 to 6 seconds, or manual.</td>
+            <td>Never steals focus. Announced politely.</td>
+            <td>Bottom, above any sticky bar</td>
+          </tr>
+          <tr>
+            <td><span class="chip banner">Banner</span></td>
+            <td>A persistent state the user should act on eventually, such as payouts not connected.</td>
+            <td>Only when the state resolves. Not dismissible.</td>
+            <td>In document flow.</td>
+            <td>Top of the content area</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="diawrap">
+      <h4>What each type looks like on a phone</h4>
+      <svg class="dia" viewBox="0 0 860 260" role="img" aria-label="Schematic of modal, bottom sheet, side panel, inline confirm, toast and banner on a phone screen">
+        <g>
+          <rect x="14" y="30" width="118" height="200" rx="11" fill="#f7f9fc" stroke="#cbd6e4"/>
+          <rect x="14" y="30" width="118" height="200" rx="11" fill="#16202e" opacity="0.28"/>
+          <rect x="26" y="88" width="94" height="84" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+          <rect x="36" y="100" width="56" height="7" rx="3" fill="#16202e"/>
+          <rect x="36" y="114" width="74" height="5" rx="2" fill="#cbd6e4"/>
+          <rect x="36" y="124" width="62" height="5" rx="2" fill="#cbd6e4"/>
+          <rect x="36" y="144" width="74" height="18" rx="5" fill="#ff6b5a"/>
+          <text x="73" y="157" text-anchor="middle" font-size="7.5" font-weight="600" fill="#ffffff">Refund $41.90</text>
+          <text x="73" y="248" text-anchor="middle" font-size="11" font-weight="600" fill="#1e3a8a">Modal</text>
+          <text x="73" y="20" text-anchor="middle" font-size="9" fill="#6b7789">money, irreversible</text>
+        </g>
+        <g>
+          <rect x="152" y="30" width="118" height="200" rx="11" fill="#f7f9fc" stroke="#cbd6e4"/>
+          <rect x="152" y="30" width="118" height="200" rx="11" fill="#16202e" opacity="0.28"/>
+          <path d="M152 150 h118 v69 a11 11 0 0 1 -11 11 h-96 a11 11 0 0 1 -11 -11 z" fill="#ffffff" stroke="#6d28d9" stroke-width="2"/>
+          <rect x="198" y="157" width="26" height="4" rx="2" fill="#cbd6e4"/>
+          <rect x="164" y="172" width="54" height="7" rx="3" fill="#16202e"/>
+          <rect x="164" y="188" width="44" height="16" rx="5" fill="#dbe6fe" stroke="#2563eb"/>
+          <rect x="212" y="188" width="44" height="16" rx="5" fill="#f7f9fc" stroke="#cbd6e4"/>
+          <text x="211" y="248" text-anchor="middle" font-size="11" font-weight="600" fill="#6d28d9">Bottom sheet</text>
+          <text x="211" y="20" text-anchor="middle" font-size="9" fill="#6b7789">input needing room</text>
+        </g>
+        <g>
+          <rect x="290" y="30" width="118" height="200" rx="11" fill="#f7f9fc" stroke="#cbd6e4"/>
+          <rect x="290" y="30" width="118" height="200" rx="11" fill="#16202e" opacity="0.28"/>
+          <path d="M290 110 h118 v109 a11 11 0 0 1 -11 11 h-96 a11 11 0 0 1 -11 -11 z" fill="#ffffff" stroke="#0e7490" stroke-width="2"/>
+          <rect x="302" y="122" width="62" height="7" rx="3" fill="#16202e"/>
+          <rect x="302" y="140" width="94" height="5" rx="2" fill="#cbd6e4"/>
+          <rect x="302" y="152" width="84" height="5" rx="2" fill="#cbd6e4"/>
+          <rect x="302" y="164" width="90" height="5" rx="2" fill="#cbd6e4"/>
+          <rect x="302" y="176" width="70" height="5" rx="2" fill="#cbd6e4"/>
+          <text x="349" y="248" text-anchor="middle" font-size="11" font-weight="600" fill="#0e7490">Side panel</text>
+          <text x="349" y="20" text-anchor="middle" font-size="9" fill="#6b7789">doubt, never leave the page</text>
+        </g>
+        <g>
+          <rect x="428" y="30" width="118" height="200" rx="11" fill="#ffffff" stroke="#cbd6e4"/>
+          <rect x="440" y="44" width="94" height="22" rx="6" fill="#f7f9fc" stroke="#cbd6e4"/>
+          <rect x="440" y="72" width="94" height="40" rx="6" fill="#fbe4e4" stroke="#b91c1c"/>
+          <text x="487" y="88" text-anchor="middle" font-size="7.5" font-weight="600" fill="#b91c1c">Card declined</text>
+          <text x="487" y="102" text-anchor="middle" font-size="7" fill="#46536a">Try another card</text>
+          <rect x="440" y="120" width="94" height="22" rx="6" fill="#f7f9fc" stroke="#cbd6e4"/>
+          <text x="487" y="248" text-anchor="middle" font-size="11" font-weight="600" fill="#b91c1c">Inline</text>
+          <text x="487" y="20" text-anchor="middle" font-size="9" fill="#6b7789">fix a field, stay in place</text>
+        </g>
+        <g>
+          <rect x="566" y="30" width="118" height="200" rx="11" fill="#ffffff" stroke="#cbd6e4"/>
+          <rect x="578" y="46" width="94" height="6" rx="3" fill="#e7eef8"/>
+          <rect x="578" y="60" width="78" height="6" rx="3" fill="#e7eef8"/>
+          <rect x="578" y="74" width="88" height="6" rx="3" fill="#e7eef8"/>
+          <rect x="578" y="194" width="94" height="24" rx="7" fill="#16202e"/>
+          <text x="625" y="209" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">Link copied</text>
+          <text x="625" y="248" text-anchor="middle" font-size="11" font-weight="600" fill="#15803d">Toast</text>
+          <text x="625" y="20" text-anchor="middle" font-size="9" fill="#6b7789">it already worked</text>
+        </g>
+        <g>
+          <rect x="704" y="30" width="118" height="200" rx="11" fill="#ffffff" stroke="#cbd6e4"/>
+          <rect x="716" y="44" width="94" height="28" rx="7" fill="#fdf0d5" stroke="#b45309"/>
+          <text x="763" y="62" text-anchor="middle" font-size="7" fill="#b45309">Add bank details to get paid</text>
+          <rect x="716" y="84" width="94" height="6" rx="3" fill="#e7eef8"/>
+          <rect x="716" y="98" width="78" height="6" rx="3" fill="#e7eef8"/>
+          <rect x="716" y="112" width="88" height="6" rx="3" fill="#e7eef8"/>
+          <rect x="716" y="126" width="70" height="6" rx="3" fill="#e7eef8"/>
+          <text x="763" y="248" text-anchor="middle" font-size="11" font-weight="600" fill="#b45309">Banner</text>
+          <text x="763" y="20" text-anchor="middle" font-size="9" fill="#6b7789">a state, until it resolves</text>
+        </g>
+      </svg>
+      <p class="vnote">The difference that matters is not how they look but how much they interrupt. A modal stops everything and should only do that when money or an irreversible action is involved. A banner stops nothing and stays until the state it describes is fixed.</p>
+    </div>
+
+    <div class="note crit">
+      <h3>Four rules that override everything else</h3>
+      <ol style="margin-bottom:0">
+        <li><strong>No modal during checkout.</strong> The one exception is a genuine blocking failure, such as the slot being taken while paying. Every other interruption on a payment screen is an abandonment risk.</li>
+        <li><strong>Anything that moves money gets a modal with the amount in the confirm button.</strong> Not "Confirm" but "Refund $40.00". The person should never have to remember what they are agreeing to.</li>
+        <li><strong>No modal can be the only route to information.</strong> Everything in a panel must also exist as a page, because people share links and print things.</li>
+        <li><strong>Never use a toast for an error the user must act on.</strong> A toast that disappears after five seconds is not a way to tell someone their payment failed.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>Overlays · Level 2 Customer</h2></div>
+    <p class="lede">Ten overlays. Four of them sit on the booking path, which means four chances to lose a paying customer.</p>
+
+    <div class="pop">
+      <header><span class="xid">X1</span><span class="xt">How LINK works</span><span class="xr"><span class="chip panel">Panel</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>The <em>How LINK works</em> link on a creator profile, and the same link in checkout.</dd>
+          <dt>Why a panel</dt><dd>A doubting visitor must be able to resolve their doubt <strong>without leaving the booking page</strong>. Navigating away at this point loses the booking.</dd>
+          <dt>Contains</dt><dd>Three answers only: what held funds mean, what the refund policy is, and what the verified badge actually claims. Nothing about the company.</dd>
+          <dt>Copy</dt><dd class="say">"Your payment is held by LINK until your call is finished. If the creator does not show up, you get everything back."</dd>
+          <dt>Dismissal</dt><dd>Close button, backdrop, Escape. Returns to the exact scroll position.</dd>
+          <dt>Note</dt><dd>Same content source as the <span class="path">/how-it-works</span> page. Write once, render twice.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X2</span><span class="xt">Slot confirmation</span><span class="xr"><span class="chip sheet">Sheet</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>Choosing a time slot on the creator profile.</dd>
+          <dt>Job</dt><dd>Show the <strong>all-in total including the service fee</strong> before the customer commits to checkout. This is where the largest documented abandonment cause gets neutralised.</dd>
+          <dt>Contains</dt><dd>Creator, date and time in the viewer's zone, duration, price, service fee as a separate line, total, and the refund line. One primary action: Continue to payment.</dd>
+          <dt>Copy</dt><dd class="say">Service fee (card processing) &nbsp;·&nbsp; "Free cancellation up to 24 hours before."</dd>
+          <dt>Dismissal</dt><dd>Backdrop, swipe, or Back. Returns to availability with the slot still highlighted.</dd>
+          <dt>Developer</dt><dd>Total comes from the server. Fire <code>slot_selected</code> when this opens.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X3</span><span class="xt">Card declined</span><span class="xr"><span class="chip inline">Inline</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>A payment attempt is rejected by the processor.</dd>
+          <dt>Why inline</dt><dd>Not a modal. The customer is mid-task and needs to correct a field, not acknowledge a dialog. The error belongs beside the card input.</dd>
+          <dt>Copy</dt><dd class="say">"Your card was declined. Try another card, or contact your bank."</dd>
+          <dt>Must not</dt><dd>Show a processor error code. Clear the entered name and email. Release the held slot.</dd>
+          <dt>Developer</dt><dd>Keep the slot held through the retry. Fire <code>payment_failed</code> with the decline category, not the raw message.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X4</span><span class="xt">Slot taken while paying</span><span class="xr"><span class="chip modal">Modal</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>The hold expired or the slot was booked by someone else during payment.</dd>
+          <dt>Why a modal</dt><dd>The one permitted interruption in checkout, because the customer cannot continue and needs to choose an alternative.</dd>
+          <dt>Contains</dt><dd>What happened, confirmation that no charge was made or that a refund was issued immediately, and <strong>the two nearest alternative slots as one-tap actions</strong>.</dd>
+          <dt>Copy</dt><dd class="say">"That time was just booked by someone else. You have not been charged. Here are the next two times available."</dd>
+          <dt>Developer</dt><dd>If the charge completed before the clash was detected, refund immediately and say so. Never leave the customer to discover it.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X5</span><span class="xt">Hold expiring</span><span class="xr"><span class="chip banner">Banner</span><span class="chip p2">Priority 2</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>Fewer than two minutes remain on the slot hold during checkout.</dd>
+          <dt>Why a banner</dt><dd>Informational and continuous. A modal would block the very action the customer needs to complete.</dd>
+          <dt>Copy</dt><dd class="say">"This time is held for you for another 1:48."</dd>
+          <dt>On expiry</dt><dd>Becomes X4, with the slot released server-side.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X6</span><span class="xt">Cancel booking</span><span class="xr"><span class="chip modal">Modal</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>Cancel on the booking page or from a reminder email.</dd>
+          <dt>Job</dt><dd>State the refund consequence <strong>computed for the current moment</strong>, not as a policy link. The refund tier changes as the call approaches and the customer must see which one applies to them right now.</dd>
+          <dt>Copy</dt><dd class="say">"Cancel this call? You will be refunded $41.90 in full." &nbsp;or&nbsp; "It is less than 24 hours before your call, so you will be refunded $20.95, half of what you paid."</dd>
+          <dt>Confirm button</dt><dd><strong>Carries the amount:</strong> "Cancel and refund $41.90". Never a bare "Confirm".</dd>
+          <dt>Developer</dt><dd>Compute the tier live against the call start time. Refund immediately and email both parties.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X7</span><span class="xt">Camera or microphone blocked</span><span class="xr"><span class="chip modal">Modal</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>The browser refuses camera or microphone permission at the call join screen.</dd>
+          <dt>Why it matters</dt><dd>Phase 1 has <strong>no pre-call device check</strong>, so this overlay is the only recovery path in the product. A failure here counts against the call-completion gate metric.</dd>
+          <dt>Contains</dt><dd>Browser-specific instructions, because the fix genuinely differs between iOS Safari and Android Chrome. Detect and show only the relevant one.</dd>
+          <dt>Copy</dt><dd class="say">"LINK needs your camera and microphone for this call. On iPhone: tap the <em>aA</em> icon in the address bar, then Website Settings, then allow Camera and Microphone."</dd>
+          <dt>Also</dt><dd>A route to support, and a statement of what happens to the payment if the call cannot happen.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X8</span><span class="xt">Waiting for the other person</span><span class="xr"><span class="chip inline">Inline</span><span class="chip p2">Priority 2</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>One party has joined and the other has not.</dd>
+          <dt>Contains</dt><dd>A grace countdown and a plain statement of what happens when it expires. Anxiety here is the customer's strongest negative emotion in the whole journey.</dd>
+          <dt>Copy</dt><dd class="say">"Waiting for Maya. If she does not join within 10 minutes you will be refunded in full, automatically."</dd>
+          <dt>Blocked by</dt><dd>The grace period and no-show outcomes are still unspecified. This copy cannot be finalised until that decision is made.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X9 &amp; X10</span><span class="xt">Add to calendar · Share confirmation</span><span class="xr"><span class="chip inline">Inline</span><span class="chip toast">Toast</span><span class="chip p3">Priority 3</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>X9</dt><dd>A small menu offering Google, Apple and Outlook, plus a downloadable calendar file. Worth the space: it is the single best defence against a no-show. The join link must be inside the event body.</dd>
+          <dt>X10</dt><dd>A toast confirming a link was copied. Four seconds, bottom, above any sticky bar, polite announcement to assistive technology.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>Overlays · Level 1 Creator</h2></div>
+    <p class="lede">Nine overlays. Two of them sit inside onboarding, which carries a gate metric, so both are priority 1.</p>
+
+    <div class="pop">
+      <header><span class="xid">X11</span><span class="xt">Before you connect your account</span><span class="xr"><span class="chip modal">Modal</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>Tapping Connect on the signup page, before the OAuth redirect.</dd>
+          <dt>Why it exists</dt><dd>Permission anxiety peaks here, before any value has been shown. An unexplained OAuth screen is where creators stop.</dd>
+          <dt>Contains</dt><dd>Three lines: what we read, what we never do, and what the creator gets. Then one action.</dd>
+          <dt>Copy</dt><dd class="say">"We read your public profile and follower count, once. We never post anything, never read your messages, and never see your password. You get a verified badge that shows your real following."</dd>
+          <dt>Must not</dt><dd>Use the word "permissions". Describe scopes in technical terms.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X12</span><span class="xt">Connection did not work</span><span class="xr"><span class="chip modal">Modal</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>OAuth fails, is cancelled, or the creator is on a platform Phase 1 does not automate.</dd>
+          <dt>Critical rule</dt><dd>This <strong>must read as an alternative route, not a failure</strong>. The creator continues to onboarding with a manual verification pending. Never tell someone their platform is unsupported.</dd>
+          <dt>Copy</dt><dd class="say">"No problem. We will verify your account by hand instead, usually within a day. You can carry on setting up now and your badge will appear once we have checked."</dd>
+          <dt>Actions</dt><dd>Primary: Continue setting up. Secondary: Try connecting again.</dd>
+          <dt>Developer</dt><dd>Flag the record for manual verification and surface it on the admin home as an attention item.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X13</span><span class="xt">Where this price comes from</span><span class="xr"><span class="chip panel">Panel</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>The explainer link beside the suggested price in onboarding step 1.</dd>
+          <dt>Why it matters</dt><dd>Pricing is the likeliest abandonment point in the product because it is a self-valuation. A suggestion without a visible basis invites doubt rather than removing it.</dd>
+          <dt>Contains</dt><dd>The basis for the suggestion, the band ends, and the arithmetic of what the creator keeps.</dd>
+          <dt>Copy</dt><dd class="say">"We suggested $40 based on creators with a similar following in your category. You can set anything between $15 and $250. On a $40 call you receive $34."</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X14</span><span class="xt">Why we need your bank details</span><span class="xr"><span class="chip panel">Panel</span><span class="chip p2">Priority 2</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>The explainer link on the payouts step, and from the dashboard prompt when deferred.</dd>
+          <dt>Contains</dt><dd>Why identity details are required, who holds them, and the reassurance that this can wait.</dd>
+          <dt>Copy</dt><dd class="say">"Our payment provider verifies identity before sending money, which is a legal requirement for them. LINK never sees or stores your bank details. You can do this any time before your first payout."</dd>
+          <dt>Note</dt><dd>Deliberately <strong>not</strong> a confirmation dialog on skip. Skipping is a legitimate route and should not require defending.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X15</span><span class="xt">Add availability</span><span class="xr"><span class="chip sheet">Sheet</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>Adding or editing a time slot, in onboarding and in the editor.</dd>
+          <dt>Why a sheet</dt><dd>This is the hardest mobile component in the product and it needs room. A bottom sheet on mobile, a modal on desktop.</dd>
+          <dt>Contains</dt><dd><strong>Presets first:</strong> Today afternoon, Next 2 hours, Tomorrow morning. Then a date and time picker. The creator's own time zone stated, with a note that visitors see their own.</dd>
+          <dt>Developer</dt><dd>Reject overlapping and past slots at save, not at booking. Touch targets 44 points minimum.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X16</span><span class="xt">Cancel a booking (creator)</span><span class="xr"><span class="chip modal">Modal</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>Cancel on a booking the creator has accepted.</dd>
+          <dt>Job</dt><dd>Make the consequence unambiguous. A creator cancellation refunds the customer <strong>in full including the service fee, regardless of timing</strong>, which is asymmetric to the customer policy and deliberately so.</dd>
+          <dt>Copy</dt><dd class="say">"Cancel this call with Devon? They will be refunded $41.90 in full and told you cancelled. You will not be paid for this booking."</dd>
+          <dt>Confirm button</dt><dd>"Cancel and refund $41.90"</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X17</span><span class="xt">Changing your handle</span><span class="xr"><span class="chip modal">Modal</span><span class="chip p2">Priority 2</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Trigger</dt><dd>Saving a changed handle in the profile editor.</dd>
+          <dt>Why</dt><dd>The creator's link already lives in their bio and in old posts. They need to know what happens to it.</dd>
+          <dt>Copy</dt><dd class="say">"Your link will change to link.com/c/newname. The old link will keep working and send people to the new one, but it is worth updating your bio."</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X18 &amp; X19</span><span class="xt">Messaging locked · Delete account</span><span class="xr"><span class="chip inline">Inline</span><span class="chip modal">Modal</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>X18</dt><dd>An inline explanation on an empty messages view. "Messaging opens once a booking is confirmed." The restriction will be questioned, so it needs a visible reason: it is how bookings stay protected.</dd>
+          <dt>X19</dt><dd>A modal requiring the account email to be typed. Must state what happens to upcoming bookings. If any exist, block deletion or cancel and refund them first, and say which.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Overlays · Level 3 Administrator</h2></div>
+    <p class="lede">Seven overlays, four of them confirmations. Because Phase 1 has no audit log, <strong>the confirmation dialog is effectively the only record that an irreversible decision was deliberate.</strong></p>
+
+    <div class="pop">
+      <header><span class="xid">X20</span><span class="xt">Verify this creator</span><span class="xr"><span class="chip modal">Modal</span><span class="chip p2">Priority 2</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Job</dt><dd>Put the evidence next to the action so the administrator is checking, not guessing.</dd>
+          <dt>Contains</dt><dd>Claimed handle, claimed follower count, the date it was read, a link opening the real profile in a new tab, and a field for the count the administrator actually observed.</dd>
+          <dt>Confirm</dt><dd>"Verify as 18.2k on Instagram"</dd>
+          <dt>Developer</dt><dd>Record the administrator and timestamp on the creator record. Sets the lighter <em>linked</em> badge, not the automated <em>verified</em> one.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X21</span><span class="xt">Suspend this account</span><span class="xr"><span class="chip modal">Modal</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Job</dt><dd>State every consequence before acting, because there is no queue, no appeal flow and no audit log behind this.</dd>
+          <dt>Contains</dt><dd>Count of upcoming bookings affected, total to be refunded, what happens to the public profile, and a required reason field.</dd>
+          <dt>Copy</dt><dd class="say">"Suspending Maya will cancel 3 upcoming calls and refund $124.70 to 3 customers. Her profile will stop accepting bookings. All four people will be emailed."</dd>
+          <dt>Confirm</dt><dd>"Suspend and refund $124.70"</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X22</span><span class="xt">Issue a refund</span><span class="xr"><span class="chip modal">Modal</span><span class="chip p1">Priority 1</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>Job</dt><dd>Apply a rule rather than make a judgement. The dialog computes the tier from the policy and the call outcome, and shows its reasoning.</dd>
+          <dt>Contains</dt><dd>Booking, amount paid, call outcome, the tier that applies and why, the computed refund, whether the platform fee is returned, and an override with a <strong>required reason</strong>.</dd>
+          <dt>Copy</dt><dd class="say">"Creator did not join. Policy: full refund including the service fee. Refund $41.90 to Devon."</dd>
+          <dt>Confirm</dt><dd>"Refund $41.90"</dd>
+          <dt>Blocked by</dt><dd>The no-show grace period and outcomes are unspecified, so the automatic tier cannot be computed yet. Until then every refund is an override.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pop">
+      <header><span class="xid">X23&ndash;X26</span><span class="xt">System overlays</span><span class="xr"><span class="chip modal">Modal</span><span class="chip banner">Banner</span></span></header>
+      <div class="xb">
+        <dl>
+          <dt>X23 Session expired</dt><dd>Modal on the creator and admin surfaces. Preserves the current page so sign-in returns there. Never appears to a guest customer, who has no session.</dd>
+          <dt>X24 Connection lost</dt><dd>Banner. "You are offline. We will keep trying." Must appear on the call join screen, where it matters most.</dd>
+          <dt>X25 Unsaved changes</dt><dd>Modal on navigating away from an edited offer, availability or profile. Not used in onboarding, which autosaves every step.</dd>
+          <dt>X26 Something went wrong</dt><dd>Modal for an unrecoverable error. Must carry a reference the person can quote to support, and must never show a stack trace or an error code alone.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>Form rules</h2></div>
+    <p class="lede">Applied to every form in the product. Settle these once rather than deciding them twenty times.</p>
+
+    <div class="g2">
+      <div class="card">
+        <h4>Structure</h4>
+        <ul class="tiny">
+          <li><strong>Visible label on every field.</strong> Placeholder-as-label fails the moment someone starts typing, and fails permanently for screen readers.</li>
+          <li><strong>Mark optional fields, not required ones.</strong> Most fields are required, so marking the minority is less noise.</li>
+          <li><strong>One column.</strong> Side-by-side fields break at phone width and cause tab-order confusion.</li>
+          <li><strong>16px minimum font on inputs</strong>, or iOS zooms the viewport on focus.</li>
+          <li><strong>Correct input types and autocomplete attributes</strong>, so mobile keyboards and password managers work.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Validation and errors</h4>
+        <ul class="tiny">
+          <li><strong>Validate on blur, not on keystroke.</strong> Telling someone their email is invalid while they are typing it is hostile.</li>
+          <li><strong>Re-validate on change once a field has errored</strong>, so the error clears as soon as it is fixed.</li>
+          <li><strong>Errors sit with their field</strong>, programmatically associated, not collected in a summary at the top.</li>
+          <li><strong>Say what happened and what to do.</strong> "Enter a valid email address" not "Invalid input".</li>
+          <li><strong>Never clear a form on error.</strong> Especially not name and email after a card decline.</li>
+          <li><strong>Disable the submit button only while submitting</strong>, never as a validation device.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <h3>Every field has to justify itself</h3>
+      <p>Twenty-one percent of checkout abandoners cite a process that was too long. In this product the customer is buying one call from one person, so every field on the checkout is a conversion cost. If a field does not change what we deliver or what the law requires, it does not belong there. Intake questions, where they exist at all, belong after the booking is confirmed, not before the payment.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>Forms · Level 2 Customer</h2></div>
+    <p class="lede">Five forms. One of them is the most commercially important form in the product.</p>
+
+    <h3>F1 · Checkout <span class="chip p1">Priority 1</span> &nbsp; <span class="path">/checkout/{ref}</span></h3>
+    <p class="tiny soft">Guest only. No password, no account, no second step. Four inputs total.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Validation</th><th>Error message</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Full name</strong></td><td class="w2">text<br><code>name</code></td><td class="w2"><span class="req">Yes</span></td><td>2 to 80 characters</td><td>"Enter your name so the creator knows who is joining."</td></tr>
+          <tr><td><strong>Email</strong></td><td class="w2">email<br><code>email</code></td><td class="w2"><span class="req">Yes</span></td><td>Valid format. Confirmation and join link go here.</td><td>"Enter a valid email address. We send your join link here."</td></tr>
+          <tr><td><strong>Card</strong></td><td class="w2">Stripe element</td><td class="w2"><span class="req">Yes</span></td><td>Handled by the processor. Never touches our origin.</td><td>"Your card was declined. Try another card, or contact your bank."</td></tr>
+          <tr><td><strong>Anything for the creator</strong></td><td class="w2">textarea</td><td class="w2"><span class="opt">No</span></td><td>Max 500 characters, counter shown past 400</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft"><strong>Not collected:</strong> password, phone, billing address beyond what the processor requires, marketing consent. Each of those would be a measurable conversion cost on a single-item purchase.</p>
+
+    <h3>F2 · Review <span class="chip p2">Priority 2</span> &nbsp; <span class="path">/review/{ref}</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Validation</th><th>Error message</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Rating</strong></td><td class="w2">1&ndash;5 stars</td><td class="w2"><span class="req">Yes</span></td><td>Keyboard operable as a radio group</td><td>"Choose a rating from 1 to 5."</td></tr>
+          <tr><td><strong>What was it like</strong></td><td class="w2">textarea</td><td class="w2"><span class="opt">No</span></td><td>Max 1000 characters. Visibly optional.</td><td>&mdash;</td></tr>
+          <tr><td><strong>Display name</strong></td><td class="w2">text</td><td class="w2"><span class="opt">No</span></td><td>Defaults to first name and last initial</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">A required text field roughly halves submission. Average rating above 4.6 is a gate metric, so submission volume matters as much as the scores.</p>
+
+    <h3>F3 · Cancel booking &nbsp; F4 · Support &nbsp; F5 · Availability filter <span class="chip p2">Priority 2</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Form</th><th>Fields</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>F3 Cancel booking</strong></td><td>Reason <span class="opt">optional</span>, from a short list plus Other</td><td>The refund amount is computed and shown, never entered. Reason is optional because requiring one to get a refund reads as an obstacle.</td></tr>
+          <tr><td><strong>F4 Support</strong></td><td>Name, email, booking reference <span class="opt">prefilled</span>, message</td><td>Reference auto-fills when opened from a booking. Confirm on screen that it was sent, not only by email.</td></tr>
+          <tr><td><strong>F5 Availability filter</strong></td><td>Date range, duration</td><td>Not a form in the submit sense. Filters apply instantly, no Apply button, and the state lives in the URL so it can be shared.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">07</span><h2>Forms · Level 1 Creator</h2></div>
+    <p class="lede">Ten forms. The three onboarding forms carry a gate metric between them, so they are specified in the most detail.</p>
+
+    <h3>F6 · Sign up <span class="chip p1">Priority 1</span> &nbsp; <span class="path">/signup</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Validation</th><th>Error message</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Email</strong></td><td class="w2">email<br><code>email</code></td><td class="w2"><span class="req">Yes</span></td><td>Valid format, not already registered</td><td>"That email already has an account. Sign in instead?"</td></tr>
+          <tr><td><strong>Password</strong></td><td class="w2">password<br><code>new-password</code></td><td class="w2"><span class="req">Yes</span></td><td>Minimum 10 characters. Strength shown, not enforced beyond length.</td><td>"Use at least 10 characters."</td></tr>
+          <tr><td><strong>Show password</strong></td><td class="w2">toggle</td><td class="w2"><span class="opt">&mdash;</span></td><td>Default off</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">No password confirmation field. A reveal toggle is more effective and one field shorter. No name field: the name arrives from the social connection, or in onboarding if that fails.</p>
+
+    <h3>F7 · Onboarding, the offer <span class="chip p1">Priority 1</span> &nbsp; <span class="path">/onboarding/offer</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Validation</th><th>Error message</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Call length</strong></td><td class="w2">choice: 15 / 30 / 60</td><td class="w2"><span class="req">Yes</span></td><td>Bounded options, 30 preselected</td><td>&mdash;</td></tr>
+          <tr><td><strong>Price</strong></td><td class="w2">currency<br><code>decimal</code></td><td class="w2"><span class="req">Yes</span></td><td><strong>Prefilled with a suggestion.</strong> Within the band, whole dollars.</td><td>"The lowest price is $15, because card fees take too much below that." / "The highest price is $250 during the pilot."</td></tr>
+          <tr><td><strong>You receive</strong></td><td class="w2">computed</td><td class="w2"><span class="opt">&mdash;</span></td><td>Live, server-derived. Not an input.</td><td>&mdash;</td></tr>
+          <tr><td><strong>What you will cover</strong></td><td class="w2">textarea</td><td class="w2"><span class="opt">No</span></td><td>Max 300 characters</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note crit">
+      <h3>The price field is the most important input in the product</h3>
+      <p>It is <strong>never empty</strong>. It opens with a suggestion and its basis, and shows the net amount received live beside it. Of the four steps to a live profile, three have an obviously correct answer and this one does not, which makes it the likeliest abandonment point. An empty field asks the creator to value themselves from nothing; a prefilled one asks them to accept or adjust, which is a far easier decision.</p>
+    </div>
+
+    <h3>F8 · Onboarding, availability <span class="chip p1">Priority 1</span> &nbsp; <span class="path">/onboarding/availability</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Validation</th><th>Error message</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Quick presets</strong></td><td class="w2">buttons</td><td class="w2"><span class="opt">&mdash;</span></td><td>Today afternoon, Next 2 hours, Tomorrow morning. One tap adds a slot.</td><td>&mdash;</td></tr>
+          <tr><td><strong>Date</strong></td><td class="w2">date</td><td class="w2"><span class="req">Yes</span></td><td>Today or later. Native picker on mobile.</td><td>"Choose a date in the future."</td></tr>
+          <tr><td><strong>Start time</strong></td><td class="w2">time</td><td class="w2"><span class="req">Yes</span></td><td>At least the lead time from now. No overlap with an existing slot.</td><td>"You already have a call booked at that time." / "Choose a time at least 2 hours from now."</td></tr>
+          <tr><td><strong>Your time zone</strong></td><td class="w2">select</td><td class="w2"><span class="req">Yes</span></td><td>Detected, confirmable. Stated once with its effect.</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">At least one future slot plus a saved offer plus a live profile sets the <strong>bookable flag</strong>, which is what the creator activation gate metric counts.</p>
+
+    <h3>F9 · Payouts <span class="chip p1">Priority 1</span> &nbsp; <span class="path">/onboarding/payouts</span></h3>
+    <p class="tiny soft"><strong>Not our form.</strong> The payment provider's hosted onboarding collects identity and bank details, so we never build or style these fields and never store the data. What we own is the page around it: the explanation, and the deferral.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Element</th><th>Behaviour</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Connect payouts</strong></td><td>Hands off to the hosted flow, returns to the dashboard.</td></tr>
+          <tr><td><strong>Add this later</strong></td><td><strong>Equal visual weight.</strong> Not greyed, not smaller. "Add your bank details later. You will need them before your first payout, not before going live."</td></tr>
+          <tr><td><strong>Why we need this</strong></td><td>Opens panel X14. Unexplained identity requests read as suspicious.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>F10 to F15 · Remaining creator forms <span class="chip p2">Priority 2</span></h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Form</th><th>Fields</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>F10 Sign in</strong></td><td>Email, password, show toggle</td><td>Rate limited. Must not reveal whether an email exists. <code>autocomplete="current-password"</code>.</td></tr>
+          <tr><td><strong>F11 Password reset</strong></td><td>Email, then new password</td><td>Always show the same confirmation regardless of whether the account exists.</td></tr>
+          <tr><td><strong>F12 Profile editor</strong></td><td>Display name, handle, bio, photo</td><td>Handle: lowercase, letters, numbers, hyphens, 3 to 30 characters, uniqueness checked live. Bio max 500. Photo shows a cropper, since imported social images are rarely square. Changing the handle opens X17.</td></tr>
+          <tr><td><strong>F13 Offer editor</strong></td><td>Same fields as F7</td><td>Reuses the F7 components in an editing context. A price change must not affect bookings already paid for.</td></tr>
+          <tr><td><strong>F14 Message composer</strong></td><td>Message body</td><td>Only available after a confirmed booking. Max 2000 characters. No attachments in Phase 1.</td></tr>
+          <tr><td><strong>F15 Settings</strong></td><td>Email, password change, notification preferences</td><td>Changing email requires the current password and re-verification. Group notification preferences so Phase 2 can add push and SMS channels without restructuring.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">08</span><h2>Forms · Level 3 Administrator</h2></div>
+    <p class="lede">Five forms. Three of them move money or remove access, so each one is paired with a confirmation dialog from Section 04.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Form</th><th>Fields</th><th>Rules</th><th>Pairs with</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>F16 Member search</strong></td>
+            <td>Query</td>
+            <td>Partial matching across handle, display name and email. An administrator rarely has an exact value.</td>
+            <td class="w2">&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>F17 Payment search</strong></td>
+            <td>Query, state filter, date range</td>
+            <td>Searchable by reference, creator, customer email and amount. State filter uses the money pills.</td>
+            <td class="w2">&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>F18 Manual verification</strong></td>
+            <td>Observed follower count, platform, note</td>
+            <td>Count is typed by the administrator after checking the real profile, not copied from the claim. Records who verified and when.</td>
+            <td class="w2">X20</td>
+          </tr>
+          <tr>
+            <td><strong>F19 Suspend</strong></td>
+            <td>Reason <span class="req">required</span>, internal note</td>
+            <td>Reason is required because there is no audit log. It is the only record of why.</td>
+            <td class="w2">X21</td>
+          </tr>
+          <tr>
+            <td><strong>F20 Refund</strong></td>
+            <td>Computed amount, override amount, override reason</td>
+            <td><strong>The amount is computed, not typed.</strong> Overriding requires a reason. Fee return follows policy automatically: returned on creator-side failure, retained on customer no-show.</td>
+            <td class="w2">X22</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">09</span><h2>Toasts and banners</h2></div>
+    <p class="lede">Eleven in total. A toast confirms something that already succeeded; a banner describes a state that persists. Neither is ever used for an error the person must act on.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Message</th><th>Type</th><th>Trigger</th><th>Level</th></tr></thead>
+        <tbody>
+          <tr><td class="w2">T1</td><td>"Link copied"</td><td class="w2"><span class="chip toast">Toast</span></td><td>Copying the profile or booking link</td><td class="w2"><span class="chip l1">Creator</span></td></tr>
+          <tr><td class="w2">T2</td><td>"Saved"</td><td class="w2"><span class="chip toast">Toast</span></td><td>Any editor save succeeding</td><td class="w2"><span class="chip l1">Creator</span></td></tr>
+          <tr><td class="w2">T3</td><td>"Availability added"</td><td class="w2"><span class="chip toast">Toast</span></td><td>A slot is created, including by preset</td><td class="w2"><span class="chip l1">Creator</span></td></tr>
+          <tr><td class="w2">T4</td><td>"Review submitted. Thanks."</td><td class="w2"><span class="chip toast">Toast</span></td><td>Rating submitted</td><td class="w2"><span class="chip l2">Customer</span></td></tr>
+          <tr><td class="w2">T5</td><td>"Added to your calendar"</td><td class="w2"><span class="chip toast">Toast</span></td><td>Calendar file downloaded or added</td><td class="w2"><span class="chip l2">Customer</span></td></tr>
+          <tr><td class="w2">T6</td><td>"Refund issued"</td><td class="w2"><span class="chip toast">Toast</span></td><td>Administrator refund confirmed</td><td class="w2"><span class="chip l3">Admin</span></td></tr>
+          <tr><td class="w2">B1</td><td>"Add your bank details to receive your earnings."</td><td class="w2"><span class="chip banner">Banner</span></td><td>Payouts deferred and earnings pending</td><td class="w2"><span class="chip l1">Creator</span></td></tr>
+          <tr><td class="w2">B2</td><td>"We are checking your account. Your badge will appear within a day."</td><td class="w2"><span class="chip banner">Banner</span></td><td>Manual verification pending</td><td class="w2"><span class="chip l1">Creator</span></td></tr>
+          <tr><td class="w2">B3</td><td>"Add a time so people can book you."</td><td class="w2"><span class="chip banner">Banner</span></td><td>No future availability exists</td><td class="w2"><span class="chip l1">Creator</span></td></tr>
+          <tr><td class="w2">B4</td><td>"This time is held for you for another 1:48."</td><td class="w2"><span class="chip banner">Banner</span></td><td>Slot hold under two minutes</td><td class="w2"><span class="chip l2">Customer</span></td></tr>
+          <tr><td class="w2">B5</td><td>"You are offline. We will keep trying."</td><td class="w2"><span class="chip banner">Banner</span></td><td>Connection lost</td><td class="w2">All</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>B1 and B3 are the two that earn their keep</h3>
+      <p>A creator with pending earnings and no bank details, and a creator with a live profile and no availability, are both one small action away from working and neither will realise it on their own. These banners persist until the state resolves and are <strong>not dismissible</strong>, because dismissing them does not fix anything. Both map directly to the creator activation gate metric.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">10</span><h2>Accessibility requirements</h2></div>
+    <p class="lede">Dialogs and forms are where accessibility failures concentrate. Phase 1 commits to keyboard-navigable booking and checkout with visible focus; these rules deliver that.</p>
+
+    <div class="g2">
+      <div class="card">
+        <h4>Every dialog</h4>
+        <ul class="tiny">
+          <li>Marked as a dialog, with its title programmatically associated.</li>
+          <li><strong>Focus moves into the dialog on open</strong>, to the heading or the first control, and is <strong>trapped</strong> while it is open.</li>
+          <li><strong>Focus returns to the trigger on close.</strong> The most commonly missed rule, and the most disorienting when absent.</li>
+          <li>Escape closes anything low-consequence. Escape does <em>not</em> close a confirmation for an irreversible action.</li>
+          <li>Content behind the dialog is inert: not scrollable, not reachable by tab.</li>
+          <li>A visible close control, not only a backdrop click.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Every form</h4>
+        <ul class="tiny">
+          <li>Label associated with its input. Not a nearby paragraph.</li>
+          <li>Errors programmatically linked to the field and announced when they appear.</li>
+          <li>Required state conveyed in text, never by colour or an asterisk alone.</li>
+          <li>Visible focus on every control, including custom ones like the star rating and the slot picker.</li>
+          <li>The star rating operates as a radio group with arrow keys.</li>
+          <li>Touch targets at least 44 by 44 points, including availability cells.</li>
+          <li>Errors never communicated by colour alone.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <h3>Two of these are conversion mechanics, not compliance</h3>
+      <p><strong>Visible focus</strong> and <strong>errors attached to their field</strong> are usually argued on accessibility grounds. In a checkout they are commercial: a customer who cannot tell which field is active, or why a payment was rejected, abandons. Framing them this way keeps them in scope when the schedule tightens.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">11</span><h2>Summary</h2></div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Level</th><th>Overlays</th><th>Forms</th><th>Toasts and banners</th><th>Priority 1</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Level 2 · Customer</strong></td><td class="w2">10</td><td class="w2">5</td><td class="w2">3</td><td class="w2">7</td></tr>
+          <tr><td><strong>Level 1 · Creator</strong></td><td class="w2">9</td><td class="w2">10</td><td class="w2">6</td><td class="w2">9</td></tr>
+          <tr><td><strong>Level 3 · Administrator</strong></td><td class="w2">3</td><td class="w2">5</td><td class="w2">1</td><td class="w2">2</td></tr>
+          <tr><td><strong>System</strong></td><td class="w2">4</td><td class="w2">&mdash;</td><td class="w2">1</td><td class="w2">&mdash;</td></tr>
+          <tr style="background:var(--surface-2)"><td><strong>Total</strong></td><td class="w2"><strong>26</strong></td><td class="w2"><strong>20</strong></td><td class="w2"><strong>11</strong></td><td class="w2"><strong>18</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note crit">
+      <h3>Three items cannot be finalised yet</h3>
+      <p><strong>X8 Waiting for the other person</strong>, <strong>X22 Issue a refund</strong> and the refund tiers inside <strong>X6 Cancel booking</strong> all depend on the no-show grace period and outcomes, which were still unspecified when this document was written. Until that decision lands, the copy cannot be finalised and X22 cannot compute a tier automatically, which means every administrator refund is an override.</p>
+      <p>It is a decision, not a build task, and it sits on the critical path for the payment state machine. It is questionnaire item Q16 and Q17.</p>
+    </div>
+
+    <div class="note good">
+      <h3>The shortest useful summary of this document</h3>
+      <p><strong>Modals are for money and for things that cannot be undone. Panels are for doubt. Toasts are for things that already worked. Everything else is inline.</strong> And every confirm button that moves money carries the amount, because nobody should have to remember what they are agreeing to.</p>
+    </div>
+  </section>
+
+  <p class="foot">LINK popups and forms inventory, issued 1 October 2026 for the Phase 1 design phase, Weeks 4 to 6. Companion to the LINK navigation structure and page list of the same date, and derived from the same research. Copy shown in quotation marks is proposed and forms part of the design deliverable. Three overlays depend on the no-show policy decision and are marked as blocked. Prepared by Oyolloo for WorkDev Solutions.</p>
+
+</div>
+
+<script>
+  document.getElementById("pdfBtn").addEventListener("click", function(){
+    window.print();
+  });
+</script>

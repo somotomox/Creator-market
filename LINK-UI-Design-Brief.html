@@ -1,0 +1,1051 @@
+<meta charset="utf-8">
+<title>LINK UI Design Brief</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa; --surface-3:#e7eef8;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --good:#15803d; --good-bg:#e4f7ea; --warn:#b45309; --warn-bg:#fdf0d5;
+    --crit:#b91c1c; --crit-bg:#fbe4e4;
+    --coral:#ff6b5a;
+    --shadow:0 1px 2px rgba(11,31,58,.05);
+    --f-body:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --f-mono:"IBM Plex Mono","SFMono-Regular",ui-monospace,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--f-body);
+       font-size:16px; line-height:1.78; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px; margin:0 auto; padding-inline:22px; padding-block:30px 90px}
+  p{margin:0 0 15px}
+  strong{font-weight:600}
+  h1,h2,h3,h4{margin:0; line-height:1.3; text-wrap:balance; color:var(--ink)}
+  h1{font-size:clamp(28px,4.6vw,40px); font-weight:600; letter-spacing:-.025em; line-height:1.26}
+  h1 em{font-style:normal; color:var(--accent)}
+  h2{font-size:26px; font-weight:600; letter-spacing:-.018em}
+  h3{font-size:17px; font-weight:600; margin-top:26px; letter-spacing:-.008em}
+  h4{font-size:15px; font-weight:600; margin-top:0}
+  ul,ol{margin:12px 0 15px; padding-left:22px}
+  li{margin:7px 0; padding-left:3px}
+  .lab{font-size:11.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+  .soft{color:var(--ink-soft)}
+  .tiny{font-size:14px; line-height:1.68}
+  code{font-family:var(--f-mono); font-size:13.5px; background:var(--surface-2); color:var(--accent-deep);
+       padding:2px 7px; border-radius:5px}
+
+  .dochead{border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:12px;
+           padding:24px 26px; background:var(--surface); box-shadow:var(--shadow)}
+  .dochead .kicker{font-size:11.5px; letter-spacing:.09em; text-transform:uppercase;
+                   color:var(--accent); font-weight:600; margin-bottom:12px; display:block}
+  .dochead h1{margin:0 0 12px}
+  .dochead .sub{font-size:17px; color:var(--ink-soft); line-height:1.7; margin:0}
+  .facts{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line);
+         border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-top:20px}
+  @media (min-width:520px){ .facts{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:760px){ .facts{grid-template-columns:repeat(3,1fr)} }
+  .facts > div{background:var(--bg); padding:12px 15px}
+  .facts .v{font-size:15px; font-weight:600; margin-top:6px; line-height:1.4}
+  .facts .v.accent{color:var(--accent)}
+
+  section{margin-top:52px; padding-top:30px; border-top:1px solid var(--line)}
+  .shead{display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; margin-bottom:10px}
+  .snum{font-family:var(--f-mono); font-size:19px; font-weight:500; color:var(--accent); flex:0 0 auto}
+  .lede{font-size:17px; color:var(--ink-soft); line-height:1.65; margin:8px 0 22px}
+
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:19px 21px}
+  .stack{display:grid; gap:14px}
+  .g2{display:grid; gap:14px; grid-template-columns:1fr}
+  @media (min-width:660px){ .g2{grid-template-columns:repeat(2,1fr)}
+    .g2 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  .g3{display:grid; gap:14px; grid-template-columns:1fr}
+  @media (min-width:560px) and (max-width:879px){ .g3{grid-template-columns:repeat(2,1fr)}
+    .g3 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  @media (min-width:880px){ .g3{grid-template-columns:repeat(3,1fr)} }
+
+  .tw{overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--bg); margin:16px 0}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; line-height:1.6; min-width:620px}
+  th,td{text-align:left; padding:13px 15px; border-top:1px solid var(--line); vertical-align:top}
+  thead th{border-top:none; background:var(--surface-2); font-weight:600; font-size:12px;
+           letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap}
+  tbody tr:hover{background:var(--surface)}
+  td.w2{white-space:nowrap; font-variant-numeric:tabular-nums}
+
+  .rule{border:1px solid var(--line); border-left:4px solid var(--crit); border-radius:0 12px 12px 0;
+        padding:18px 21px; background:var(--surface)}
+  .rule > header{display:flex; gap:11px; align-items:baseline; flex-wrap:wrap; margin-bottom:8px}
+  .rule .rid{font-family:var(--f-mono); font-size:12.5px; font-weight:500; background:var(--crit-bg);
+             color:var(--crit); padding:3px 9px; border-radius:5px}
+  .rule .rt{font-size:16.5px; font-weight:600; letter-spacing:-.01em}
+  .rule .why{font-size:14px; color:var(--ink-soft); margin-top:9px; padding-top:9px;
+             border-top:1px dashed var(--line-strong)}
+
+  .scr{border:1px solid var(--line); border-radius:12px; background:var(--surface); padding:19px 21px}
+  .scr > header{display:flex; gap:11px; align-items:baseline; flex-wrap:wrap; padding-bottom:11px;
+                margin-bottom:13px; border-bottom:2px solid var(--line-strong)}
+  .scr .sid{font-family:var(--f-mono); font-size:12.5px; font-weight:500; background:var(--accent-soft);
+            color:var(--accent-deep); padding:3px 9px; border-radius:5px}
+  .scr .st{font-size:18px; font-weight:600; letter-spacing:-.012em}
+  .scr .sp{font-size:12.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+           color:var(--muted); margin-left:auto}
+  .scr dl{margin:0; display:grid; grid-template-columns:1fr; gap:6px}
+  @media (min-width:620px){ .scr dl{grid-template-columns:140px 1fr; gap:11px 16px} }
+  .scr dt{font-size:11.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+          color:var(--muted); padding-top:4px}
+  .scr dd{margin:0; font-size:14.5px; line-height:1.65}
+  .scr dd ul{margin:0; padding-left:20px}
+  .scr dd li{margin:5px 0}
+
+  .chip{display:inline-block; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+        padding:3px 9px; border-radius:20px; white-space:nowrap}
+  .chip.p1{background:var(--crit-bg); color:var(--crit)}
+  .chip.p2{background:var(--warn-bg); color:var(--warn)}
+  .chip.p3{background:var(--surface-3); color:var(--muted)}
+  .chip.ok{background:var(--good-bg); color:var(--good)}
+
+  .swatch{display:flex; align-items:center; gap:11px; padding:9px 0; border-top:1px solid var(--line)}
+  .swatch:first-child{border-top:none}
+  .swatch i{width:34px; height:34px; border-radius:8px; border:1px solid rgba(11,31,58,.12); flex:0 0 auto}
+  .swatch .sn{font-weight:600; font-size:14.5px}
+  .swatch .sv{font-family:var(--f-mono); font-size:12.5px; color:var(--muted); margin-left:auto}
+
+  .note{border:1px solid var(--line); border-left:4px solid var(--accent); background:var(--accent-soft);
+        border-radius:0 12px 12px 0; padding:18px 22px; margin:20px 0}
+  .note h3{color:var(--accent-deep); margin:0 0 8px; font-size:16.5px}
+  .note p:last-child{margin-bottom:0}
+  .note.warn{border-left-color:var(--warn); background:var(--warn-bg)} .note.warn h3{color:var(--warn)}
+  .note.crit{border-left-color:var(--crit); background:var(--crit-bg)} .note.crit h3{color:var(--crit)}
+  .note.good{border-left-color:var(--good); background:var(--good-bg)} .note.good h3{color:var(--good)}
+
+  .chk{display:grid; gap:0; background:var(--bg); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+  .chk label{display:grid; grid-template-columns:24px 1fr; gap:13px; padding:13px 17px; align-items:start;
+             border-top:1px solid var(--line); cursor:pointer}
+  .chk label:first-of-type{border-top:none}
+  .chk label:hover{background:var(--surface)}
+  .chk input[type=checkbox]{width:19px; height:19px; margin:2px 0 0; accent-color:var(--accent); cursor:pointer}
+  .chk input[type=checkbox]:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .chk input[type=checkbox]:checked ~ span{color:var(--muted); text-decoration:line-through}
+  .chk label > span{font-size:14.5px; line-height:1.6}
+  .chkbar{display:flex; align-items:center; gap:15px; flex-wrap:wrap; margin:15px 0 0; font-size:14px}
+  .chkbar .cprog{flex:1 1 150px; min-width:130px; height:9px; background:var(--surface-2);
+                 border-radius:6px; overflow:hidden}
+  .chkbar .cprog i{display:block; height:100%; width:0; background:var(--good); border-radius:6px}
+  .chkbar .ccount{font-family:var(--f-mono); font-size:13.5px; color:var(--ink-soft); white-space:nowrap}
+  .chkbar button{font-family:var(--f-body); font-size:13px; font-weight:600; cursor:pointer;
+                 background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line-strong);
+                 border-radius:7px; padding:6px 14px}
+  .chkbar button:hover{border-color:var(--accent); color:var(--accent-deep)}
+  .chkbar button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  @media print{ .chkbar button{display:none} .chk input[type=checkbox]{-webkit-print-color-adjust:exact; print-color-adjust:exact} }
+
+  /* data visuals */
+  .viz{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:20px 22px; margin:20px 0}
+  .viz > h4{margin:0 0 5px; font-size:15.5px; font-weight:600}
+  .viz .vcap{font-size:13.5px; color:var(--muted); margin:0 0 18px; line-height:1.55}
+  .viz .vnote{font-size:13px; color:var(--muted); margin:16px 0 0; padding-top:13px;
+              border-top:1px solid var(--line); line-height:1.55}
+  .viz.plain{background:var(--surface)}
+
+  .bars{display:grid; gap:11px}
+  .bar{display:grid; grid-template-columns:minmax(96px,27%) 1fr minmax(58px,auto); gap:14px; align-items:center}
+  @media (max-width:600px){ .bar{grid-template-columns:1fr auto; gap:4px 10px}
+    .bar .bl{grid-column:1/-1} .bar .bv{text-align:right} }
+  .bar .bl{font-size:14px; line-height:1.32}
+  .bar .bl small{display:block; font-size:12px; color:var(--muted); font-weight:400}
+  .bar .bt{background:var(--surface-2); border-radius:6px; height:28px; overflow:hidden}
+  .bar .bt i{display:block; height:100%; border-radius:6px; background:var(--accent)}
+  .bar .bt i.good{background:var(--good)}
+  .bar .bt i.warn{background:var(--warn)}
+  .bar .bt i.crit{background:var(--crit)}
+  .bar .bt i.mute{background:var(--line-strong)}
+  .bar .bt i.deep{background:var(--accent-deep)}
+  .bar .bv{font-family:var(--f-mono); font-size:14px; font-weight:500; white-space:nowrap; text-align:right}
+
+  .stackbar{display:flex; height:50px; border-radius:9px; overflow:hidden; border:1px solid var(--line)}
+  .stackbar > span{display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:600;
+                   color:#fff; white-space:nowrap; overflow:hidden; padding:0 4px; min-width:0}
+  .stackkey{display:flex; flex-wrap:wrap; gap:16px; margin-top:14px; font-size:13.5px}
+  .stackkey span{display:flex; align-items:center; gap:8px; white-space:nowrap}
+  .stackkey i{width:13px; height:13px; border-radius:3px; display:block; flex:0 0 auto}
+
+  .tiles{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .tile{border:1px solid var(--line); border-radius:11px; padding:15px 16px; background:var(--bg)}
+  .tile .tv{font-family:var(--f-mono); font-size:26px; font-weight:500; letter-spacing:-.02em; line-height:1.1}
+  .tile .tk{font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.45}
+  .tile.ok{border-left:4px solid var(--good)} .tile.ok .tv{color:var(--good)}
+  .tile.at{border-left:4px solid var(--warn)} .tile.at .tv{color:var(--warn)}
+  .tile.no{border-left:4px solid var(--crit)} .tile.no .tv{color:var(--crit)}
+  .tile.nu{border-left:4px solid var(--accent)} .tile.nu .tv{color:var(--accent)}
+
+  .funnel{display:grid; gap:7px}
+  .fstep2{display:grid; grid-template-columns:1fr; gap:4px}
+  .fstep2 .fbar{height:38px; border-radius:7px; background:var(--accent); display:flex; align-items:center;
+                padding:0 14px; color:#fff; font-size:14px; font-weight:600}
+  .fstep2 .fmeta{font-size:12.5px; color:var(--muted); padding-left:2px}
+  .fdrop{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--crit);
+         padding-left:14px; font-weight:600}
+
+  svg.dia{display:block; width:100%; height:auto; max-width:100%}
+  .diawrap{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:18px;
+           margin:20px 0; overflow-x:auto}
+  .diawrap h4{margin:0 0 14px; font-size:15.5px}
+
+  @media print{
+    .viz,.diawrap{break-inside:avoid; page-break-inside:avoid}
+    .bar .bt i,.stackbar > span,.tile,.fstep2 .fbar{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* cross-document navigation */
+  .docnav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.94);
+          -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+          border-bottom:1px solid var(--line)}
+  .docnav .dn{max-width:1080px; margin:0 auto; padding:0 22px; display:flex; align-items:center; gap:20px}
+  .docnav .dnbrand{font-weight:600; font-size:15px; letter-spacing:-.012em; color:var(--ink);
+                   white-space:nowrap; padding:14px 0; flex:0 0 auto; text-decoration:none}
+  .docnav .dnbrand b{color:var(--accent); font-weight:600}
+  .docnav .dnbrand:hover b{color:var(--accent-deep)}
+  .docnav .dnlinks{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .docnav .dnlinks::-webkit-scrollbar{display:none}
+  .docnav .dnlinks a{display:block; padding:14px 12px; font-size:14px; color:var(--ink-soft);
+            text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; font-weight:400}
+  .docnav .dnlinks a:hover{color:var(--accent-deep)}
+  .docnav .dnlinks a.on{color:var(--accent-deep); font-weight:600; border-bottom-color:var(--accent)}
+  .docnav .dnlinks a:focus-visible{outline:2px solid var(--accent); outline-offset:-3px; border-radius:4px}
+  @media (max-width:680px){
+    .docnav .dn{gap:12px; padding:0 14px}
+    .docnav .dnbrand{font-size:13.5px; padding:12px 0}
+    .docnav .dnlinks a{padding:12px 9px; font-size:13.5px}
+  }
+  section, [id^="s"], [id^="p-"]{scroll-margin-top:76px}
+  @media print{ .docnav{display:none !important} }
+
+  .dock{position:fixed; right:16px; bottom:16px; z-index:20}
+  .dockbtn{background:var(--surface); border:1px solid var(--line-strong); border-radius:22px;
+           box-shadow:0 4px 18px rgba(11,31,58,.14); padding:10px 17px; font-size:14px; font-weight:600;
+           font-family:var(--f-body); color:var(--ink); cursor:pointer; min-height:42px; line-height:1;
+           display:inline-flex; align-items:center; gap:8px}
+  .dockbtn:hover{border-color:var(--accent); color:var(--accent-deep)}
+  .dockbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .foot{margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+  @page{ margin:14mm }
+  @media print{
+    .dock{display:none !important}
+    body{background:#fff; font-size:10.5pt; line-height:1.6}
+    .wrap{max-width:none; padding:0}
+    .card,.note,.tw,.scr,.rule,.dochead,.facts,.chk{break-inside:avoid; page-break-inside:avoid}
+    h1,h2,h3,h4{break-after:avoid}
+    table{min-width:0}
+    .chip,.swatch i{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* ---- black and white print ---- */
+  @media print{
+    :root{
+      --bg:#ffffff; --surface:#f7f7f7; --surface-2:#f0f0f0; --surface-3:#e8e8e8;
+      --ink:#000000; --ink-soft:#2b2b2b; --muted:#5a5a5a;
+      --line:#d0d0d0; --line-strong:#9a9a9a;
+      --accent:#1a1a1a; --accent-deep:#000000; --accent-soft:#f0f0f0; --navy:#000000;
+      --good:#1a1a1a; --good-bg:#f2f2f2;
+      --warn:#1a1a1a; --warn-bg:#ededed;
+      --crit:#000000; --crit-bg:#e6e6e6;
+      --coral:#1a1a1a;
+      --l1:#1a1a1a; --l1-bg:#f2f2f2; --l2:#1a1a1a; --l2-bg:#ededed; --l3:#5a5a5a; --l3-bg:#e8e8e8;
+      --s:#1a1a1a; --s-bg:#f4f4f4; --w:#1a1a1a; --w-bg:#ededed;
+      --o:#1a1a1a; --o-bg:#f0f0f0; --t:#000000; --t-bg:#e6e6e6;
+      --ev-a:#1a1a1a; --ev-a-bg:#f0f0f0; --ev-b:#1a1a1a; --ev-b-bg:#eaeaea;
+      --ev-c:#1a1a1a; --ev-c-bg:#eeeeee; --ev-d:#1a1a1a; --ev-d-bg:#e9e9e9;
+      --ev-e:#1a1a1a; --ev-e-bg:#e4e4e4;
+      --shadow:none;
+    }
+    body{background:#fff; color:#000}
+    a{color:#000; text-decoration:underline}
+    svg.dia, .stackbar, .tile, .bar .bt, .qbox, .seg, .nav .ncta, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .chip, .ev, .sev, .pill, .dcode, .pid, .xid, .rid, .sid, .fid, .iid, .dnum, .tag, .path, code{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .note, .find, .rule, .card, .viz, .diawrap, .pop, .scr, .pg, .item, .lvl{
+      border-color:#bdbdbd !important;
+    }
+    .stackbar > span{color:#fff !important}
+    .dock, .docnav, .chkbar button{display:none !important}
+  }
+
+  /* ---- plain print: no panels, cards or chips. charts and diagrams stay ---- */
+  @media print{
+    /* every decorative container becomes plain typography */
+    .dochead, .hero, .doc, .card, .note, .find, .rule, .item, .pgroup, .qbox,
+    .scr, .pg, .pg > header, .pg .pbody, .pop, .pop > header, .lvl, .viz, .viz.plain,
+    .diawrap, .tw, .chk, .chk label, .tree, .forwho, .forwho.design, .forwho.dev,
+    .tile, .facts, .facts > div, .toc a, .pmeta, .ppath, .chkbar, .dmeta, .seg{
+      background:transparent !important;
+      border:0 !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      overflow:visible !important;
+      filter:none !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+    }
+    .note, .find, .rule, .item, .pgroup, .qbox, .scr, .pg, .pop, .lvl, .card, .viz, .diawrap{
+      margin:15pt 0 !important;
+      padding-top:0 !important;
+      padding-bottom:0 !important;
+    }
+    .dochead, .hero{padding:0 !important; margin:0 0 16pt !important}
+    .forwho{padding:0 !important; margin-top:10pt !important}
+    .tree{padding:0 !important; font-size:9pt !important}
+    .tile{padding:0 !important}
+    .doc{padding:0 !important; margin:0 0 12pt !important}
+
+    /* headings and ids carry the structure now that the boxes are gone */
+    .note h3, .find .ft, .rule .rt, .viz > h4, .diawrap h4, .card h4, .item .itxt strong,
+    .pop .xt, .scr .st2, .scr h4, .pg .ptitle, .lvl .lvname, .qbox .qt, .doc .dt,
+    .forwho h5, .shead h2{ color:#000 !important }
+    .qbox header, .pg > header, .pop > header, .lvl > header, .scr header{
+      border-bottom:0.5pt solid #b4b4b4 !important; padding-bottom:5pt !important;
+      margin-bottom:8pt !important;
+    }
+    .forwho h5{border-bottom:0.5pt solid #d4d4d4 !important; padding-bottom:3pt !important}
+
+    /* badges, pills and code chips become plain text */
+    .chip, .ev, .sev, .pill, .tag, .dcode, .dnum, .pid, .xid, .rid, .sid, .fid, .iid,
+    .lvtag, .qk, .qn, .sz, .cnt, .path, code, .fscr, .bk, .tv{
+      background:transparent !important; border:0 !important; padding:0 !important;
+      border-radius:0 !important; color:#000 !important; filter:none !important;
+      box-shadow:none !important; width:auto !important; height:auto !important;
+    }
+    .chip, .ev, .sev, .pill, .tag, .lvtag, .qk, .bk{font-weight:600 !important; margin-right:6pt}
+    .tile .tv{font-size:19pt !important; color:#000 !important}
+    .swatch i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+
+    /* hairlines where a list needs separating, instead of panels */
+    .facts > div{border-bottom:0.5pt solid #d2d2d2 !important; padding:5pt 0 !important}
+    .chk label{border-bottom:0.5pt solid #dcdcdc !important; padding:4pt 0 !important}
+    .pop .say{border-left:1pt solid #8a8a8a !important; padding:2pt 0 2pt 9pt !important;
+              background:transparent !important; border-radius:0 !important}
+    .cprog{display:none !important}
+
+    /* tables: horizontal rules only */
+    table{width:100% !important; min-width:0 !important}
+    thead th{background:transparent !important; color:#000 !important;
+             border-bottom:1pt solid #000 !important; padding:0 9pt 5pt 0 !important}
+    th, td{border-top:0 !important; border-bottom:0.5pt solid #cfcfcf !important;
+           padding:5pt 9pt 5pt 0 !important; background:transparent !important}
+    tr.tot td, tr.tot th{border-top:1pt solid #000 !important; font-weight:600 !important}
+
+    /* the charts stay */
+    .bar .bt{background:#ededed !important; border:0.5pt solid #c4c4c4 !important;
+             border-radius:0 !important; filter:grayscale(100%) !important;
+             -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .bar .bt i{border-radius:0 !important; filter:grayscale(100%) !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+              filter:grayscale(100%) !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar > span{color:#fff !important}
+    .stackkey i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+                -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep2 .fbar{border-radius:0 !important; filter:grayscale(100%) !important;
+                  -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    svg.dia{filter:grayscale(100%) !important; max-width:100% !important; height:auto !important}
+
+    /* the user-flow diagram stays: numbered nodes, rails, decision points */
+    .fstep .fn{filter:grayscale(100%) !important; width:26px !important; height:26px !important;
+               border-radius:50% !important; padding:0 !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep.exit .fn{color:#fff !important}
+    .frail .fline i{background:#6a6a6a !important}
+    .fdec{border:0.5pt dashed #8a8a8a !important; background:transparent !important;
+          border-radius:0 !important}
+    .fbr{border-top:0.5pt solid #e0e0e0 !important}
+
+    /* the navigation mock-ups are wireframes, not decoration */
+    .nav{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+         background:transparent !important; overflow:hidden !important}
+    .nav .nbar, .nav .ncta, .nav .nghost, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .nav .ncap{border-top:0.5pt dashed #8a8a8a !important}
+
+    .dock, .docnav, .chkbar button{display:none !important}
+    .g2, .g3, .tiles, .docs, .quad, .split{gap:10pt !important}
+  }
+
+  /* ---- plain print corrections ---- */
+  @media print{
+    /* an id that is a table cell still needs its column gap */
+    td.fid, td.pid, td.iid, td.xid, td.rid, td.sid, td.dcode, td.cnt, td.sz{
+      padding:5pt 12pt 5pt 0 !important; white-space:nowrap !important;
+    }
+    /* an inline tag needs a delimiter once the chip is gone */
+    .ev::before, .sev::before{content:"["}
+    .ev::after, .sev::after{content:"] "}
+    td .ev::before, td .sev::before, th .ev::before, th .sev::before{content:""}
+    td .ev::after, td .sev::after, th .ev::after, th .sev::after{content:""}
+    .ev, .sev{white-space:nowrap !important; margin-left:3pt !important}
+  }
+</style>
+
+<div class="dock">
+  <button class="dockbtn" id="pdfBtn" type="button"><span aria-hidden="true">⇩</span> Download PDF</button>
+</div>
+
+<nav class="docnav">
+  <div class="dn">
+    <a class="dnbrand" href="index.html">LINK <b>UX</b></a>
+    <div class="dnlinks">
+      <a href="LINK-UX-Research.html">Research</a>
+      <a href="LINK-SWOT.html">SWOT</a>
+      <a href="LINK-Revenue-Policy.html">Revenue &amp; Policy</a>
+      <a href="LINK-UI-Design-Brief.html" class="on" aria-current="page">Design Brief</a>
+      <a href="LINK-Navigation-Pages.html">Navigation</a>
+      <a href="LINK-Page-Features.html">Features</a>
+      <a href="LINK-Popups-Forms.html">Popups &amp; Forms</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="dochead">
+    <span class="kicker">LINK · Phase 1 pilot · design brief for UI designers</span>
+    <h1>What to design, in what order, and the <em>eleven rules you cannot break</em></h1>
+    <p class="sub">Everything a UI designer needs to produce the Phase 1 screens without reading the full research. It covers the product in two minutes, the three user levels, the non-negotiable rules and why each exists, the foundations, a screen-by-screen specification, and the checklist a screen must pass before handoff. Read Sections 01 to 04 before opening a design file.</p>
+    <div class="facts">
+      <div><span class="lab">Design window</span><div class="v accent">Weeks 4&ndash;6 · 8&ndash;28 Oct</div></div>
+      <div><span class="lab">Approval</span><div class="v">Wed 28 Oct 2026</div></div>
+      <div><span class="lab">Screens in scope</span><div class="v">21 across 3 levels</div></div>
+      <div><span class="lab">Primary device</span><div class="v">Mobile, designed first</div></div>
+      <div><span class="lab">Deliverable</span><div class="v">Token set + hi-fi screens</div></div>
+      <div><span class="lab">Not in scope</span><div class="v">Full design system</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>The product in two minutes</h2></div>
+
+    <p>LINK is a marketplace where a creator sells a paid one-to-one video call to the people who already follow them. The creator sets a price and some availability, gets one shareable link, and puts it in their bio. A follower opens that link, picks a time, pays by card, and both join a browser-based call. LINK holds the money until the call happens, then pays the creator and keeps 15 percent.</p>
+
+    <p>Three things about this product change how it should be designed, and they are not obvious:</p>
+
+    <div class="g3">
+      <div class="card">
+        <h4>The customer is not shopping</h4>
+        <p class="tiny soft" style="margin:8px 0 0">They arrive from a creator they already follow and trust. They have chosen the person before they see the page. <strong>The profile is a conversion page for a decision mostly made, not a listing competing for attention.</strong> Do not design it like a marketplace tile.</p>
+      </div>
+      <div class="card">
+        <h4>The trust problem is about LINK, not the creator</h4>
+        <p class="tiny soft" style="margin:8px 0 0">The visitor believes in the person and has never heard of the platform. Design effort belongs on payment protection, refund clarity and processor branding. It does not belong on persuading them the creator is worth it.</p>
+      </div>
+      <div class="card">
+        <h4>Everything happens on a phone</h4>
+        <p class="tiny soft" style="margin:8px 0 0">Traffic arrives from social links, and creator onboarding has a stated target of under five minutes on a phone. Design at phone width first and expand. Not the other way round.</p>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <h3>The marketplace is empty at launch, and that is the condition you are designing for</h3>
+      <p>Thirty hand-recruited creators, no reviews on day one, thin availability. Emptiness reads as abandonment, not as newness. <strong>Do not design surfaces whose emptiness is visible.</strong> Browse and category pages exist but are demoted in the pilot, because a category page advertises exactly how small the marketplace is. Every empty state in this product needs a deliberate answer, not a default one.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>The three user levels</h2></div>
+    <p class="lede">Each level is a separate surface with a separate job. The prototype currently mixes them, and separating them is one of the main things this design pass must fix.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Level</th><th>Who</th><th>Entry point</th><th>Success looks like</th><th>Design priority</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>1 · Creator</strong><div class="tiny soft">The supply side, and the hard side of this marketplace</div></td>
+            <td>Modest following, roughly 20k to 80k. Wants income and credibility without looking unprofessional.</td>
+            <td>A personal invitation from the founder. Never search.</td>
+            <td>A live profile link taking bookings, reached in under five minutes on a phone.</td>
+            <td class="w2"><span class="chip p1">Highest</span></td>
+          </tr>
+          <tr>
+            <td><strong>2 · Customer</strong><div class="tiny soft">The demand side</div></td>
+            <td>An existing follower of one specific creator. Has never heard of LINK.</td>
+            <td>A link in a story, bio or post. On mobile.</td>
+            <td>A paid, completed, reviewed call. Then a second one.</td>
+            <td class="w2"><span class="chip p1">Highest</span></td>
+          </tr>
+          <tr>
+            <td><strong>3 · Administrator</strong><div class="tiny soft">Internal operations</div></td>
+            <td>One person. At pilot scale this role replaces trust and safety tooling.</td>
+            <td>An alert, a report, or a routine check.</td>
+            <td>The problem resolved before either party escalates.</td>
+            <td class="w2"><span class="chip p3">Plain and fast</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <h3>Structure: three surfaces, one shell</h3>
+      <p>A shared visual language and shared components, but three distinct navigation contexts. A creator setting up their offer and a visitor deciding whether to pay want almost nothing in common, and a single undifferentiated structure serves neither. The administrator surface can be visually plain; it needs speed, not polish.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>The eleven rules</h2></div>
+    <p class="lede">Each of these comes from research or from an agreed contractual decision. If a design conflicts with one of these, the design changes, not the rule. Every rule carries its reason, because a rule without a reason gets broken the first time it is inconvenient.</p>
+
+    <div class="stack">
+      <div class="rule">
+        <header><span class="rid">R1</span><span class="rt">Show the all-in total before the card form</span></header>
+        <p style="margin:0">The service fee must appear in the total at <strong>slot selection</strong>, not at checkout. The customer should never see a number go up.</p>
+        <div class="why"><strong>Why:</strong> unexpected extra costs are cited by 48 percent of people who abandon a checkout, the single largest documented cause. This is the cheapest conversion win in the product and it is free until this screen is drawn.</div>
+      </div>
+
+      <div class="rule">
+        <header><span class="rid">R2</span><span class="rt">Guest checkout. No account to buy one call</span></header>
+        <p style="margin:0">Collect only what the booking requires: name, email, payment. No password, no profile, no confirmation step.</p>
+        <div class="why"><strong>Why:</strong> forced account creation is cited by 26 percent of abandoners. The customer is buying one call from one person, not joining a platform.</div>
+      </div>
+
+      <div class="rule">
+        <header><span class="rid">R3</span><span class="rt">Availability renders in the viewer's time zone, always</span></header>
+        <p style="margin:0">Never the creator's. Never UTC. State the zone visibly so the viewer can confirm it.</p>
+        <div class="why"><strong>Why:</strong> a visitor who has to do mental arithmetic to work out whether a slot suits them is a visitor who leaves. It is in the acceptance criteria and should be treated as conversion-critical, not as formatting.</div>
+      </div>
+
+      <div class="rule">
+        <header><span class="rid">R4</span><span class="rt">Payment protection is visible at the pay button</span></header>
+        <p style="margin:0">One line: the payment is held until the call is complete. Plus one line of refund policy. Both adjacent to the button, not in a footer or a terms link.</p>
+        <div class="why"><strong>Why:</strong> the customer's primary fear is paying and being ghosted, and it peaks at exactly this moment. Held funds are the strongest trust asset the product has and they are currently invisible.</div>
+      </div>
+
+      <div class="rule">
+        <header><span class="rid">R5</span><span class="rt">The verified badge makes a precise, dated claim</span></header>
+        <p style="margin:0">Not "Verified". Instead: <code>18.2k on Instagram · verified Oct 2026</code>. Manual verification gets a visibly lighter "linked" treatment so the two are never confused.</p>
+        <div class="why"><strong>Why:</strong> "Verified" alone implies identity verification, which LINK does not do. A smaller precise claim is more credible than a larger vague one and is defensible if challenged.</div>
+      </div>
+
+      <div class="rule">
+        <header><span class="rid">R6</span><span class="rt">Payout setup is deferrable, and the copy must prove it</span></header>
+        <p style="margin:0">A creator reaches a live profile without entering bank details. The step must look optional, not skippable-but-probably-required.</p>
+        <div class="why"><strong>Why:</strong> bank details are the heaviest step in the creator flow and the one most likely to end the session. Deferring it is already the design intent; a step that looks mandatory will be treated as mandatory.</div>
+      </div>
+
+      <div class="rule">
+        <header><span class="rid">R7</span><span class="rt">Never show an empty price field</span></header>
+        <p style="margin:0">Show a suggested price with its basis, and the net amount the creator receives: <code>You receive $34 of $40</code>.</p>
+        <div class="why"><strong>Why:</strong> of the four steps to a live profile, three have an obviously correct answer. Pricing does not; it is a self-valuation under uncertainty and the likeliest abandonment point. A suggestion turns an identity question into accept-or-adjust.</div>
+      </div>
+
+      <div class="rule">
+        <header><span class="rid">R8</span><span class="rt">Design the empty state before the full one</span></header>
+        <p style="margin:0">Every list, dashboard and category in this product will be empty at launch. The empty state is the default condition, not the edge case.</p>
+        <div class="why"><strong>Why:</strong> emptiness reads as abandonment. A new creator's dashboard should show the next action, not "no bookings yet". Categories with fewer than a handful of creators should not be exposed at all.</div>
+      </div>
+
+      <div class="rule">
+        <header><span class="rid">R9</span><span class="rt">Mobile first, literally</span></header>
+        <p style="margin:0">Draw the phone layout first. Desktop is the expansion. Minimum touch target 44 by 44 points, including availability grids.</p>
+        <div class="why"><strong>Why:</strong> mobile cart abandonment runs 80 percent against 66 percent on desktop, and both sides of this marketplace arrive on a phone by construction.</div>
+      </div>
+
+      <div class="rule">
+        <header><span class="rid">R10</span><span class="rt">Focus states and error messages are conversion features</span></header>
+        <p style="margin:0">Visible focus on every interactive element. Error messages that say what went wrong and how to fix it, placed with the field they belong to.</p>
+        <div class="why"><strong>Why:</strong> usually argued on accessibility grounds, but in a checkout they are conversion mechanics. A user who cannot tell which field is active, or why a payment was rejected, abandons.</div>
+      </div>
+
+      <div class="rule">
+        <header><span class="rid">R11</span><span class="rt">No invented numbers, anywhere</span></header>
+        <p style="margin:0">No placeholder statistics, no sample review counts, no "join 10,000 creators". If a number is not real and sourced, it does not appear, including in the design file.</p>
+        <div class="why"><strong>Why:</strong> the current prototype contains fabricated figures and it is recorded as both a trust problem and a legal risk on a page that takes card payments. Numbers invented in a mockup have a habit of shipping.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Foundations</h2></div>
+    <p class="lede">A token set, not a design system. Phase 1 delivers enough shared decisions to make 21 screens coherent. The full documented system in Figma and code is Phase 2, so do not build one now.</p>
+
+    <h3>Colour</h3>
+    <p>Derived from the existing coral identity in the prototype, which is being kept. Coral is the brand; it is not the interface. Use it for brand moments and the primary action, not for every surface.</p>
+    <div class="g2">
+      <div class="card">
+        <h4>Brand and action</h4>
+        <div class="swatch"><i style="background:#ff6b5a"></i><span class="sn">Coral, primary action</span><span class="sv">#FF6B5A</span></div>
+        <div class="swatch"><i style="background:#e04a39"></i><span class="sn">Coral pressed</span><span class="sv">#E04A39</span></div>
+        <div class="swatch"><i style="background:#fff0ee"></i><span class="sn">Coral tint, surfaces</span><span class="sv">#FFF0EE</span></div>
+        <p class="tiny soft" style="margin:12px 0 0"><strong>Check the contrast.</strong> Coral on white is very likely to fail 4.5:1 for body text. It is a button fill with white text, not a text colour. Measure before committing.</p>
+      </div>
+      <div class="card">
+        <h4>Semantic, separate from brand</h4>
+        <div class="swatch"><i style="background:#15803d"></i><span class="sn">Success, paid, verified</span><span class="sv">#15803D</span></div>
+        <div class="swatch"><i style="background:#b45309"></i><span class="sn">Warning, pending</span><span class="sv">#B45309</span></div>
+        <div class="swatch"><i style="background:#b91c1c"></i><span class="sn">Error, refunded, failed</span><span class="sv">#B91C1C</span></div>
+        <div class="swatch"><i style="background:#16202e"></i><span class="sn">Ink, body text</span><span class="sv">#16202E</span></div>
+        <p class="tiny soft" style="margin:12px 0 0">Money states need their own colours and must never rely on coral. A pending payout and a primary button must not look the same.</p>
+      </div>
+    </div>
+
+    <h3>Type</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Role</th><th>Size</th><th>Weight</th><th>Used for</th></tr></thead>
+        <tbody>
+          <tr><td>Display</td><td class="w2">32&ndash;40px</td><td class="w2">600</td><td>Page titles, the creator name on a profile</td></tr>
+          <tr><td>Heading</td><td class="w2">20&ndash;24px</td><td class="w2">600</td><td>Section headings, modal titles</td></tr>
+          <tr><td>Subheading</td><td class="w2">17px</td><td class="w2">600</td><td>Card titles, step titles</td></tr>
+          <tr><td>Body</td><td class="w2">16px</td><td class="w2">400</td><td>Everything else. <strong>Never below 16px on mobile</strong>, because iOS zooms on focus for smaller inputs.</td></tr>
+          <tr><td>Secondary</td><td class="w2">14px</td><td class="w2">400</td><td>Helper text, timestamps, policy lines</td></tr>
+          <tr><td>Numeric</td><td class="w2">inherit</td><td class="w2">500</td><td>Prices, earnings, counts. Use tabular figures so columns align.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Spacing, radius, elevation</h3>
+    <div class="g3">
+      <div class="card"><h4>Spacing scale</h4><p class="tiny soft" style="margin:8px 0 0">4, 8, 12, 16, 24, 32, 48, 64. Use the scale, not arbitrary values. Vertical rhythm matters more than horizontal in a document-heavy product like this.</p></div>
+      <div class="card"><h4>Radius</h4><p class="tiny soft" style="margin:8px 0 0">Three values only: 8px for inputs and small controls, 12px for cards and panels, full for pills and avatars. More than three reads as inconsistent.</p></div>
+      <div class="card"><h4>Elevation</h4><p class="tiny soft" style="margin:8px 0 0">Two levels: a hairline border for separation, and one soft shadow for genuinely floating things such as modals and the sticky booking bar. Not every card is elevated.</p></div>
+    </div>
+
+    <h3>Components to define once</h3>
+    <p>These appear across all three levels. Define each with its full state set before drawing screens, because retrofitting a state across 21 screens is where design time disappears.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Component</th><th>States required</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Button</strong></td><td>Default, hover, pressed, focus, disabled, loading</td><td>Primary, secondary, ghost, destructive. Loading state is mandatory on anything touching payment.</td></tr>
+          <tr><td><strong>Input</strong></td><td>Default, focus, filled, error, disabled, with helper text</td><td>Label always visible. Never placeholder-as-label.</td></tr>
+          <tr><td><strong>Price input</strong></td><td>As above, plus suggested value and net-received line</td><td>A distinct component because of R7, not a styled text input.</td></tr>
+          <tr><td><strong>Slot picker</strong></td><td>Available, selected, unavailable, loading, none available</td><td>The hardest mobile component in the product. 44pt targets.</td></tr>
+          <tr><td><strong>Verified badge</strong></td><td>Verified with count, linked unverified, pending</td><td>Three visually distinct levels per R5.</td></tr>
+          <tr><td><strong>Money state pill</strong></td><td>Pending, paid, refunded, failed, held</td><td>Semantic colour only, never coral.</td></tr>
+          <tr><td><strong>Avatar</strong></td><td>Image, initials fallback, with and without badge</td><td>Fallback matters: imported social images fail often.</td></tr>
+          <tr><td><strong>Empty state</strong></td><td>One per context, each with a next action</td><td>Per R8. Not a single generic component.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>Screens</h2></div>
+    <p class="lede">Twenty-one screens across three levels, in build order. Priority 1 screens carry a gate metric and should be designed first and reviewed hardest.</p>
+
+    <div class="diawrap">
+      <h4>Layout intent for the three screens that carry the money</h4>
+      <svg class="dia" viewBox="0 0 820 400" role="img" aria-label="Wireframe sketches of the creator profile, checkout and creator dashboard at phone width">
+        <text x="20" y="18" font-size="11.5" fill="#6b7789">Schematic only. Drawn at phone proportions, which is the order these should be designed in.</text>
+
+        <rect x="20" y="34" width="230" height="346" rx="14" fill="#ffffff" stroke="#cbd6e4" stroke-width="2"/>
+        <rect x="20" y="34" width="230" height="30" rx="14" fill="#eef3fa"/>
+        <text x="34" y="54" font-size="11" font-weight="600" fill="#1e3a8a">LINK</text>
+        <text x="236" y="54" text-anchor="end" font-size="10" fill="#6b7789">How LINK works</text>
+        <circle cx="58" cy="100" r="22" fill="#e7eef8" stroke="#cbd6e4"/>
+        <rect x="90" y="86" width="86" height="11" rx="4" fill="#16202e"/>
+        <rect x="90" y="103" width="120" height="9" rx="4" fill="#15803d"/>
+        <text x="94" y="111" font-size="7.5" fill="#ffffff">18.2k on Instagram, verified Oct 2026</text>
+        <rect x="34" y="138" width="202" height="9" rx="4" fill="#cbd6e4"/>
+        <rect x="34" y="153" width="160" height="9" rx="4" fill="#cbd6e4"/>
+        <rect x="34" y="178" width="202" height="40" rx="8" fill="#f7f9fc" stroke="#cbd6e4"/>
+        <text x="46" y="195" font-size="10" font-weight="600" fill="#16202e">30 minutes</text>
+        <text x="224" y="195" text-anchor="end" font-size="11" font-weight="600" fill="#16202e">$40</text>
+        <text x="46" y="210" font-size="9" fill="#6b7789">Next available today, 4:00 pm</text>
+        <rect x="34" y="228" width="60" height="30" rx="7" fill="#dbe6fe" stroke="#2563eb"/>
+        <text x="64" y="247" text-anchor="middle" font-size="9.5" fill="#1e3a8a">4:00 pm</text>
+        <rect x="100" y="228" width="60" height="30" rx="7" fill="#f7f9fc" stroke="#cbd6e4"/>
+        <text x="130" y="247" text-anchor="middle" font-size="9.5" fill="#46536a">5:30 pm</text>
+        <rect x="166" y="228" width="60" height="30" rx="7" fill="#f7f9fc" stroke="#cbd6e4"/>
+        <text x="196" y="247" text-anchor="middle" font-size="9.5" fill="#46536a">7:00 pm</text>
+        <text x="34" y="276" font-size="8.5" fill="#6b7789">Times shown in your time zone</text>
+        <rect x="20" y="300" width="230" height="80" rx="0" fill="#f7f9fc" stroke="#cbd6e4"/>
+        <text x="34" y="320" font-size="9.5" fill="#46536a">Call $40.00</text>
+        <text x="34" y="334" font-size="9.5" fill="#46536a">Service fee (card processing) $1.90</text>
+        <text x="34" y="350" font-size="11" font-weight="600" fill="#16202e">Total $41.90</text>
+        <rect x="150" y="336" width="86" height="28" rx="7" fill="#ff6b5a"/>
+        <text x="193" y="354" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Continue</text>
+        <text x="135" y="394" text-anchor="middle" font-size="11" font-weight="600" fill="#16202e">C1 Creator profile</text>
+
+        <rect x="295" y="34" width="230" height="346" rx="14" fill="#ffffff" stroke="#cbd6e4" stroke-width="2"/>
+        <rect x="295" y="34" width="230" height="30" rx="14" fill="#eef3fa"/>
+        <text x="309" y="54" font-size="11" font-weight="600" fill="#6b7789">LINK</text>
+        <text x="511" y="54" text-anchor="end" font-size="9" fill="#6b7789">Secure checkout</text>
+        <rect x="309" y="76" width="202" height="46" rx="8" fill="#f7f9fc" stroke="#cbd6e4"/>
+        <text x="321" y="94" font-size="9.5" fill="#46536a">Maya &#183; 30 min &#183; today 4:00 pm</text>
+        <text x="321" y="112" font-size="11" font-weight="600" fill="#16202e">Total $41.90</text>
+        <text x="497" y="112" text-anchor="end" font-size="8" fill="#15803d">unchanged</text>
+        <text x="309" y="142" font-size="9" fill="#46536a">Full name</text>
+        <rect x="309" y="148" width="202" height="28" rx="7" fill="#ffffff" stroke="#cbd6e4"/>
+        <text x="309" y="194" font-size="9" fill="#46536a">Email</text>
+        <rect x="309" y="200" width="202" height="28" rx="7" fill="#ffffff" stroke="#cbd6e4"/>
+        <text x="309" y="246" font-size="9" fill="#46536a">Card</text>
+        <rect x="309" y="252" width="202" height="28" rx="7" fill="#ffffff" stroke="#cbd6e4"/>
+        <rect x="309" y="296" width="202" height="34" rx="8" fill="#ff6b5a"/>
+        <text x="410" y="318" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Pay $41.90</text>
+        <text x="410" y="346" text-anchor="middle" font-size="8.5" fill="#15803d">Your payment is held until the call is complete</text>
+        <text x="410" y="360" text-anchor="middle" font-size="8.5" fill="#6b7789">Free cancellation up to 24 hours before</text>
+        <text x="410" y="394" text-anchor="middle" font-size="11" font-weight="600" fill="#16202e">C2 Checkout, no nav</text>
+
+        <rect x="570" y="34" width="230" height="346" rx="14" fill="#ffffff" stroke="#cbd6e4" stroke-width="2"/>
+        <rect x="570" y="34" width="230" height="30" rx="14" fill="#eef3fa"/>
+        <text x="584" y="54" font-size="11" font-weight="600" fill="#1e3a8a">LINK</text>
+        <text x="786" y="54" text-anchor="end" font-size="9" fill="#6b7789">View my profile</text>
+        <rect x="584" y="78" width="202" height="28" rx="8" fill="#fdf0d5" stroke="#b45309"/>
+        <text x="594" y="96" font-size="8.5" fill="#b45309">Add your bank details to receive your earnings</text>
+        <rect x="584" y="118" width="96" height="62" rx="9" fill="#f7f9fc" stroke="#cbd6e4"/>
+        <text x="596" y="138" font-size="8.5" fill="#6b7789">Pending</text>
+        <text x="596" y="160" font-size="17" font-weight="600" fill="#b45309" font-family="monospace">$68</text>
+        <rect x="690" y="118" width="96" height="62" rx="9" fill="#f7f9fc" stroke="#cbd6e4"/>
+        <text x="702" y="138" font-size="8.5" fill="#6b7789">Paid</text>
+        <text x="702" y="160" font-size="17" font-weight="600" fill="#15803d" font-family="monospace">$204</text>
+        <rect x="584" y="192" width="202" height="54" rx="9" fill="#dbe6fe" stroke="#2563eb"/>
+        <text x="596" y="211" font-size="9" fill="#1e3a8a">Next call</text>
+        <text x="596" y="228" font-size="10.5" font-weight="600" fill="#16202e">Devon &#183; today 4:00 pm</text>
+        <text x="596" y="241" font-size="9" fill="#2563eb">Join link opens 5 minutes before</text>
+        <rect x="584" y="258" width="202" height="40" rx="9" fill="#f7f9fc" stroke="#cbd6e4" stroke-dasharray="4 3"/>
+        <text x="685" y="274" text-anchor="middle" font-size="9" fill="#6b7789">Share your link to get your first booking</text>
+        <text x="685" y="290" text-anchor="middle" font-size="9" fill="#2563eb">link.com/c/maya &#183; Copy</text>
+        <rect x="570" y="330" width="230" height="50" fill="#f7f9fc" stroke="#cbd6e4"/>
+        <text x="604" y="360" text-anchor="middle" font-size="9" font-weight="600" fill="#ff6b5a">Home</text>
+        <text x="663" y="360" text-anchor="middle" font-size="9" fill="#6b7789">Bookings</text>
+        <text x="722" y="360" text-anchor="middle" font-size="9" fill="#6b7789">Messages</text>
+        <text x="775" y="360" text-anchor="middle" font-size="9" fill="#6b7789">Profile</text>
+        <text x="685" y="394" text-anchor="middle" font-size="11" font-weight="600" fill="#16202e">K6 Dashboard</text>
+      </svg>
+      <p class="vnote">These are layout intent, not designs. They exist to settle three arguments before anyone opens a design file: the total appears on the profile and never changes, checkout has no navigation at all, and the dashboard&#8217;s empty state is the share prompt rather than a message saying there is nothing here.</p>
+    </div>
+
+    <h3>Level 2 · Customer <span class="chip p1">design these first</span></h3>
+    <p class="tiny soft">Counterintuitive, but correct: the customer screens contain the two free conversion wins and the hardest trust problem. They also unblock nothing downstream, so getting them wrong is expensive and getting them right early is cheap.</p>
+
+    <div class="stack">
+      <div class="scr">
+        <header><span class="sid">C1</span><span class="st">Creator profile and booking panel</span><span class="sp">Priority 1</span></header>
+        <dl>
+          <dt>Job</dt><dd>Establish that LINK is legitimate within seconds, then get to a selected slot. The visitor already believes in the creator.</dd>
+          <dt>Must contain</dt><dd><ul>
+            <li>Verified badge with a precise dated claim (R5)</li>
+            <li>Only real, sourced values. No invented counts (R11)</li>
+            <li>Offer options with duration and price</li>
+            <li>Availability in the viewer's time zone, leading with the nearest slot (R3)</li>
+            <li>The all-in total once a slot is chosen (R1)</li>
+            <li>Refund policy in one line (R4)</li>
+          </ul></dd>
+          <dt>Must not</dt><dd>Look like a directory listing. Compete with other creators. Show review counts that do not exist.</dd>
+          <dt>States</dt><dd>Default, no availability, creator unverified, loading, creator suspended</dd>
+          <dt>Acceptance</dt><dd>A visitor reaches checkout in under 90 seconds. Availability renders in the viewer's own zone.</dd>
+        </dl>
+      </div>
+
+      <div class="scr">
+        <header><span class="sid">C2</span><span class="st">Checkout</span><span class="sp">Priority 1</span></header>
+        <dl>
+          <dt>Job</dt><dd>Take payment without surprising anyone. This single screen carries the two largest documented abandonment causes.</dd>
+          <dt>Must contain</dt><dd><ul>
+            <li>Guest checkout. Name, email, card. Nothing else (R2)</li>
+            <li>The same total shown at slot selection, unchanged (R1)</li>
+            <li>Fee line labelled with what it covers: <code>Service fee (card processing)</code></li>
+            <li>"Your payment is held until the call is complete" at the button (R4)</li>
+            <li>Refund policy line with a link to detail</li>
+            <li>Visible processor branding</li>
+          </ul></dd>
+          <dt>Must not</dt><dd>Add any number the customer has not already seen. Require a password. Span more than one screen on mobile.</dd>
+          <dt>States</dt><dd>Default, validating, card declined, slot taken while paying, success, network failure</dd>
+          <dt>Acceptance</dt><dd>Fully keyboard navigable with visible focus. Errors say what to do next.</dd>
+        </dl>
+      </div>
+
+      <div class="scr">
+        <header><span class="sid">C3</span><span class="st">Confirmation</span><span class="sp">Priority 2</span></header>
+        <dl>
+          <dt>Job</dt><dd>Reassure immediately, and make the join link impossible to lose.</dd>
+          <dt>Must contain</dt><dd>Creator, date and time in the viewer's zone, the join link, what happens next, how to cancel, and the refund window.</dd>
+          <dt>States</dt><dd>Default, add-to-calendar taken, link copied</dd>
+        </dl>
+      </div>
+
+      <div class="scr">
+        <header><span class="sid">C4</span><span class="st">Call join</span><span class="sp">Priority 2</span></header>
+        <dl>
+          <dt>Job</dt><dd>Get both people into the call with no download and no account.</dd>
+          <dt>Note</dt><dd>The call interface itself is the video provider's prebuilt UI and is not being designed. What you design is the wrapper: the pre-join screen, the too-early state, the creator-not-here state, and the call-ended state.</dd>
+          <dt>States</dt><dd>Too early, ready to join, waiting for the other party, in call, ended, permission denied</dd>
+          <dt>Watch</dt><dd>There is no device check in Phase 1. The permission-denied state is the only recovery path and needs real design attention.</dd>
+        </dl>
+      </div>
+
+      <div class="scr">
+        <header><span class="sid">C5</span><span class="st">Post-call review</span><span class="sp">Priority 2</span></header>
+        <dl>
+          <dt>Job</dt><dd>Capture a rating, and prompt the second booking.</dd>
+          <dt>Must contain</dt><dd>One to five stars, optional text, and a <strong>book again</strong> affordance beside it. The rebooking prompt is a recommended addition because the primary gate metric is defined as trending up and nothing else in scope encourages recurrence.</dd>
+          <dt>States</dt><dd>Prompt, submitted, skipped, call did not happen</dd>
+        </dl>
+      </div>
+
+      <div class="scr">
+        <header><span class="sid">C6&ndash;C8</span><span class="st">Landing page, browse, policy pages</span><span class="sp">Priority 3</span></header>
+        <dl>
+          <dt>Landing</dt><dd>One page, with a clear split between the creator story and the customer story. Replaces the two competing landing pages in the prototype.</dd>
+          <dt>Browse</dt><dd>Exists, deliberately demoted. Not the pilot's route to a booking. Design the sparse state as the normal state (R8).</dd>
+          <dt>Policy</dt><dd>Refunds, conduct, terms, privacy. Plain, readable, linked from checkout. Content is the client's legal responsibility; the layout is ours.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <h3>Level 1 · Creator <span class="chip p1">design second</span></h3>
+
+    <div class="stack">
+      <div class="scr">
+        <header><span class="sid">K1</span><span class="st">Sign-up and account connection</span><span class="sp">Priority 1</span></header>
+        <dl>
+          <dt>Job</dt><dd>Get from an invitation link to a connected account with as little friction as possible.</dd>
+          <dt>Must contain</dt><dd>A clear statement of what connecting the account does and does not do. Permission anxiety peaks here, before any value has been shown.</dd>
+          <dt>Critical branch</dt><dd>If the connection fails, or the creator is on a platform Phase 1 does not automate, <strong>the flow must continue</strong> with manual verification pending. Never a dead end, never an error message that implies rejection.</dd>
+          <dt>States</dt><dd>Default, connecting, connected, connection failed, unsupported platform, already registered</dd>
+        </dl>
+      </div>
+
+      <div class="scr">
+        <header><span class="sid">K2</span><span class="st">Onboarding, three steps</span><span class="sp">Priority 1</span></header>
+        <dl>
+          <dt>Job</dt><dd>Reach bookable in under five minutes on a phone, unaided. This screen owns a gate metric.</dd>
+          <dt>Step 1, offer</dt><dd>Duration from bounded options. Price with a suggestion and its basis, plus the net received (R7).</dd>
+          <dt>Step 2, availability</dt><dd>Flat slots in the creator's own zone. Same-day and next-hour presets so first availability is one tap.</dd>
+          <dt>Step 3, payouts</dt><dd>Visibly optional (R6). "Add your bank details later. You will need them before your first payout, not before going live."</dd>
+          <dt>Must contain</dt><dd>Progress that shows how little is left. A live preview of how the profile will look when shared, because that is what the creator is actually anxious about.</dd>
+          <dt>States</dt><dd>Each step: empty, filled, error, saving. Plus an exit-and-resume state.</dd>
+          <dt>Acceptance</dt><dd>Bookable without entering bank details. Under five minutes on a phone with no instructions.</dd>
+        </dl>
+      </div>
+
+      <div class="scr">
+        <header><span class="sid">K3</span><span class="st">Dashboard, earnings first</span><span class="sp">Priority 1</span></header>
+        <dl>
+          <dt>Job</dt><dd>Answer "am I making money and what is next" in one glance.</dd>
+          <dt>Must contain</dt><dd>Pending earnings, paid earnings, the next upcoming call, and a prompt for anything still missing from the profile.</dd>
+          <dt>Empty state</dt><dd>The most important empty state in the product. A new creator sees this immediately after onboarding, before any booking exists. It must show the next action, such as sharing the link, not "no earnings yet" (R8).</dd>
+          <dt>States</dt><dd>Brand new, awaiting first booking, active, payout pending, payout failed, suspended</dd>
+        </dl>
+      </div>
+
+      <div class="scr">
+        <header><span class="sid">K4&ndash;K7</span><span class="st">Offer editor, availability editor, bookings list, messages</span><span class="sp">Priority 2</span></header>
+        <dl>
+          <dt>Offer and availability</dt><dd>The same components as onboarding, in an editing context. Do not design them twice.</dd>
+          <dt>Bookings</dt><dd>Upcoming and past, with the join link prominent on anything upcoming.</dd>
+          <dt>Messages</dt><dd>Gated: a thread exists only after a confirmed booking. The locked state needs a clear explanation, because this is a deliberate restriction that will be questioned.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <h3>Level 3 · Administrator <span class="chip p3">design last, keep it plain</span></h3>
+
+    <div class="stack">
+      <div class="scr">
+        <header><span class="sid">A1&ndash;A3</span><span class="st">Members list, payments list, record detail</span><span class="sp">Priority 2</span></header>
+        <dl>
+          <dt>Job</dt><dd>Locate one record and act on it in two clicks. Speed, not polish.</dd>
+          <dt>The five actions</dt><dd>Verify a creator manually, find a member or payment, issue a refund against policy, suspend an account, and respond to a monitoring alert. Each reachable in two clicks from the list.</dd>
+          <dt>Must contain</dt><dd>Search, money-state pills, and confirmation on every destructive or financial action. There is no audit log in Phase 1, so every irreversible action needs a confirm step with the consequence stated.</dd>
+          <dt>Design budget</dt><dd>Deliberately low. Use the component library as-is. No bespoke layouts.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>Every screen needs these states</h2></div>
+    <p class="lede">The most common reason a design hands off incomplete is a missing state. Run this list on every screen before you call it done.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>State</th><th>Question it answers</th><th>Commonly missed on</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Default</strong></td><td>What does this look like when everything is normal?</td><td class="w2">&mdash;</td></tr>
+          <tr><td><strong>Empty</strong></td><td>What does a new creator or an unbooked day look like?</td><td class="w2">Dashboard, bookings, browse</td></tr>
+          <tr><td><strong>Loading</strong></td><td>What happens in the seconds after a tap, especially on payment?</td><td class="w2">Checkout, slot picker</td></tr>
+          <tr><td><strong>Error</strong></td><td>What went wrong, and what does the person do now?</td><td class="w2">Checkout, account connection</td></tr>
+          <tr><td><strong>Success</strong></td><td>How does the person know it worked?</td><td class="w2">Onboarding steps, refunds</td></tr>
+          <tr><td><strong>Disabled</strong></td><td>Why can this not be used yet, and what would enable it?</td><td class="w2">Pay button, messages</td></tr>
+          <tr><td><strong>Focus</strong></td><td>Which element has keyboard focus? (R10)</td><td class="w2">Everything interactive</td></tr>
+          <tr><td><strong>Long content</strong></td><td>What happens with a 40-character name or a 500-word review?</td><td class="w2">Profile, reviews, messages</td></tr>
+          <tr><td><strong>Phone width</strong></td><td>Does it work at 375px without horizontal scroll? (R9)</td><td class="w2">Tables, availability grid</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>Three states specific to this product</h3>
+      <p><strong>Slot taken while paying.</strong> Two customers can select the same slot. The second one needs a graceful recovery, not a generic error.</p>
+      <p><strong>Creator unverified.</strong> A profile can be live with a pending manual verification. It must still look credible, just differently (R5).</p>
+      <p><strong>Call window states.</strong> Too early, joinable, in progress, missed, completed. The <em>missed</em> state is the one people forget, and it is the one that triggers refunds.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">07</span><h2>Copy you are responsible for</h2></div>
+    <p class="lede">These strings change behaviour, so they are design decisions rather than content to be filled in later. Settle them in the design file.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>String</th><th>Write it like this</th><th>Not like this</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Service fee label</strong></td><td><code>Service fee (card processing)</code></td><td>"Service fee", "Fees", "Other charges"</td></tr>
+          <tr><td><strong>Payment assurance</strong></td><td>"Your payment is held until the call is complete."</td><td>"Secure checkout", "Protected by LINK"</td></tr>
+          <tr><td><strong>Refund line</strong></td><td>"Free cancellation up to 24 hours before."</td><td>"See our refund policy"</td></tr>
+          <tr><td><strong>Verified badge</strong></td><td><code>18.2k on Instagram · verified Oct 2026</code></td><td>"Verified", "Verified creator"</td></tr>
+          <tr><td><strong>Payout deferral</strong></td><td>"Add your bank details later. You will need them before your first payout, not before going live."</td><td>"Skip for now"</td></tr>
+          <tr><td><strong>Net earnings</strong></td><td><code>You receive $34 of $40</code></td><td>"85% commission rate"</td></tr>
+          <tr><td><strong>Gated messaging</strong></td><td>"Messaging opens once a booking is confirmed."</td><td>"Locked", "Unavailable"</td></tr>
+          <tr><td><strong>Empty dashboard</strong></td><td>"Share your link to get your first booking." plus the link and a copy button.</td><td>"No bookings yet"</td></tr>
+          <tr><td><strong>Payment error</strong></td><td>"Your card was declined. Try another card, or contact your bank."</td><td>"Transaction failed. Error 402."</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tiny soft">Pattern: name the thing in the user's words, state the consequence, and give the next action. Never make a person infer what happens to their money.</p>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">08</span><h2>What you are not designing</h2></div>
+    <p class="lede">Out of scope for Phase 1. If a design implies any of these, it has grown past the agreement.</p>
+
+    <div class="g2">
+      <div class="card">
+        <h4>Deferred to Phase 2</h4>
+        <ul class="tiny soft">
+          <li>A full documented design system in Figma and code</li>
+          <li>Second and third platform connections</li>
+          <li>Search with ranking and relevance</li>
+          <li>Push and text notification surfaces</li>
+          <li>Pre-call device check and lobby</li>
+          <li>Self-serve rescheduling and calendar sync</li>
+          <li>Availability rules, buffers, blackout dates, recurring slots</li>
+          <li>Dispute, fraud and moderation tooling</li>
+          <li>Trust and safety queues, audit log views</li>
+          <li>Multiple currencies</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Beyond Phase 2</h4>
+        <ul class="tiny soft">
+          <li>Native mobile apps. This is a progressive web app in both phases</li>
+          <li>Group calls, packages, subscriptions</li>
+          <li>Tips, gifting, creator pro tier</li>
+          <li>Call recording and automatic summaries</li>
+          <li>Referral and ambassador programme screens</li>
+          <li>Advanced creator analytics</li>
+          <li>Real-time "available now" status</li>
+        </ul>
+        <p class="tiny soft" style="margin-top:12px"><strong>One exception worth knowing:</strong> same-day and next-hour availability presets are in scope. They deliver most of the immediacy of a live status for a fraction of the cost.</p>
+      </div>
+    </div>
+
+    <div class="note crit">
+      <h3>If you think something is missing, say so before you design it</h3>
+      <p>Phase 1 is a fixed fee against a fixed duration, and additions must displace something of equal size or move to Phase 2. A screen that quietly includes an out-of-scope feature creates a build expectation that was never costed. Raise it as a question, not as a mockup.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="snum">09</span><h2>Timeline and handoff</h2></div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Week</th><th>Dates</th><th>Output</th><th>Review</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Week 4</strong></td><td class="w2">8&ndash;14 Oct</td><td>Information architecture, three-surface structure, all flows mapped, wireframes for onboarding and booking at phone width</td><td>Internal</td></tr>
+          <tr><td><strong>Week 5</strong></td><td class="w2">15&ndash;21 Oct</td><td>Token set including focus states and measured contrast. Component library with full state sets. Creator onboarding and dashboard in high fidelity</td><td>Client session</td></tr>
+          <tr><td><strong>Week 6</strong></td><td class="w2">22&ndash;28 Oct</td><td>Profile and booking panel, checkout, confirmation, call join, post-call, admin essentials. Mobile review before sign-off</td><td><strong>Approval 28 Oct</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>Approval is within one working day of the demo</h3>
+      <p>This is a contractual term, not a courtesy. Build starts 29 October and the schedule has no slack built into the design phase. If approval slips more than three working days, the milestone moves rather than the work compressing, and that is confirmed in writing in the same week.</p>
+    </div>
+
+    <h3>Before you hand a screen over</h3>
+    <div class="chk" id="handoff">
+      <label><input type="checkbox" id="hd01"><span>All nine states from Section 06 exist, or are explicitly marked not applicable</span></label>
+      <label><input type="checkbox" id="hd02"><span>Phone layout drawn first, verified at 375px with no horizontal scroll</span></label>
+      <label><input type="checkbox" id="hd03"><span>Touch targets 44 by 44 points minimum, including the availability grid</span></label>
+      <label><input type="checkbox" id="hd04"><span>Focus state visible on every interactive element</span></label>
+      <label><input type="checkbox" id="hd05"><span>Text contrast measured, not assumed, especially anything on coral</span></label>
+      <label><input type="checkbox" id="hd06"><span>Every number on the screen is real and sourced, or clearly marked as sample data</span></label>
+      <label><input type="checkbox" id="hd07"><span>Every error message says what happened and what to do next</span></label>
+      <label><input type="checkbox" id="hd08"><span>Components reused from the library rather than redrawn</span></label>
+      <label><input type="checkbox" id="hd09"><span>Nothing on the screen implies an out-of-scope feature</span></label>
+      <label><input type="checkbox" id="hd10"><span>Spacing values come from the scale</span></label>
+    </div>
+    <div class="chkbar">
+      <span class="cprog"><i id="hdbar"></i></span>
+      <span class="ccount" id="hdcount">0 of 10</span>
+      <button type="button" id="hdreset">Reset</button>
+    </div>
+
+    <h3>What engineering needs from you</h3>
+    <ul>
+      <li><strong>Tokens as values, not as pictures.</strong> Hex codes, spacing numbers, type sizes, radii, in a form that can be copied.</li>
+      <li><strong>Every state as a separate frame</strong>, named so it is findable. Not variants hidden behind a toggle.</li>
+      <li><strong>Breakpoint behaviour described</strong> where it is not obvious, particularly for the availability grid and any table.</li>
+      <li><strong>Copy in the design</strong>, final, not lorem. The strings in Section 07 are part of the design.</li>
+      <li><strong>Interaction notes</strong> for anything with timing: loading, success confirmation, the call window countdown.</li>
+    </ul>
+
+    <div class="note good">
+      <h3>The one-sentence version of this brief</h3>
+      <p><strong>Design for a phone, for an empty marketplace, for someone who trusts the creator and not the platform, and never let a number appear that the person has not already seen.</strong> Everything else in this document follows from those four things.</p>
+    </div>
+  </section>
+
+  <p class="foot">LINK UI design brief, issued 1 October 2026 for the Phase 1 pilot design phase, Weeks 4 to 6. Derived from the LINK UX Research Report and SWOT analysis of the same date, the Milestone 1 agreement version 1.1, and the delivery schedule revised 25 September 2026. Rules R1, R2 and R7 are supported by published conversion research; R3, R4, R6, R8 and R11 are supported by the project record and the prior prototype audit. The design decisions behind R1, R2 and the no-show rules were open at the time of writing and are confirmed at the Week 3 scope fix. Prepared by Oyolloo for WorkDev Solutions.</p>
+
+</div>
+
+<script>
+(function(){
+  document.getElementById("pdfBtn").addEventListener("click", function(){ window.print(); });
+
+  var KEY = "link-ui-handoff";
+  var list = document.getElementById("handoff");
+  if(!list) return;
+  var boxes = Array.prototype.slice.call(list.querySelectorAll("input[type=checkbox]"));
+  var bar = document.getElementById("hdbar");
+  var count = document.getElementById("hdcount");
+  var reset = document.getElementById("hdreset");
+
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ return {}; } }
+  function save(o){ try{ localStorage.setItem(KEY, JSON.stringify(o)); }catch(e){} }
+  function paint(){
+    var done = boxes.filter(function(b){ return b.checked; }).length;
+    count.textContent = done + " of " + boxes.length;
+    bar.style.width = boxes.length ? (done / boxes.length * 100) + "%" : "0%";
+  }
+
+  var state = load();
+  boxes.forEach(function(b){
+    if(state[b.id]) b.checked = true;
+    b.addEventListener("change", function(){
+      var s = load();
+      if(b.checked){ s[b.id] = 1; } else { delete s[b.id]; }
+      save(s); paint();
+    });
+  });
+
+  reset.addEventListener("click", function(){
+    boxes.forEach(function(b){ b.checked = false; });
+    save({}); paint();
+  });
+
+  paint();
+})();
+</script>

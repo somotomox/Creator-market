@@ -1,0 +1,930 @@
+<meta charset="utf-8">
+<title>LINK Revenue and Policy</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa; --surface-3:#e7eef8;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --good:#15803d; --good-bg:#e4f7ea; --warn:#b45309; --warn-bg:#fdf0d5;
+    --crit:#b91c1c; --crit-bg:#fbe4e4; --coral:#ff6b5a;
+    --shadow:0 1px 2px rgba(11,31,58,.05);
+    --f-body:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --f-mono:"IBM Plex Mono","SFMono-Regular",ui-monospace,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--f-body);
+       font-size:16px; line-height:1.78; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px; margin:0 auto; padding-inline:22px; padding-block:30px 90px}
+  p{margin:0 0 15px}
+  strong{font-weight:600}
+  h1,h2,h3,h4{margin:0; line-height:1.3; text-wrap:balance; color:var(--ink)}
+  h1{font-size:clamp(28px,4.6vw,40px); font-weight:600; letter-spacing:-.025em; line-height:1.26}
+  h1 em{font-style:normal; color:var(--accent)}
+  h2{font-size:26px; font-weight:600; letter-spacing:-.018em}
+  h3{font-size:17px; font-weight:600; margin-top:28px; letter-spacing:-.008em}
+  h4{font-size:15px; font-weight:600; margin-top:0}
+  ul,ol{margin:12px 0 15px; padding-left:22px}
+  li{margin:7px 0; padding-left:3px}
+  .lab{font-size:11.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+  .soft{color:var(--ink-soft)}
+  .tiny{font-size:14px; line-height:1.68}
+  code{font-family:var(--f-mono); font-size:13.5px; background:var(--surface-2); color:var(--accent-deep);
+       padding:2px 7px; border-radius:5px; white-space:nowrap}
+
+  .dochead{border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:12px;
+           padding:24px 26px; background:var(--surface); box-shadow:var(--shadow)}
+  .dochead .kicker{font-size:11.5px; letter-spacing:.09em; text-transform:uppercase;
+                   color:var(--accent); font-weight:600; margin-bottom:12px; display:block}
+  .dochead h1{margin:0 0 12px}
+  .dochead .sub{font-size:17px; color:var(--ink-soft); line-height:1.7; margin:0}
+  .facts{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line);
+         border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-top:20px}
+  @media (min-width:520px){ .facts{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:760px){ .facts{grid-template-columns:repeat(3,1fr)} }
+  .facts > div{background:var(--bg); padding:12px 15px}
+  .facts .v{font-size:15px; font-weight:600; margin-top:6px; line-height:1.4}
+  .facts .v.accent{color:var(--accent)}
+  .facts .v.good{color:var(--good)}
+
+  section{margin-top:52px; padding-top:30px; border-top:1px solid var(--line)}
+  .shead{display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; margin-bottom:10px}
+  .snum{font-family:var(--f-mono); font-size:19px; font-weight:500; color:var(--accent); flex:0 0 auto}
+  .lede{font-size:17px; color:var(--ink-soft); line-height:1.65; margin:8px 0 22px}
+
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:19px 21px}
+  .g2{display:grid; gap:14px; grid-template-columns:1fr}
+  @media (min-width:660px){ .g2{grid-template-columns:repeat(2,1fr)}
+    .g2 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  .g3{display:grid; gap:14px; grid-template-columns:1fr}
+  @media (min-width:560px) and (max-width:879px){ .g3{grid-template-columns:repeat(2,1fr)}
+    .g3 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  @media (min-width:880px){ .g3{grid-template-columns:repeat(3,1fr)} }
+
+  .tw{overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--bg); margin:16px 0}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; line-height:1.6; min-width:660px}
+  th,td{text-align:left; padding:12px 14px; border-top:1px solid var(--line); vertical-align:top}
+  thead th{border-top:none; background:var(--surface-2); font-weight:600; font-size:12px;
+           letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap}
+  tbody tr:hover{background:var(--surface)}
+  td.n{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; font-family:var(--f-mono); font-size:13.5px}
+  th.n{text-align:right}
+  td.w2{white-space:nowrap}
+  tr.tot{background:var(--surface-2); font-weight:600}
+
+  .chip{display:inline-block; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+        padding:3px 9px; border-radius:20px; white-space:nowrap}
+  .chip.rec{background:var(--good-bg); color:var(--good)}
+  .chip.p2{background:var(--warn-bg); color:var(--warn)}
+  .chip.no{background:var(--surface-3); color:var(--muted)}
+  .chip.open{background:var(--crit-bg); color:var(--crit)}
+
+  .flow{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:16px 0;
+        padding:16px 18px; background:var(--surface); border:1px solid var(--line); border-radius:12px}
+  .flow .st{font-size:13.5px; font-weight:600; background:var(--bg); border:1px solid var(--line-strong);
+            border-radius:20px; padding:6px 13px; white-space:nowrap}
+  .flow .st.hold{border-color:var(--accent); color:var(--accent-deep)}
+  .flow .st.out{border-color:var(--good); color:var(--good)}
+  .flow .ar{color:var(--muted)}
+
+  .note{border:1px solid var(--line); border-left:4px solid var(--accent); background:var(--accent-soft);
+        border-radius:0 12px 12px 0; padding:18px 22px; margin:20px 0}
+  .note h3{color:var(--accent-deep); margin:0 0 8px; font-size:16.5px}
+  .note p:last-child{margin-bottom:0}
+  .note.warn{border-left-color:var(--warn); background:var(--warn-bg)} .note.warn h3{color:var(--warn)}
+  .note.crit{border-left-color:var(--crit); background:var(--crit-bg)} .note.crit h3{color:var(--crit)}
+  .note.good{border-left-color:var(--good); background:var(--good-bg)} .note.good h3{color:var(--good)}
+
+  /* data visuals */
+  .viz{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:20px 22px; margin:20px 0}
+  .viz > h4{margin:0 0 5px; font-size:15.5px; font-weight:600}
+  .viz .vcap{font-size:13.5px; color:var(--muted); margin:0 0 18px; line-height:1.55}
+  .viz .vnote{font-size:13px; color:var(--muted); margin:16px 0 0; padding-top:13px;
+              border-top:1px solid var(--line); line-height:1.55}
+  .viz.plain{background:var(--surface)}
+
+  .bars{display:grid; gap:11px}
+  .bar{display:grid; grid-template-columns:minmax(96px,27%) 1fr minmax(58px,auto); gap:14px; align-items:center}
+  @media (max-width:600px){ .bar{grid-template-columns:1fr auto; gap:4px 10px}
+    .bar .bl{grid-column:1/-1} .bar .bv{text-align:right} }
+  .bar .bl{font-size:14px; line-height:1.32}
+  .bar .bl small{display:block; font-size:12px; color:var(--muted); font-weight:400}
+  .bar .bt{background:var(--surface-2); border-radius:6px; height:28px; overflow:hidden}
+  .bar .bt i{display:block; height:100%; border-radius:6px; background:var(--accent)}
+  .bar .bt i.good{background:var(--good)}
+  .bar .bt i.warn{background:var(--warn)}
+  .bar .bt i.crit{background:var(--crit)}
+  .bar .bt i.mute{background:var(--line-strong)}
+  .bar .bt i.deep{background:var(--accent-deep)}
+  .bar .bv{font-family:var(--f-mono); font-size:14px; font-weight:500; white-space:nowrap; text-align:right}
+
+  .stackbar{display:flex; height:50px; border-radius:9px; overflow:hidden; border:1px solid var(--line)}
+  .stackbar > span{display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:600;
+                   color:#fff; white-space:nowrap; overflow:hidden; padding:0 4px; min-width:0}
+  .stackkey{display:flex; flex-wrap:wrap; gap:16px; margin-top:14px; font-size:13.5px}
+  .stackkey span{display:flex; align-items:center; gap:8px; white-space:nowrap}
+  .stackkey i{width:13px; height:13px; border-radius:3px; display:block; flex:0 0 auto}
+
+  .tiles{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .tile{border:1px solid var(--line); border-radius:11px; padding:15px 16px; background:var(--bg)}
+  .tile .tv{font-family:var(--f-mono); font-size:26px; font-weight:500; letter-spacing:-.02em; line-height:1.1}
+  .tile .tk{font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.45}
+  .tile.ok{border-left:4px solid var(--good)} .tile.ok .tv{color:var(--good)}
+  .tile.at{border-left:4px solid var(--warn)} .tile.at .tv{color:var(--warn)}
+  .tile.no{border-left:4px solid var(--crit)} .tile.no .tv{color:var(--crit)}
+  .tile.nu{border-left:4px solid var(--accent)} .tile.nu .tv{color:var(--accent)}
+
+  .funnel{display:grid; gap:7px}
+  .fstep2{display:grid; grid-template-columns:1fr; gap:4px}
+  .fstep2 .fbar{height:38px; border-radius:7px; background:var(--accent); display:flex; align-items:center;
+                padding:0 14px; color:#fff; font-size:14px; font-weight:600}
+  .fstep2 .fmeta{font-size:12.5px; color:var(--muted); padding-left:2px}
+  .fdrop{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--crit);
+         padding-left:14px; font-weight:600}
+
+  svg.dia{display:block; width:100%; height:auto; max-width:100%}
+  .diawrap{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:18px;
+           margin:20px 0; overflow-x:auto}
+  .diawrap h4{margin:0 0 14px; font-size:15.5px}
+
+  @media print{
+    .viz,.diawrap{break-inside:avoid; page-break-inside:avoid}
+    .bar .bt i,.stackbar > span,.tile,.fstep2 .fbar{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* cross-document navigation */
+  .docnav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.94);
+          -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+          border-bottom:1px solid var(--line)}
+  .docnav .dn{max-width:1080px; margin:0 auto; padding:0 22px; display:flex; align-items:center; gap:20px}
+  .docnav .dnbrand{font-weight:600; font-size:15px; letter-spacing:-.012em; color:var(--ink);
+                   white-space:nowrap; padding:14px 0; flex:0 0 auto; text-decoration:none}
+  .docnav .dnbrand b{color:var(--accent); font-weight:600}
+  .docnav .dnbrand:hover b{color:var(--accent-deep)}
+  .docnav .dnlinks{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .docnav .dnlinks::-webkit-scrollbar{display:none}
+  .docnav .dnlinks a{display:block; padding:14px 12px; font-size:14px; color:var(--ink-soft);
+            text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; font-weight:400}
+  .docnav .dnlinks a:hover{color:var(--accent-deep)}
+  .docnav .dnlinks a.on{color:var(--accent-deep); font-weight:600; border-bottom-color:var(--accent)}
+  .docnav .dnlinks a:focus-visible{outline:2px solid var(--accent); outline-offset:-3px; border-radius:4px}
+  @media (max-width:680px){
+    .docnav .dn{gap:12px; padding:0 14px}
+    .docnav .dnbrand{font-size:13.5px; padding:12px 0}
+    .docnav .dnlinks a{padding:12px 9px; font-size:13.5px}
+  }
+  section, [id^="s"]{scroll-margin-top:76px}
+  @media print{ .docnav{display:none !important} }
+
+  .dock{position:fixed; right:16px; bottom:16px; z-index:20}
+  .dockbtn{background:var(--surface); border:1px solid var(--line-strong); border-radius:22px;
+           box-shadow:0 4px 18px rgba(11,31,58,.14); padding:10px 17px; font-size:14px; font-weight:600;
+           font-family:var(--f-body); color:var(--ink); cursor:pointer; min-height:42px; line-height:1;
+           display:inline-flex; align-items:center; gap:8px}
+  .dockbtn:hover{border-color:var(--accent); color:var(--accent-deep)}
+  .dockbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .foot{margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+  @page{ margin:14mm }
+  @media print{
+    .dock{display:none !important}
+    body{background:#fff; font-size:10.5pt; line-height:1.6}
+    .wrap{max-width:none; padding:0}
+    .card,.note,.tw,.dochead,.facts,.flow{break-inside:avoid; page-break-inside:avoid}
+    h1,h2,h3,h4{break-after:avoid}
+    table{min-width:0}
+    .chip{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* ---- black and white print ---- */
+  @media print{
+    :root{
+      --bg:#ffffff; --surface:#f7f7f7; --surface-2:#f0f0f0; --surface-3:#e8e8e8;
+      --ink:#000000; --ink-soft:#2b2b2b; --muted:#5a5a5a;
+      --line:#d0d0d0; --line-strong:#9a9a9a;
+      --accent:#1a1a1a; --accent-deep:#000000; --accent-soft:#f0f0f0; --navy:#000000;
+      --good:#1a1a1a; --good-bg:#f2f2f2;
+      --warn:#1a1a1a; --warn-bg:#ededed;
+      --crit:#000000; --crit-bg:#e6e6e6;
+      --coral:#1a1a1a;
+      --l1:#1a1a1a; --l1-bg:#f2f2f2; --l2:#1a1a1a; --l2-bg:#ededed; --l3:#5a5a5a; --l3-bg:#e8e8e8;
+      --s:#1a1a1a; --s-bg:#f4f4f4; --w:#1a1a1a; --w-bg:#ededed;
+      --o:#1a1a1a; --o-bg:#f0f0f0; --t:#000000; --t-bg:#e6e6e6;
+      --ev-a:#1a1a1a; --ev-a-bg:#f0f0f0; --ev-b:#1a1a1a; --ev-b-bg:#eaeaea;
+      --ev-c:#1a1a1a; --ev-c-bg:#eeeeee; --ev-d:#1a1a1a; --ev-d-bg:#e9e9e9;
+      --ev-e:#1a1a1a; --ev-e-bg:#e4e4e4;
+      --shadow:none;
+    }
+    body{background:#fff; color:#000}
+    a{color:#000; text-decoration:underline}
+    svg.dia, .stackbar, .tile, .bar .bt, .qbox, .seg, .nav .ncta, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .chip, .ev, .sev, .pill, .dcode, .pid, .xid, .rid, .sid, .fid, .iid, .dnum, .tag, .path, code{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .note, .find, .rule, .card, .viz, .diawrap, .pop, .scr, .pg, .item, .lvl{
+      border-color:#bdbdbd !important;
+    }
+    .stackbar > span{color:#fff !important}
+    .dock, .docnav, .chkbar button{display:none !important}
+  }
+
+  /* ---- plain print: no panels, cards or chips. charts and diagrams stay ---- */
+  @media print{
+    /* every decorative container becomes plain typography */
+    .dochead, .hero, .doc, .card, .note, .find, .rule, .item, .pgroup, .qbox,
+    .scr, .pg, .pg > header, .pg .pbody, .pop, .pop > header, .lvl, .viz, .viz.plain,
+    .diawrap, .tw, .chk, .chk label, .tree, .forwho, .forwho.design, .forwho.dev,
+    .tile, .facts, .facts > div, .toc a, .pmeta, .ppath, .chkbar, .dmeta, .seg{
+      background:transparent !important;
+      border:0 !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      overflow:visible !important;
+      filter:none !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+    }
+    .note, .find, .rule, .item, .pgroup, .qbox, .scr, .pg, .pop, .lvl, .card, .viz, .diawrap{
+      margin:15pt 0 !important;
+      padding-top:0 !important;
+      padding-bottom:0 !important;
+    }
+    .dochead, .hero{padding:0 !important; margin:0 0 16pt !important}
+    .forwho{padding:0 !important; margin-top:10pt !important}
+    .tree{padding:0 !important; font-size:9pt !important}
+    .tile{padding:0 !important}
+    .doc{padding:0 !important; margin:0 0 12pt !important}
+
+    /* headings and ids carry the structure now that the boxes are gone */
+    .note h3, .find .ft, .rule .rt, .viz > h4, .diawrap h4, .card h4, .item .itxt strong,
+    .pop .xt, .scr .st2, .scr h4, .pg .ptitle, .lvl .lvname, .qbox .qt, .doc .dt,
+    .forwho h5, .shead h2{ color:#000 !important }
+    .qbox header, .pg > header, .pop > header, .lvl > header, .scr header{
+      border-bottom:0.5pt solid #b4b4b4 !important; padding-bottom:5pt !important;
+      margin-bottom:8pt !important;
+    }
+    .forwho h5{border-bottom:0.5pt solid #d4d4d4 !important; padding-bottom:3pt !important}
+
+    /* badges, pills and code chips become plain text */
+    .chip, .ev, .sev, .pill, .tag, .dcode, .dnum, .pid, .xid, .rid, .sid, .fid, .iid,
+    .lvtag, .qk, .qn, .sz, .cnt, .path, code, .fscr, .bk, .tv{
+      background:transparent !important; border:0 !important; padding:0 !important;
+      border-radius:0 !important; color:#000 !important; filter:none !important;
+      box-shadow:none !important; width:auto !important; height:auto !important;
+    }
+    .chip, .ev, .sev, .pill, .tag, .lvtag, .qk, .bk{font-weight:600 !important; margin-right:6pt}
+    .tile .tv{font-size:19pt !important; color:#000 !important}
+    .swatch i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+
+    /* hairlines where a list needs separating, instead of panels */
+    .facts > div{border-bottom:0.5pt solid #d2d2d2 !important; padding:5pt 0 !important}
+    .chk label{border-bottom:0.5pt solid #dcdcdc !important; padding:4pt 0 !important}
+    .pop .say{border-left:1pt solid #8a8a8a !important; padding:2pt 0 2pt 9pt !important;
+              background:transparent !important; border-radius:0 !important}
+    .cprog{display:none !important}
+
+    /* tables: horizontal rules only */
+    table{width:100% !important; min-width:0 !important}
+    thead th{background:transparent !important; color:#000 !important;
+             border-bottom:1pt solid #000 !important; padding:0 9pt 5pt 0 !important}
+    th, td{border-top:0 !important; border-bottom:0.5pt solid #cfcfcf !important;
+           padding:5pt 9pt 5pt 0 !important; background:transparent !important}
+    tr.tot td, tr.tot th{border-top:1pt solid #000 !important; font-weight:600 !important}
+
+    /* the charts stay */
+    .bar .bt{background:#ededed !important; border:0.5pt solid #c4c4c4 !important;
+             border-radius:0 !important; filter:grayscale(100%) !important;
+             -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .bar .bt i{border-radius:0 !important; filter:grayscale(100%) !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+              filter:grayscale(100%) !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar > span{color:#fff !important}
+    .stackkey i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+                -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep2 .fbar{border-radius:0 !important; filter:grayscale(100%) !important;
+                  -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    svg.dia{filter:grayscale(100%) !important; max-width:100% !important; height:auto !important}
+
+    /* the user-flow diagram stays: numbered nodes, rails, decision points */
+    .fstep .fn{filter:grayscale(100%) !important; width:26px !important; height:26px !important;
+               border-radius:50% !important; padding:0 !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep.exit .fn{color:#fff !important}
+    .frail .fline i{background:#6a6a6a !important}
+    .fdec{border:0.5pt dashed #8a8a8a !important; background:transparent !important;
+          border-radius:0 !important}
+    .fbr{border-top:0.5pt solid #e0e0e0 !important}
+
+    /* the navigation mock-ups are wireframes, not decoration */
+    .nav{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+         background:transparent !important; overflow:hidden !important}
+    .nav .nbar, .nav .ncta, .nav .nghost, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .nav .ncap{border-top:0.5pt dashed #8a8a8a !important}
+
+    .dock, .docnav, .chkbar button{display:none !important}
+    .g2, .g3, .tiles, .docs, .quad, .split{gap:10pt !important}
+  }
+
+  /* ---- plain print corrections ---- */
+  @media print{
+    /* an id that is a table cell still needs its column gap */
+    td.fid, td.pid, td.iid, td.xid, td.rid, td.sid, td.dcode, td.cnt, td.sz{
+      padding:5pt 12pt 5pt 0 !important; white-space:nowrap !important;
+    }
+    /* an inline tag needs a delimiter once the chip is gone */
+    .ev::before, .sev::before{content:"["}
+    .ev::after, .sev::after{content:"] "}
+    td .ev::before, td .sev::before, th .ev::before, th .sev::before{content:""}
+    td .ev::after, td .sev::after, th .ev::after, th .sev::after{content:""}
+    .ev, .sev{white-space:nowrap !important; margin-left:3pt !important}
+  }
+</style>
+
+<nav class="docnav">
+  <div class="dn">
+    <a class="dnbrand" href="index.html">LINK <b>UX</b></a>
+    <div class="dnlinks">
+      <a href="LINK-UX-Research.html">Research</a>
+      <a href="LINK-SWOT.html">SWOT</a>
+      <a href="LINK-Revenue-Policy.html" class="on" aria-current="page">Revenue &amp; Policy</a>
+      <a href="LINK-UI-Design-Brief.html">Design Brief</a>
+      <a href="LINK-Navigation-Pages.html">Navigation</a>
+      <a href="LINK-Page-Features.html">Features</a>
+      <a href="LINK-Popups-Forms.html">Popups &amp; Forms</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dock">
+  <button class="dockbtn" id="pdfBtn" type="button"><span aria-hidden="true">⇩</span> Download PDF</button>
+</div>
+
+<div class="wrap">
+
+  <div class="dochead">
+    <span class="kicker">LINK · Phase 1 pilot · commercial model</span>
+    <h1>Payments, revenue and <em>policy</em></h1>
+    <p class="sub">How the money moves, what it actually costs, how five comparable platforms structure their own take, and what LINK should do about it. Includes a full unit-economics model at six price points, five revenue structures assessed against this specific business, and the payment policy set that has to exist before checkout is built.</p>
+    <div class="facts">
+      <div><span class="lab">Proposed take rate</span><div class="v accent">15% commission</div></div>
+      <div><span class="lab">Creator keeps</span><div class="v good">85%</div></div>
+      <div><span class="lab">Comparators modelled</span><div class="v">5 platforms</div></div>
+      <div><span class="lab">Price points modelled</span><div class="v">6</div></div>
+      <div><span class="lab">Issued</span><div class="v">3 October 2026</div></div>
+      <div><span class="lab">Status</span><div class="v">For the scope fix</div></div>
+    </div>
+  </div>
+
+  <section id="s01">
+    <div class="shead"><span class="snum">01</span><h2>How the money moves</h2></div>
+    <p class="lede">Before any model can be assessed, the mechanics have to be clear, because the charge structure decides who carries the risk.</p>
+
+    <div class="diawrap">
+      <h4>The money path, with where it can divert</h4>
+      <svg class="dia" viewBox="0 0 880 250" role="img" aria-label="Money flow from customer payment through a held balance to creator payout, with refund branches">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#8795a8"/>
+          </marker>
+          <marker id="arR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/>
+          </marker>
+        </defs>
+
+        <rect x="8" y="78" width="140" height="56" rx="10" fill="#eef3fa" stroke="#cbd6e4"/>
+        <text x="78" y="101" text-anchor="middle" font-size="14" font-weight="600" fill="#16202e">Customer</text>
+        <text x="78" y="119" text-anchor="middle" font-size="12.5" fill="#6b7789">pays $41.90</text>
+
+        <line x1="150" y1="106" x2="196" y2="106" stroke="#8795a8" stroke-width="2" marker-end="url(#ar)"/>
+
+        <rect x="200" y="70" width="160" height="72" rx="10" fill="#dbe6fe" stroke="#2563eb" stroke-width="2"/>
+        <text x="280" y="95" text-anchor="middle" font-size="14" font-weight="600" fill="#1e3a8a">LINK holds</text>
+        <text x="280" y="113" text-anchor="middle" font-size="12.5" fill="#1e3a8a">$40.38 after card cost</text>
+        <text x="280" y="130" text-anchor="middle" font-size="11.5" fill="#46536a">merchant of record</text>
+
+        <line x1="362" y1="106" x2="408" y2="106" stroke="#8795a8" stroke-width="2" marker-end="url(#ar)"/>
+
+        <rect x="412" y="78" width="148" height="56" rx="10" fill="#eef3fa" stroke="#cbd6e4"/>
+        <text x="486" y="101" text-anchor="middle" font-size="14" font-weight="600" fill="#16202e">Call completes</text>
+        <text x="486" y="119" text-anchor="middle" font-size="12.5" fill="#6b7789">+ 24h review window</text>
+
+        <line x1="562" y1="106" x2="608" y2="106" stroke="#8795a8" stroke-width="2" marker-end="url(#ar)"/>
+
+        <rect x="612" y="70" width="160" height="72" rx="10" fill="#e4f7ea" stroke="#15803d" stroke-width="2"/>
+        <text x="692" y="95" text-anchor="middle" font-size="14" font-weight="600" fill="#15803d">Creator paid</text>
+        <text x="692" y="113" text-anchor="middle" font-size="12.5" fill="#15803d">$34.00</text>
+        <text x="692" y="130" text-anchor="middle" font-size="11.5" fill="#46536a">weekly, $25 minimum</text>
+
+        <path d="M280 142 L280 190 L486 190" fill="none" stroke="#b91c1c" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arR)"/>
+        <rect x="200" y="196" width="300" height="42" rx="9" fill="#fbe4e4" stroke="#b91c1c"/>
+        <text x="350" y="214" text-anchor="middle" font-size="12.5" font-weight="600" fill="#b91c1c">Refund diverts here, before release</text>
+        <text x="350" y="230" text-anchor="middle" font-size="11.5" fill="#46536a">cancellation, creator no-show, technical failure</text>
+
+        <path d="M692 142 L692 190 L560 190" fill="none" stroke="#b91c1c" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arR)"/>
+        <rect x="560" y="196" width="300" height="42" rx="9" fill="#fdf0d5" stroke="#b45309"/>
+        <text x="710" y="214" text-anchor="middle" font-size="12.5" font-weight="600" fill="#b45309">Chargeback claws back after release</text>
+        <text x="710" y="230" text-anchor="middle" font-size="11.5" fill="#46536a">LINK absorbs it, plus a dispute fee</text>
+
+        <text x="280" y="42" text-anchor="middle" font-size="12" font-weight="600" fill="#1e3a8a">LINK&#8217;s balance</text>
+        <text x="280" y="58" text-anchor="middle" font-size="11" fill="#6b7789">not the creator&#8217;s</text>
+        <text x="20" y="22" font-size="11.5" fill="#6b7789">Modelled on a $40 call</text>
+      </svg>
+      <p class="vnote">Everything up to the payout is reversible. Once the creator has been paid, anything that goes wrong has to be recovered from someone. That is the entire argument for the review window and the payout threshold.</p>
+    </div>
+
+    <p>The customer's card is charged <strong>to LINK's account, not the creator's</strong>. Funds sit there until the call has happened and the review window has closed, then a transfer is made to the creator's connected account and paid out to their bank. In payment-processor terms this is the <em>separate charges and transfers</em> model, and it is the only one that supports holding funds.</p>
+
+    <div class="note crit">
+      <h3>This means LINK carries the chargeback liability, not the creator</h3>
+      <p>Because LINK is the merchant of record, a customer who disputes a charge disputes it with LINK. The money comes back out of LINK's balance, plus a dispute fee, and if the creator has already been paid the platform is out of pocket until it can recover from them.</p>
+      <p>At pilot scale this is manageable and is the right trade, because the alternative (charging directly to the creator) makes held funds impossible and removes the product's main trust mechanism. But it should be a known position rather than a discovered one, and it is an argument for the review window before release.</p>
+    </div>
+
+    <h3>The three moments that matter</h3>
+    <div class="g3">
+      <div class="card">
+        <h4>Capture</h4>
+        <p class="tiny soft" style="margin:9px 0 0">The full amount is taken at booking, not at the call. A customer who has already paid is far more likely to attend, and an authorisation held for days risks expiring.</p>
+      </div>
+      <div class="card">
+        <h4>Hold</h4>
+        <p class="tiny soft" style="margin:9px 0 0">Funds sit with LINK through the call and the review window. This is what makes "your payment is held until the call is complete" a true statement rather than marketing.</p>
+      </div>
+      <div class="card">
+        <h4>Release</h4>
+        <p class="tiny soft" style="margin:9px 0 0">Transfer to the creator after the review window, then payout to their bank on the payout schedule. Two distinct steps, and the second one has its own cost.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s02">
+    <div class="shead"><span class="snum">02</span><h2>What it actually costs</h2></div>
+    <p class="lede">Four separate charges, not one. The third and fourth are the ones usually left out of a business model.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Cost</th><th>Rate</th><th>When</th><th>Who it lands on</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Card processing</strong></td><td class="w2">2.9% + $0.30</td><td>Every successful payment</td><td>LINK, as merchant of record</td></tr>
+          <tr><td><strong>Connected account</strong></td><td class="w2">$2.00 per month</td><td>Per creator who <em>receives a payout</em> that month</td><td>LINK. A creator with no payout costs nothing.</td></tr>
+          <tr><td><strong>Payout</strong></td><td class="w2">0.25% + $0.25</td><td>Every payout to a creator's bank</td><td>LINK</td></tr>
+          <tr><td><strong>Dispute</strong></td><td class="w2">Fee plus the disputed amount</td><td>Only on a chargeback</td><td>LINK</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">Rates are the standard published figures for the processor and Express connected accounts as of October 2026. They should be confirmed against the live account before any pricing is published.</p>
+
+    <div class="note warn">
+      <h3>The $2 monthly account fee is the one that distorts the model</h3>
+      <p>It is a <strong>fixed</strong> cost attached to a creator, not a percentage of what they earn, and it only triggers when they actually get paid. That makes a dormant creator free and a barely-active creator expensive in relative terms. A creator doing one $15 call in a month generates about $2.24 of gross margin and costs $2.00 in account fees, which is close to break-even. Section 04 models this properly, and Section 07 proposes the policy that fixes it.</p>
+    </div>
+  </section>
+
+  <section id="s03">
+    <div class="shead"><span class="snum">03</span><h2>Competitor business models</h2></div>
+    <p class="lede">Five platforms, chosen because each solves one part of LINK's problem. The useful question is not what they charge but <em>why</em> they can charge it.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Platform</th><th>Model</th><th>Take</th><th>Creator keeps</th><th>Why they can charge that</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Intro</strong><div class="tiny soft">Paid expert calls</div></td>
+            <td>Curated marketplace, tiered by who brought the customer</td>
+            <td class="w2">~10% direct link<br>~30% marketplace<br>up to 50% paid ad</td>
+            <td class="w2">50&ndash;90%</td>
+            <td>Curation creates scarcity and trust, and the tier reflects who did the work of finding the buyer. The expert pays more when Intro supplies the demand.</td>
+          </tr>
+          <tr>
+            <td><strong>Cameo</strong><div class="tiny soft">Personalised videos</div></td>
+            <td>Asynchronous marketplace</td>
+            <td class="w2">25&ndash;30%</td>
+            <td class="w2">70&ndash;75%<br>tips 100%</td>
+            <td>Fame supplies its own demand. The rate has been a documented source of creator dissatisfaction, which marks it as the ceiling rather than a target.</td>
+          </tr>
+          <tr>
+            <td><strong>Fiverr</strong><div class="tiny soft">Services marketplace</div></td>
+            <td>Scoped deliverables, flat rate</td>
+            <td class="w2">20% flat</td>
+            <td class="w2">80%</td>
+            <td>It supplies the demand and holds the buyer relationship. No loyalty discount, which is a standing complaint but has not moved sellers off it.</td>
+          </tr>
+          <tr>
+            <td><strong>Upwork</strong><div class="tiny soft">Freelance marketplace</div></td>
+            <td>Contracts and hourly work</td>
+            <td class="w2">10% flat</td>
+            <td class="w2">90%</td>
+            <td>Long engagements mean high value per relationship, so a low rate on a large base still works. Sets the floor for what feels fair.</td>
+          </tr>
+          <tr>
+            <td><strong>Patreon</strong><div class="tiny soft">Memberships</div></td>
+            <td>Recurring support, fee split from processing</td>
+            <td class="w2">10% + processing charged separately</td>
+            <td class="w2">~81&ndash;88%</td>
+            <td>The creator brings the entire audience, so the platform is infrastructure rather than a demand source. Separating the platform fee from processing is what makes the headline rate honest.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="viz">
+      <h4>Take rate across the comparison set</h4>
+      <p class="vcap">What each platform keeps from a transaction. Where a range is published, the bar shows the upper figure.</p>
+      <div class="bars">
+        <div class="bar"><span class="bl">Intro <small>paid ad booking</small></span><span class="bt"><i class="crit" style="width:100%"></i></span><span class="bv">50%</span></div>
+        <div class="bar"><span class="bl">Intro <small>marketplace</small></span><span class="bt"><i class="warn" style="width:60%"></i></span><span class="bv">30%</span></div>
+        <div class="bar"><span class="bl">Cameo</span><span class="bt"><i class="warn" style="width:60%"></i></span><span class="bv">25&ndash;30%</span></div>
+        <div class="bar"><span class="bl">Fiverr</span><span class="bt"><i class="warn" style="width:40%"></i></span><span class="bv">20%</span></div>
+        <div class="bar"><span class="bl"><strong>LINK proposed</strong></span><span class="bt"><i class="deep" style="width:30%"></i></span><span class="bv"><strong>15%</strong></span></div>
+        <div class="bar"><span class="bl">Upwork</span><span class="bt"><i class="good" style="width:20%"></i></span><span class="bv">10%</span></div>
+        <div class="bar"><span class="bl">Patreon <small>+ processing</small></span><span class="bt"><i class="good" style="width:20%"></i></span><span class="bv">10%</span></div>
+        <div class="bar"><span class="bl">Intro <small>expert&#8217;s own link</small></span><span class="bt"><i class="good" style="width:20%"></i></span><span class="bv">10%</span></div>
+      </div>
+      <p class="vnote">Note where the two Intro extremes sit. The same platform charges 10% or 50% for the identical service, and the only difference is who found the customer. In the pilot, every LINK booking is the 10% case.</p>
+    </div>
+
+    <div class="note">
+      <h3>The pattern across all five</h3>
+      <p><strong>The take rate tracks who supplies the demand.</strong> Upwork and Patreon sit at 10 percent because the creator brings the relationship. Fiverr and Cameo sit at 20 to 30 because the platform brings the buyer. Intro is the only one that makes this explicit by charging a different rate depending on the answer.</p>
+      <p>LINK's pilot is firmly in the first category. Every booking arrives through a creator's own shared link, which under Intro's logic is the 10 percent tier. <strong>At 15 percent, LINK is already charging above the going rate for the work it is actually doing</strong>, and that is worth knowing before anyone suggests raising it.</p>
+    </div>
+
+    <h3>The model LINK is not using, and should not</h3>
+    <p>A subscription model, where creators pay a monthly fee and keep everything, is the obvious alternative. Scheduling tools work this way. It is wrong for LINK for one specific reason: <strong>it charges creators before they have earned anything</strong>. A modest-following creator being asked for a monthly fee to find out whether their audience will pay for calls is being asked to take all of the risk. The commission model means LINK only earns when the creator earns, which is the correct alignment for an unproven category and is also the easier recruitment pitch.</p>
+  </section>
+
+  <section id="s04">
+    <div class="shead"><span class="snum">04</span><h2>Unit economics</h2></div>
+    <p class="lede">What one completed call is actually worth, modelled at six price points across the proposed band. All figures use a 15 percent commission and a customer service fee of 3.5 percent plus $0.50.</p>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Creator price</th><th class="n">Service fee</th><th class="n">Customer pays</th><th class="n">Card cost</th><th class="n">Commission</th><th class="n">Creator gets</th><th class="n">Payout cost</th><th class="n">LINK nets</th><th class="n">Effective</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>$15</strong> <span class="tiny soft">floor</span></td><td class="n">1.02</td><td class="n">16.02</td><td class="n">0.76</td><td class="n">2.25</td><td class="n">12.75</td><td class="n">0.28</td><td class="n">2.23</td><td class="n">14.9%</td></tr>
+          <tr><td><strong>$25</strong></td><td class="n">1.38</td><td class="n">26.38</td><td class="n">1.07</td><td class="n">3.75</td><td class="n">21.25</td><td class="n">0.30</td><td class="n">3.76</td><td class="n">15.0%</td></tr>
+          <tr><td><strong>$40</strong> <span class="tiny soft">likely median</span></td><td class="n">1.90</td><td class="n">41.90</td><td class="n">1.52</td><td class="n">6.00</td><td class="n">34.00</td><td class="n">0.34</td><td class="n">6.04</td><td class="n">15.1%</td></tr>
+          <tr><td><strong>$75</strong></td><td class="n">3.13</td><td class="n">78.13</td><td class="n">2.57</td><td class="n">11.25</td><td class="n">63.75</td><td class="n">0.41</td><td class="n">11.40</td><td class="n">15.2%</td></tr>
+          <tr><td><strong>$150</strong></td><td class="n">5.75</td><td class="n">155.75</td><td class="n">4.82</td><td class="n">22.50</td><td class="n">127.50</td><td class="n">0.57</td><td class="n">22.86</td><td class="n">15.2%</td></tr>
+          <tr><td><strong>$250</strong> <span class="tiny soft">ceiling</span></td><td class="n">9.25</td><td class="n">259.25</td><td class="n">7.82</td><td class="n">37.50</td><td class="n">212.50</td><td class="n">0.78</td><td class="n">38.15</td><td class="n">15.3%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">Excludes the $2 monthly connected-account fee, which is handled separately below because it is a per-creator cost rather than a per-call one.</p>
+
+    <div class="viz">
+      <h4>Where a $40 call actually goes</h4>
+      <p class="vcap">The customer pays $41.90. This is how it splits.</p>
+      <div class="stackbar">
+        <span style="width:81.1%; background:#15803d">Creator $34.00</span>
+        <span style="width:14.4%; background:#2563eb">LINK $6.04</span>
+        <span style="width:4.5%; background:#b45309"></span>
+      </div>
+      <div class="stackkey">
+        <span><i style="background:#15803d"></i> Creator, 81.1%</span>
+        <span><i style="background:#2563eb"></i> LINK net, 14.4%</span>
+        <span><i style="background:#b45309"></i> Card and payout cost $1.86, 4.5%</span>
+      </div>
+      <p class="vnote">The creator&#8217;s 85% is of the <em>call price</em>, not of what the customer pays. Against the full $41.90 they receive 81.1%, and the difference is the service fee that covers processing. Both statements are true and the first is the one to use with creators.</p>
+    </div>
+
+    <div class="viz">
+      <h4>Effective take rate holds flat across the band</h4>
+      <p class="vcap">What LINK actually keeps, as a percentage of the creator&#8217;s price, at each point in the proposed range.</p>
+      <div class="bars">
+        <div class="bar"><span class="bl">$15 <small>floor</small></span><span class="bt"><i style="width:97.4%"></i></span><span class="bv">14.9%</span></div>
+        <div class="bar"><span class="bl">$25</span><span class="bt"><i style="width:98.4%"></i></span><span class="bv">15.0%</span></div>
+        <div class="bar"><span class="bl">$40 <small>likely median</small></span><span class="bt"><i style="width:98.8%"></i></span><span class="bv">15.1%</span></div>
+        <div class="bar"><span class="bl">$75</span><span class="bt"><i style="width:99.5%"></i></span><span class="bv">15.2%</span></div>
+        <div class="bar"><span class="bl">$150</span><span class="bt"><i style="width:99.7%"></i></span><span class="bv">15.2%</span></div>
+        <div class="bar"><span class="bl">$250 <small>ceiling</small></span><span class="bt"><i style="width:100%"></i></span><span class="bv">15.3%</span></div>
+      </div>
+      <p class="vnote">Bars are scaled to the 15.3% maximum so the variation is visible. The real finding is how little there is: a spread of 0.4 percentage points across a sixteen-fold price range.</p>
+    </div>
+
+    <div class="note good">
+      <h3>The service fee does exactly what it was designed to do</h3>
+      <p>LINK's effective take lands between <strong>14.9 and 15.3 percent</strong> across the entire price band. That is the stated take rate, actually realised, which is unusual: in most marketplace models the headline rate and the real one drift apart because processing is absorbed somewhere.</p>
+      <p>Charging processing to the customer is what holds it flat. It is also what makes "creators keep 85 percent" literally true rather than approximately true.</p>
+    </div>
+
+    <h3>What happens if the service fee is declined</h3>
+    <p>This is decision <code>D6</code>, and it is still open. If processing comes out of LINK's commission instead of being charged to the customer, the effective take rate collapses and becomes inconsistent:</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Price</th><th class="n">Commission</th><th class="n">Minus card</th><th class="n">Minus payout</th><th class="n">LINK nets</th><th class="n">Effective take</th></tr></thead>
+        <tbody>
+          <tr><td><strong>$15</strong></td><td class="n">2.25</td><td class="n">0.74</td><td class="n">0.28</td><td class="n">1.23</td><td class="n"><strong>8.2%</strong></td></tr>
+          <tr><td><strong>$40</strong></td><td class="n">6.00</td><td class="n">1.46</td><td class="n">0.34</td><td class="n">4.20</td><td class="n"><strong>10.5%</strong></td></tr>
+          <tr><td><strong>$250</strong></td><td class="n">37.50</td><td class="n">7.55</td><td class="n">0.78</td><td class="n">29.17</td><td class="n"><strong>11.7%</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="viz">
+      <h4>What declining the service fee costs</h4>
+      <p class="vcap">Effective take rate with the customer service fee, against absorbing processing into commission.</p>
+      <div class="bars">
+        <div class="bar"><span class="bl">$15 <small>with fee</small></span><span class="bt"><i class="good" style="width:97.4%"></i></span><span class="bv">14.9%</span></div>
+        <div class="bar"><span class="bl">$15 <small>without</small></span><span class="bt"><i class="crit" style="width:53.6%"></i></span><span class="bv">8.2%</span></div>
+        <div class="bar"><span class="bl">$40 <small>with fee</small></span><span class="bt"><i class="good" style="width:98.8%"></i></span><span class="bv">15.1%</span></div>
+        <div class="bar"><span class="bl">$40 <small>without</small></span><span class="bt"><i class="crit" style="width:68.6%"></i></span><span class="bv">10.5%</span></div>
+        <div class="bar"><span class="bl">$250 <small>with fee</small></span><span class="bt"><i class="good" style="width:100%"></i></span><span class="bv">15.3%</span></div>
+        <div class="bar"><span class="bl">$250 <small>without</small></span><span class="bt"><i class="crit" style="width:76.3%"></i></span><span class="bv">11.7%</span></div>
+      </div>
+      <p class="vnote">The gap is widest exactly where it hurts most. On the cheap calls a pilot sees most of, declining the fee cuts the realised take rate almost in half.</p>
+    </div>
+
+    <p>A stated 15 percent becomes a realised 8 to 12 percent, and it is worst on the cheapest calls, which are the ones a pilot will see most of. The alternative is to take processing out of the creator's share, in which case they keep roughly 82 percent and <strong>every instance of the 85 percent claim has to be reworded</strong>, in marketing, on the profile, in onboarding and in the proposal itself.</p>
+
+    <div class="note crit">
+      <h3>The fixed cost that decides which creators are worth having</h3>
+      <p>The $2 monthly connected-account fee only applies to creators who actually receive a payout. A creator with no bookings costs nothing. But for a creator who earns a little:</p>
+      <div class="tw" style="margin:12px 0 0">
+        <table style="min-width:0">
+          <thead><tr><th>Price point</th><th class="n">LINK nets per call</th><th class="n">Calls to cover $2</th><th class="n">One call a month leaves</th></tr></thead>
+          <tbody>
+            <tr><td>$15</td><td class="n">2.23</td><td class="n">0.9</td><td class="n"><strong>$0.23</strong></td></tr>
+            <tr><td>$25</td><td class="n">3.76</td><td class="n">0.5</td><td class="n">$1.76</td></tr>
+            <tr><td>$40</td><td class="n">6.04</td><td class="n">0.3</td><td class="n">$4.04</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:12px">A creator doing <strong>one $15 call a month is worth 23 cents to the platform</strong>. That is not a reason to reject low-priced calls, but it is a reason to hold payouts to a threshold rather than paying out every small amount, and it is the clearest argument for the $15 floor being set where it is rather than lower.</p>
+    </div>
+
+    <h3>What the stated ambition requires</h3>
+    <p>The client's stated goal is a business earning around <strong>three million dollars a year</strong>. At $40 a call and the model above, each completed call produces about $6.05 of gross margin. That means:</p>
+    <div class="tiles">
+      <div class="tile nu"><div class="tv">496k</div><div class="tk">completed paid calls per year</div></div>
+      <div class="tile nu"><div class="tv">1,360</div><div class="tk">completed calls every single day</div></div>
+      <div class="tile nu"><div class="tv">4,100</div><div class="tk">active creators at 10 calls a month each</div></div>
+      <div class="tile at"><div class="tv">$6.05</div><div class="tk">gross margin per $40 call, before any operating cost</div></div>
+    </div>
+    <p class="tiny soft" style="margin-top:14px">And that is <strong>gross margin, not profit</strong>. Team, hosting, support and marketing come out of it, so the real figure is meaningfully higher. This is not an argument against the goal. It is an argument that the business is a volume business, that recurrence is the whole game, and that a higher average call price moves the number far faster than a higher take rate would.</p>
+  </section>
+
+  <section id="s05">
+    <div class="shead"><span class="snum">05</span><h2>Revenue structures assessed</h2></div>
+    <p class="lede">Five structures, each judged against this specific business rather than in the abstract.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Structure</th><th>How it works</th><th>For LINK</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>A · Flat commission</strong><div class="tiny soft">The current proposal</div></td>
+            <td>A fixed percentage of every completed booking, with processing charged to the customer as a service fee.</td>
+            <td>Simple to explain, simple to build, aligns platform income with creator income, and lands the effective take within a third of a percent of the stated one. Sits competitively between Upwork and Fiverr.</td>
+            <td class="w2"><span class="chip rec">Phase 1</span></td>
+          </tr>
+          <tr>
+            <td><strong>B · Tiered by attribution</strong><div class="tiny soft">The Intro model</div></td>
+            <td>A lower rate when the creator's own link brought the customer, higher when the platform's search or paid advertising did.</td>
+            <td>The fairest possible logic, and the one that grows with the platform instead of taxing creators for their own audience. Needs booking-source tracking, and in the pilot nearly every booking is creator-sourced so there is nothing to tier yet.</td>
+            <td class="w2"><span class="chip p2">Phase 2</span></td>
+          </tr>
+          <tr>
+            <td><strong>C · Subscription</strong><div class="tiny soft">The scheduling-tool model</div></td>
+            <td>Creators pay a monthly fee and keep all or most of their earnings.</td>
+            <td>Charges creators before they have earned anything, in a category where nobody yet knows whether audiences will pay. It puts all the risk on the person we are trying to recruit, and it makes the pitch far harder.</td>
+            <td class="w2"><span class="chip no">Reject</span></td>
+          </tr>
+          <tr>
+            <td><strong>D · Hybrid with a pro tier</strong></td>
+            <td>Commission for everyone, plus an optional paid tier buying lower commission, analytics or featured placement.</td>
+            <td>Right eventually, wrong now. A pro tier only makes sense once there are creators earning enough that a lower rate is worth paying for, and once there is placement worth featuring on.</td>
+            <td class="w2"><span class="chip p2">Later</span></td>
+          </tr>
+          <tr>
+            <td><strong>E · Loyalty taper</strong></td>
+            <td>The rate falls as a creator's lifetime volume rises, rewarding the ones who stay.</td>
+            <td>Directly addresses the complaint creators have about flat-rate platforms, and it rewards exactly the behaviour the business model depends on, which is recurrence. But it is complex to communicate and premature before anyone has volume.</td>
+            <td class="w2"><span class="chip p2">Consider later</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <h3>Why flat wins for the pilot and not forever</h3>
+      <p>In the pilot, every booking arrives through a creator's own link. There is no marketplace demand to charge differently for, no volume history to taper against, and no featured placement to sell. A flat rate is not a compromise here, it is the only structure the available facts support.</p>
+      <p>What changes that is <strong>search, browse and paid acquisition actually bringing customers</strong>. The moment LINK is supplying demand rather than only infrastructure, structure B becomes available and it is the one to move to. That is why booking-source attribution should be captured from the first day even though nothing consumes it in Phase 1.</p>
+    </div>
+  </section>
+
+  <section id="s06">
+    <div class="shead"><span class="snum">06</span><h2>Recommended structure</h2></div>
+
+    <div class="note good">
+      <h3>Phase 1, for approval at the scope fix</h3>
+      <ul style="margin-bottom:0">
+        <li><strong>15 percent commission</strong> on every completed booking. Creators keep 85 percent.</li>
+        <li><strong>Customer service fee of 3.5 percent plus $0.50</strong>, labelled as covering card processing, shown in the total at slot selection rather than at the card form.</li>
+        <li><strong>Funds held</strong> from payment until the call completes and the review window closes.</li>
+        <li><strong>Price band $15 to $250</strong>, with a suggested price shown rather than an empty field.</li>
+        <li><strong>Payout threshold of $25</strong>, with weekly payouts above it. This is new and it is what protects the economics on low-value creators.</li>
+        <li><strong>Booking-source attribution recorded</strong> from day one, unused until Phase 2.</li>
+        <li><strong>Tips, if offered later, go entirely to the creator.</strong> Matching the strongest comparator convention and costing LINK almost nothing in the pilot.</li>
+      </ul>
+    </div>
+
+    <h3>The one new recommendation in that list</h3>
+    <p>A <strong>$25 payout threshold</strong> was not in the original scope and it is worth its own paragraph. Without it, a creator earning $12.75 from a single call triggers a payout, which costs $0.25 plus 0.25 percent, and activates the $2 monthly account fee, leaving the platform 23 cents. With it, small balances accumulate until they are worth moving, which cuts both the payout count and the number of billable account-months.</p>
+    <p>It costs the creator nothing in money and a little in patience, and every comparable platform does some version of it. The creator-facing copy should say so plainly: <em>"Payouts go out every week once your balance reaches $25."</em></p>
+
+    <h3>Phase 2 and beyond</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>When</th><th>Add</th><th>Why then</th></tr></thead>
+        <tbody>
+          <tr><td class="w2"><strong>Phase 2</strong></td><td>Attribution-tiered commission</td><td>Once search and paid acquisition bring real volume, LINK can charge for the demand it supplies rather than for all demand equally.</td></tr>
+          <tr><td class="w2"><strong>Phase 2</strong></td><td>Tips and gifting</td><td>Pure upside, low build cost, and every comparator that offers it gives 100 percent to the creator, which is a recruiting asset.</td></tr>
+          <tr><td class="w2"><strong>After Phase 2</strong></td><td>Creator pro tier</td><td>Only once creators exist whose volume makes a lower rate worth paying for.</td></tr>
+          <tr><td class="w2"><strong>After Phase 2</strong></td><td>Packages and subscriptions</td><td>Higher value per transaction moves the revenue target far faster than a higher take rate, and it does not antagonise creators.</td></tr>
+          <tr><td class="w2"><strong>Later</strong></td><td>Multi-currency and international payouts</td><td>Expands the addressable creator base. Needs a currency recorded on every price from Phase 1 to be affordable.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>The lever that matters most is not the take rate</h3>
+      <p>Raising commission from 15 to 20 percent adds about $2 per $40 call and moves LINK from mid-pack to the top of the comparator range, which is where creator dissatisfaction has been documented. Raising the <em>average call price</em> from $40 to $75 adds $5.36 per call and costs nothing in goodwill.</p>
+      <p>The second is a product and positioning problem, not a pricing one, and it is where the attention should go.</p>
+    </div>
+  </section>
+
+  <section id="s07">
+    <div class="shead"><span class="snum">07</span><h2>Payment policy</h2></div>
+    <p class="lede">The rules the product has to enforce. Several of these are already agreed; the ones marked open block the payment state machine and cannot be designed around.</p>
+
+    <h3>7.1 Holding and release</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Rule</th><th>Policy</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>When the customer is charged</strong></td><td>In full, at booking. Not at the call.</td><td class="w2"><span class="chip rec">Agreed</span></td></tr>
+          <tr><td><strong>Where the money sits</strong></td><td>With LINK, not the creator, from payment until release.</td><td class="w2"><span class="chip rec">Agreed</span></td></tr>
+          <tr><td><strong>When funds release</strong></td><td>After the call completes <em>and</em> the review window closes.</td><td class="w2"><span class="chip rec">Agreed</span></td></tr>
+          <tr><td><strong>Review window length</strong></td><td>Proposed: 24 hours after the call ends.</td><td class="w2"><span class="chip open">Open</span></td></tr>
+          <tr><td><strong>If no review is left</strong></td><td>Funds release automatically when the window expires. A silent customer is not a complaint.</td><td class="w2"><span class="chip rec">Proposed</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>7.2 Cancellation and refunds</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Situation</th><th>Customer receives</th><th>Creator receives</th><th>Service fee</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Customer cancels, 24h or more before</strong></td><td class="w2">Full refund</td><td class="w2">Nothing</td><td class="w2">Returned</td></tr>
+          <tr><td><strong>Customer cancels, inside 24h</strong></td><td class="w2">50 percent</td><td class="w2">Nothing</td><td class="w2">Returned on the refunded half</td></tr>
+          <tr><td><strong>Customer cancels, inside 2h or at start</strong></td><td class="w2">Nothing</td><td class="w2">Paid in full</td><td class="w2">Retained</td></tr>
+          <tr><td><strong>Creator cancels, at any point</strong></td><td class="w2">Full refund</td><td class="w2">Nothing</td><td class="w2"><strong>Returned</strong></td></tr>
+          <tr><td><strong>Creator does not show</strong></td><td class="w2">Full refund</td><td class="w2">Nothing</td><td class="w2"><strong>Returned</strong></td></tr>
+          <tr><td><strong>Customer does not show</strong></td><td class="w2">Nothing</td><td class="w2">Paid in full</td><td class="w2">Retained</td></tr>
+          <tr><td><strong>Technical failure, neither party at fault</strong></td><td class="w2">Full refund or reschedule</td><td class="w2">Nothing, or paid on the rescheduled call</td><td class="w2">Returned</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note crit">
+      <h3>The asymmetry is deliberate, and it should be explained rather than hidden</h3>
+      <p>A customer cancelling late loses money. A creator cancelling late does not cost the customer anything. That looks uneven and it is, on purpose: <strong>the platform's credibility depends on the customer never being out of pocket for something the creator did.</strong> The service fee comes back too, which most platforms do not do, and it is a cheap way to make a bad experience survivable.</p>
+      <p>The cost of that policy is carried by the platform, not the creator, so it needs watching. If creator cancellations become common the policy stays and the creator gets suspended, rather than the policy changing.</p>
+    </div>
+
+    <div class="note warn">
+      <h3>Still open, and blocking</h3>
+      <p>The <strong>no-show grace period</strong> is unspecified. Without it, there is no rule that says when a call counts as missed, which means the refund tier cannot be computed automatically and every disputed no-show is arbitrated by hand. Proposed: <strong>10 minutes</strong> from the scheduled start, after which either party can mark the call as missed. This is questionnaire items Q16 and Q17 and it is on the critical path for the payment state machine.</p>
+    </div>
+
+    <h3>7.3 Payouts</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Rule</th><th>Policy</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Schedule</strong></td><td>Weekly</td><td>Fast enough that creators trust it, infrequent enough to batch payout fees.</td></tr>
+          <tr><td><strong>Minimum threshold</strong></td><td>$25</td><td>Below this the payout and account fees consume most of the margin. Balances roll forward.</td></tr>
+          <tr><td><strong>First payout</strong></td><td>Requires identity and bank verification complete</td><td>A legal requirement of the payment provider, not a LINK rule.</td></tr>
+          <tr><td><strong>Arrival time</strong></td><td>Typically 2 to 5 business days after release</td><td>Set the expectation in the payout email, since this is where creators lose confidence.</td></tr>
+          <tr><td><strong>Failed payout</strong></td><td>Balance returns to pending, creator notified, raised on the admin attention list</td><td>A silent payout failure is the fastest way to lose a creator.</td></tr>
+          <tr><td><strong>Account closure</strong></td><td>Remaining balance paid out regardless of threshold</td><td>Nobody's money gets stranded by a policy designed to save fees.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>7.4 Disputes and chargebacks</h3>
+    <ul>
+      <li><strong>LINK is the merchant of record</strong>, so a disputed charge is disputed with LINK and the funds plus a dispute fee come out of LINK's balance.</li>
+      <li><strong>If the creator has already been paid</strong>, the platform is out of pocket until it recovers. The review window and the payout threshold both reduce this exposure, which is a second reason for having them.</li>
+      <li><strong>Evidence to retain for every booking:</strong> the booking record, both parties' join events from the video provider, the call duration, and any review. This is what a dispute is won or lost on, and it has to be captured at the time rather than reconstructed.</li>
+      <li><strong>Repeat disputes against one creator</strong> are a suspension trigger, not a cost of doing business.</li>
+      <li>Phase 1 has <strong>no dispute tooling</strong>. Disputes are handled manually through the provider dashboard, which is acceptable at pilot volume and is on the Phase 2 list.</li>
+    </ul>
+
+    <h3>7.5 Tax and compliance</h3>
+    <ul>
+      <li><strong>Creators are responsible for their own tax.</strong> LINK is not an employer and does not withhold.</li>
+      <li>The payment provider handles United States tax reporting for connected accounts, including identity collection and year-end forms where thresholds are met. This is one of the main reasons for using it rather than paying creators directly.</li>
+      <li>Phase 1 is <strong>United States and US dollars only</strong>, which keeps this simple. International payouts bring a materially larger compliance surface and belong after Phase 2.</li>
+      <li><strong>Sales tax on the service fee</strong> has not been assessed. It is unlikely to apply to this transaction type in most states, but it is a question for the client's accountant rather than an assumption for us to make.</li>
+      <li>Terms, privacy and conduct policies are the client's legal responsibility under the agreement. The product links to them; it does not write them.</li>
+    </ul>
+
+    <h3>7.6 Changing the fees later</h3>
+    <p>Worth settling now because it is cheap to agree and expensive to improvise. <strong>Any increase in the commission or the service fee should be announced to creators at least 30 days before it takes effect</strong>, should not apply to bookings already made, and should be visible in the creator dashboard rather than only emailed. Creators who discover a rate change after the fact leave, and they tell other creators.</p>
+  </section>
+
+  <section id="s08">
+    <div class="shead"><span class="snum">08</span><h2>Risks and open decisions</h2></div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Item</th><th>What happens if it goes wrong</th><th>Position</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Service fee declined</strong><div class="tiny soft">Decision D6, open</div></td>
+            <td>Effective take falls from 15 percent to between 8 and 12, worst on the cheapest calls. Or creators drop to 82 percent and every 85 percent claim needs rewording.</td>
+            <td class="w2"><span class="chip open">Needs a decision</span></td>
+          </tr>
+          <tr>
+            <td><strong>No-show rules unspecified</strong><div class="tiny soft">Q16 and Q17</div></td>
+            <td>The refund tier cannot be computed, so every disputed call is arbitrated by hand with no rule to appeal to.</td>
+            <td class="w2"><span class="chip open">Blocking</span></td>
+          </tr>
+          <tr>
+            <td><strong>Chargeback exposure</strong></td>
+            <td>LINK absorbs disputed amounts plus fees as merchant of record. A small number is a cost of business; a pattern is a margin problem.</td>
+            <td class="w2">Accepted, mitigated by the review window</td>
+          </tr>
+          <tr>
+            <td><strong>Low-value creator drag</strong></td>
+            <td>Creators earning one small call a month cost nearly as much to serve as they generate.</td>
+            <td class="w2">Mitigated by the $25 threshold</td>
+          </tr>
+          <tr>
+            <td><strong>Processor rate changes</strong></td>
+            <td>The whole model sits on published third-party rates that can move without notice.</td>
+            <td class="w2">Re-verify before publishing any figure</td>
+          </tr>
+          <tr>
+            <td><strong>Volume required for the stated goal</strong></td>
+            <td>Roughly 496,000 completed calls a year for $3m of gross margin, before operating costs.</td>
+            <td class="w2">Real, and it argues for higher call prices rather than a higher take rate</td>
+          </tr>
+          <tr>
+            <td><strong>Disintermediation</strong></td>
+            <td>Creator and customer transact directly after meeting on LINK, and the commission earns nothing on the relationship it created.</td>
+            <td class="w2">Measure repeat rate; gated messaging and held funds are the defences</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note good">
+      <h3>What to take to the scope fix</h3>
+      <ol style="margin-bottom:0">
+        <li><strong>Approve the 15 percent commission and the customer service fee.</strong> The modelling shows it realises almost exactly the stated rate, and declining the fee costs a third of the margin.</li>
+        <li><strong>Settle the no-show grace period.</strong> Ten minutes, with the outcomes in 7.2. It unblocks the payment state machine.</li>
+        <li><strong>Approve the $25 payout threshold and weekly schedule.</strong> New, small, and it is what makes low-value creators viable.</li>
+        <li><strong>Confirm the review window at 24 hours.</strong> It sets when money releases and it is the main chargeback defence.</li>
+        <li><strong>Note the chargeback position.</strong> No action needed, but the client should know that LINK carries it.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="s09">
+    <div class="shead"><span class="snum">09</span><h2>Sources</h2></div>
+    <ul class="tiny">
+      <li>Processor pricing, standard online rate and Connect Express account and payout fees, October 2026: <a href="https://flexprice.io/blog/stripe-pricing-breakdown-2026">flexprice.io</a>, <a href="https://fiska.com/blog/stripe-connect-pricing/">fiska.com</a>, <a href="https://www.merchantmaverick.com/complete-guide-stripe-pricing-costs/">merchantmaverick.com</a></li>
+      <li>Connect account type comparison: <a href="https://www.nimblechapps.com/blog/comparing-stripe-connect-standard-vs-express-vs-custom">nimblechapps.com</a></li>
+      <li>Intro tiered commission structure: <a href="https://www.growthmentor.com/blog/intro-co-alternatives">growthmentor.com</a>, <a href="https://sfstandard.com/2024/07/12/intro-cameo-techie-meeting-call/">sfstandard.com</a></li>
+      <li>Cameo take rate and creator sentiment: <a href="https://talkspresso.com/blog/why-cameo-is-dying">talkspresso.com</a></li>
+      <li>Creator platform fee comparison, Fiverr, Upwork and Patreon: <a href="https://behindthescenes.com/blogs/platform-fee-comparison-2026-trends-stats-what-s-next">behindthescenes.com</a>, <a href="https://www.ruzuku.com/learn/articles/patreon-pricing">ruzuku.com</a></li>
+    </ul>
+    <p class="tiny soft">All third-party rates gathered October 2026 from public documentation and reporting. They change without announcement and must be re-verified against the live account before any figure in this document is published or quoted to a creator.</p>
+  </section>
+
+  <p class="foot">LINK payments, revenue and policy, issued 3 October 2026 for the Phase 1 pilot. Companion to the UX research report, the SWOT analysis and the feature inventory. Unit economics are modelled on published processor rates and the proposed commission structure; they are planning figures, not a financial forecast, and they exclude operating costs entirely. Items marked open were unresolved at the time of writing and several of them block the payment state machine. Prepared by Oyolloo for WorkDev Solutions.</p>
+
+</div>
+
+<script>
+  document.getElementById("pdfBtn").addEventListener("click", function(){
+    window.print();
+  });
+</script>

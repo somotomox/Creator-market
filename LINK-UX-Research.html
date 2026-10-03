@@ -1,0 +1,2363 @@
+<meta charset="utf-8">
+<title>LINK UX Research Report</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f7f9fc; --surface-2:#eef3fa; --surface-3:#e7eef8;
+    --ink:#16202e; --ink-soft:#46536a; --muted:#6b7789;
+    --line:#e2e8f1; --line-strong:#cbd6e4;
+    --accent:#2563eb; --accent-deep:#1e3a8a; --accent-soft:#dbe6fe; --navy:#0b1f3a;
+    --good:#15803d; --good-bg:#e4f7ea; --warn:#b45309; --warn-bg:#fdf0d5;
+    --crit:#b91c1c; --crit-bg:#fbe4e4;
+    --ev-a:#15803d; --ev-a-bg:#e4f7ea;
+    --ev-b:#1d4ed8; --ev-b-bg:#dbe6fe;
+    --ev-c:#0e7490; --ev-c-bg:#d6f0f6;
+    --ev-d:#b45309; --ev-d-bg:#fdf0d5;
+    --ev-e:#7c3aed; --ev-e-bg:#ece4fd;
+    --shadow:0 1px 2px rgba(11,31,58,.05);
+    --f-disp:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --f-body:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+    --f-mono:"IBM Plex Mono","SFMono-Regular",ui-monospace,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--f-body);
+       font-size:16px; line-height:1.78; letter-spacing:.002em; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px; margin:0 auto; padding-inline:22px; padding-block:30px 90px}
+  p{margin:0 0 15px}
+  strong{font-weight:600}
+  h1,h2,h3,h4{margin:0; line-height:1.22; text-wrap:balance; color:var(--ink)}
+  h1{font-family:var(--f-disp); font-size:clamp(28px,4.6vw,40px); font-weight:600; letter-spacing:-.025em; line-height:1.28}
+  h1 em{font-style:normal; font-weight:600; color:var(--accent)}
+  h2{font-family:var(--f-disp); font-size:26px; font-weight:600; letter-spacing:-.018em; line-height:1.3}
+  h3{font-size:17px; font-weight:600; margin-top:26px; letter-spacing:-.008em; line-height:1.4}
+  h4{font-size:15px; font-weight:600; margin-top:18px; letter-spacing:-.005em}
+  ul,ol{margin:12px 0 15px; padding-left:22px}
+  li{margin:7px 0; padding-left:3px}
+  .lab{font-family:var(--f-body); font-size:11.5px; font-weight:600; letter-spacing:.07em;
+       text-transform:uppercase; color:var(--muted)}
+  .soft{color:var(--ink-soft)}
+  .tiny{font-size:14px; line-height:1.68}
+  .num{font-variant-numeric:tabular-nums}
+
+  .dochead{border:1px solid var(--line); border-top:4px solid var(--accent); border-radius:12px;
+           padding:24px 26px; background:var(--surface); box-shadow:var(--shadow)}
+  .dochead .kicker{font-family:var(--f-mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+                   color:var(--accent); font-weight:500; margin-bottom:10px; display:block}
+  .dochead h1{margin:0 0 12px}
+  .dochead .sub{font-size:17px; color:var(--ink-soft); line-height:1.7; margin:0}
+  .facts{display:grid; grid-template-columns:1fr; gap:1px; background:var(--line);
+         border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-top:20px}
+  @media (min-width:520px){ .facts{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:760px){ .facts{grid-template-columns:repeat(3,1fr)} }
+  .facts > div{background:var(--bg); padding:11px 14px}
+  .facts .v{font-size:15px; font-weight:600; margin-top:6px; line-height:1.4}
+  .facts .v.accent{color:var(--accent)}
+
+  section{margin-top:52px; padding-top:30px; border-top:1px solid var(--line)}
+  .shead{display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; margin-bottom:10px}
+  .snum{font-family:var(--f-mono); font-size:19px; font-weight:500; color:var(--accent); flex:0 0 auto}
+  .lede{font-size:17px; color:var(--ink-soft); line-height:1.65; margin:8px 0 22px; font-weight:400}
+
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:19px 21px}
+  .stack{display:grid; gap:12px}
+  .g2{display:grid; gap:12px; grid-template-columns:1fr}
+  @media (min-width:660px){ .g2{grid-template-columns:repeat(2,1fr)}
+    .g2 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  .g3{display:grid; gap:12px; grid-template-columns:1fr}
+  @media (min-width:560px) and (max-width:879px){ .g3{grid-template-columns:repeat(2,1fr)}
+    .g3 > :last-child:nth-child(odd){grid-column:1 / -1} }
+  @media (min-width:880px){ .g3{grid-template-columns:repeat(3,1fr)} }
+
+  .tw{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--bg); margin:12px 0}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; line-height:1.62; min-width:620px}
+  th,td{text-align:left; padding:13px 15px; border-top:1px solid var(--line); vertical-align:top}
+  thead th{border-top:none; background:var(--surface-2); font-family:var(--f-body); font-weight:600;
+           font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap}
+  tbody tr:hover{background:var(--surface)}
+  td.w{white-space:nowrap; font-variant-numeric:tabular-nums}
+
+  .ev{display:inline-block; font-family:var(--f-body); font-size:10.5px; font-weight:600; letter-spacing:.05em;
+      padding:3px 8px; border-radius:5px; white-space:nowrap; vertical-align:middle}
+  .ev.a{background:var(--ev-a-bg); color:var(--ev-a)}
+  .ev.b{background:var(--ev-b-bg); color:var(--ev-b)}
+  .ev.c{background:var(--ev-c-bg); color:var(--ev-c)}
+  .ev.d{background:var(--ev-d-bg); color:var(--ev-d)}
+  .ev.e{background:var(--ev-e-bg); color:var(--ev-e)}
+
+  .sev{display:inline-block; font-family:var(--f-body); font-size:10.5px; font-weight:600; letter-spacing:.05em;
+       text-transform:uppercase; padding:3px 9px; border-radius:20px; white-space:nowrap}
+  .sev.c1{background:var(--crit-bg); color:var(--crit)}
+  .sev.h1{background:var(--warn-bg); color:var(--warn)}
+  .sev.m1{background:var(--accent-soft); color:var(--accent-deep)}
+  .sev.l1{background:var(--surface-3); color:var(--muted)}
+
+  .note{border:1px solid var(--line); border-left:4px solid var(--accent); background:var(--accent-soft);
+        border-radius:0 12px 12px 0; padding:18px 22px; margin:20px 0}
+  .note h3{color:var(--accent-deep); margin:0 0 8px; font-size:16.5px}
+  .note p:last-child{margin-bottom:0}
+  .note.warn{border-left-color:var(--warn); background:var(--warn-bg)}
+  .note.warn h3{color:var(--warn)}
+  .note.crit{border-left-color:var(--crit); background:var(--crit-bg)}
+  .note.crit h3{color:var(--crit)}
+  .note.good{border-left-color:var(--good); background:var(--good-bg)}
+  .note.good h3{color:var(--good)}
+
+  .find{border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:0 12px 12px 0;
+        padding:18px 21px; background:var(--surface)}
+  .find .fh{display:flex; gap:9px; align-items:baseline; flex-wrap:wrap; margin-bottom:6px}
+  .find .fid{font-family:var(--f-mono); font-size:11px; font-weight:500; background:var(--surface-3);
+             color:var(--ink-soft); padding:2px 7px; border-radius:4px}
+  .find .ft{font-weight:600; font-size:16.5px; letter-spacing:-.01em}
+  .find dl{margin:8px 0 0; display:grid; grid-template-columns:1fr; gap:4px}
+  @media (min-width:620px){ .find dl{grid-template-columns:124px 1fr; gap:9px 16px} }
+  .find dt{font-family:var(--f-body); font-size:11.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+           color:var(--muted); padding-top:4px}
+  .find dd{margin:0; font-size:14.5px; line-height:1.65}
+  .find.crit{border-left-color:var(--crit)}
+  .find.high{border-left-color:var(--warn)}
+
+  /* user flow maps */
+  .lvl{border:1px solid var(--line); border-radius:12px; background:var(--surface); padding:20px 22px; margin:18px 0}
+  .lvl > header{display:flex; gap:12px; align-items:baseline; flex-wrap:wrap; padding-bottom:12px;
+                margin-bottom:16px; border-bottom:2px solid var(--line-strong)}
+  .lvl .lvtag{font-family:var(--f-body); font-size:11.5px; font-weight:600; letter-spacing:.07em;
+              text-transform:uppercase; color:#fff; background:var(--accent); padding:4px 11px; border-radius:20px}
+  .lvl .lvname{font-size:19px; font-weight:600; letter-spacing:-.012em}
+  .lvl .lvgoal{font-size:14.5px; color:var(--ink-soft); width:100%; margin-top:2px}
+
+  .fmap{display:grid; gap:0}
+  .fstep{display:grid; grid-template-columns:36px 1fr; gap:14px; align-items:start}
+  .fstep .fn{width:30px; height:30px; border-radius:50%; background:var(--accent-soft); color:var(--accent-deep);
+             font-family:var(--f-mono); font-size:13px; font-weight:500; display:flex; align-items:center;
+             justify-content:center; flex:0 0 auto}
+  .fstep.entry .fn{background:var(--good-bg); color:var(--good)}
+  .fstep.exit .fn{background:var(--accent); color:#fff}
+  .fstep .fb{padding-bottom:4px}
+  .fstep .ft2{font-weight:600; font-size:16px; letter-spacing:-.008em}
+  .fstep .fd{font-size:14.5px; color:var(--ink-soft); margin-top:3px; line-height:1.62}
+  .fstep .fscr{display:inline-block; font-family:var(--f-mono); font-size:11.5px; color:var(--muted);
+               background:var(--surface-2); border:1px solid var(--line); padding:2px 8px;
+               border-radius:5px; margin-top:7px}
+  .frail{display:grid; grid-template-columns:36px 1fr; gap:14px}
+  .frail .fline{display:flex; justify-content:center}
+  .frail .fline i{display:block; width:2px; background:var(--line-strong); height:22px}
+  .fdec{grid-column:2; background:var(--bg); border:1px dashed var(--line-strong); border-radius:10px;
+        padding:12px 15px; margin:8px 0}
+  .fdec .fq{display:block; font-weight:600; font-size:14.5px; margin-bottom:9px}
+  .fbr{display:grid; grid-template-columns:auto 1fr; gap:10px; font-size:14px; padding:5px 0;
+       border-top:1px solid var(--line)}
+  .fbr:first-of-type{border-top:none}
+  .fbr .bk{font-family:var(--f-body); font-size:11.5px; font-weight:600; letter-spacing:.05em;
+           text-transform:uppercase; padding:2px 9px; border-radius:20px; white-space:nowrap; height:fit-content}
+  .fbr .bk.y{background:var(--good-bg); color:var(--good)}
+  .fbr .bk.n{background:var(--crit-bg); color:var(--crit)}
+  .fbr .bk.alt{background:var(--warn-bg); color:var(--warn)}
+  .fexit{grid-column:2; font-size:13.5px; color:var(--muted); padding:4px 0 0}
+
+  /* data visuals */
+  .viz{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:20px 22px; margin:20px 0}
+  .viz > h4{margin:0 0 5px; font-size:15.5px; font-weight:600}
+  .viz .vcap{font-size:13.5px; color:var(--muted); margin:0 0 18px; line-height:1.55}
+  .viz .vnote{font-size:13px; color:var(--muted); margin:16px 0 0; padding-top:13px;
+              border-top:1px solid var(--line); line-height:1.55}
+  .viz.plain{background:var(--surface)}
+
+  .bars{display:grid; gap:11px}
+  .bar{display:grid; grid-template-columns:minmax(96px,27%) 1fr minmax(58px,auto); gap:14px; align-items:center}
+  @media (max-width:600px){ .bar{grid-template-columns:1fr auto; gap:4px 10px}
+    .bar .bl{grid-column:1/-1} .bar .bv{text-align:right} }
+  .bar .bl{font-size:14px; line-height:1.32}
+  .bar .bl small{display:block; font-size:12px; color:var(--muted); font-weight:400}
+  .bar .bt{background:var(--surface-2); border-radius:6px; height:28px; overflow:hidden}
+  .bar .bt i{display:block; height:100%; border-radius:6px; background:var(--accent)}
+  .bar .bt i.good{background:var(--good)}
+  .bar .bt i.warn{background:var(--warn)}
+  .bar .bt i.crit{background:var(--crit)}
+  .bar .bt i.mute{background:var(--line-strong)}
+  .bar .bt i.deep{background:var(--accent-deep)}
+  .bar .bv{font-family:var(--f-mono); font-size:14px; font-weight:500; white-space:nowrap; text-align:right}
+
+  .stackbar{display:flex; height:50px; border-radius:9px; overflow:hidden; border:1px solid var(--line)}
+  .stackbar > span{display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:600;
+                   color:#fff; white-space:nowrap; overflow:hidden; padding:0 4px; min-width:0}
+  .stackkey{display:flex; flex-wrap:wrap; gap:16px; margin-top:14px; font-size:13.5px}
+  .stackkey span{display:flex; align-items:center; gap:8px; white-space:nowrap}
+  .stackkey i{width:13px; height:13px; border-radius:3px; display:block; flex:0 0 auto}
+
+  .tiles{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .tile{border:1px solid var(--line); border-radius:11px; padding:15px 16px; background:var(--bg)}
+  .tile .tv{font-family:var(--f-mono); font-size:26px; font-weight:500; letter-spacing:-.02em; line-height:1.1}
+  .tile .tk{font-size:12.5px; color:var(--muted); margin-top:7px; line-height:1.45}
+  .tile.ok{border-left:4px solid var(--good)} .tile.ok .tv{color:var(--good)}
+  .tile.at{border-left:4px solid var(--warn)} .tile.at .tv{color:var(--warn)}
+  .tile.no{border-left:4px solid var(--crit)} .tile.no .tv{color:var(--crit)}
+  .tile.nu{border-left:4px solid var(--accent)} .tile.nu .tv{color:var(--accent)}
+
+  .funnel{display:grid; gap:7px}
+  .fstep2{display:grid; grid-template-columns:1fr; gap:4px}
+  .fstep2 .fbar{height:38px; border-radius:7px; background:var(--accent); display:flex; align-items:center;
+                padding:0 14px; color:#fff; font-size:14px; font-weight:600}
+  .fstep2 .fmeta{font-size:12.5px; color:var(--muted); padding-left:2px}
+  .fdrop{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--crit);
+         padding-left:14px; font-weight:600}
+
+  svg.dia{display:block; width:100%; height:auto; max-width:100%}
+  .diawrap{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:18px;
+           margin:20px 0; overflow-x:auto}
+  .diawrap h4{margin:0 0 14px; font-size:15.5px}
+
+  @media print{
+    .viz,.diawrap{break-inside:avoid; page-break-inside:avoid}
+    .bar .bt i,.stackbar > span,.tile,.fstep2 .fbar{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* cross-document navigation */
+  .docnav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.94);
+          -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+          border-bottom:1px solid var(--line)}
+  .docnav .dn{max-width:1080px; margin:0 auto; padding:0 22px; display:flex; align-items:center; gap:20px}
+  .docnav .dnbrand{font-weight:600; font-size:15px; letter-spacing:-.012em; color:var(--ink);
+                   white-space:nowrap; padding:14px 0; flex:0 0 auto; text-decoration:none}
+  .docnav .dnbrand b{color:var(--accent); font-weight:600}
+  .docnav .dnbrand:hover b{color:var(--accent-deep)}
+  .docnav .dnlinks{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .docnav .dnlinks::-webkit-scrollbar{display:none}
+  .docnav .dnlinks a{display:block; padding:14px 12px; font-size:14px; color:var(--ink-soft);
+            text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; font-weight:400}
+  .docnav .dnlinks a:hover{color:var(--accent-deep)}
+  .docnav .dnlinks a.on{color:var(--accent-deep); font-weight:600; border-bottom-color:var(--accent)}
+  .docnav .dnlinks a:focus-visible{outline:2px solid var(--accent); outline-offset:-3px; border-radius:4px}
+  @media (max-width:680px){
+    .docnav .dn{gap:12px; padding:0 14px}
+    .docnav .dnbrand{font-size:13.5px; padding:12px 0}
+    .docnav .dnlinks a{padding:12px 9px; font-size:13.5px}
+  }
+  section, [id^="s"], [id^="p-"]{scroll-margin-top:76px}
+  @media print{ .docnav{display:none !important} }
+
+  .dock{position:fixed; right:16px; bottom:16px; z-index:20}
+  .dockbtn{background:var(--surface); border:1px solid var(--line-strong); border-radius:22px;
+           box-shadow:0 4px 18px rgba(11,31,58,.14); padding:9px 16px; font-size:13px; font-weight:600;
+           font-family:var(--f-body); color:var(--ink); cursor:pointer; min-height:40px; line-height:1;
+           display:inline-flex; align-items:center; gap:7px}
+  .dockbtn:hover{border-color:var(--accent); color:var(--accent-deep)}
+  .dockbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .toc{columns:2; column-gap:34px; font-size:15px}
+  @media (max-width:620px){ .toc{columns:1} }
+  .toc a{display:block; padding:6px 0; color:var(--ink-soft); text-decoration:none;
+         border-bottom:1px solid transparent; break-inside:avoid}
+  .toc a:hover{color:var(--accent-deep); border-bottom-color:var(--line-strong)}
+  .toc a span{font-family:var(--f-mono); font-size:12px; color:var(--muted); margin-right:9px}
+
+  .foot{margin-top:40px; padding-top:14px; border-top:1px solid var(--line); color:var(--muted); font-size:12px}
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+
+  @page{ margin:14mm }
+  @media print{
+    .dock{display:none !important}
+    body{background:#fff; font-size:10.5pt; line-height:1.6}
+    .wrap{max-width:none; padding:0}
+    .card,.note,.tw,.find,.dochead,.facts{break-inside:avoid; page-break-inside:avoid}
+    h1,h2,h3,h4{break-after:avoid; page-break-after:avoid}
+    section{break-before:auto}
+    table{min-width:0}
+    .ev,.sev{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+
+  /* ---- black and white print ---- */
+  @media print{
+    :root{
+      --bg:#ffffff; --surface:#f7f7f7; --surface-2:#f0f0f0; --surface-3:#e8e8e8;
+      --ink:#000000; --ink-soft:#2b2b2b; --muted:#5a5a5a;
+      --line:#d0d0d0; --line-strong:#9a9a9a;
+      --accent:#1a1a1a; --accent-deep:#000000; --accent-soft:#f0f0f0; --navy:#000000;
+      --good:#1a1a1a; --good-bg:#f2f2f2;
+      --warn:#1a1a1a; --warn-bg:#ededed;
+      --crit:#000000; --crit-bg:#e6e6e6;
+      --coral:#1a1a1a;
+      --l1:#1a1a1a; --l1-bg:#f2f2f2; --l2:#1a1a1a; --l2-bg:#ededed; --l3:#5a5a5a; --l3-bg:#e8e8e8;
+      --s:#1a1a1a; --s-bg:#f4f4f4; --w:#1a1a1a; --w-bg:#ededed;
+      --o:#1a1a1a; --o-bg:#f0f0f0; --t:#000000; --t-bg:#e6e6e6;
+      --ev-a:#1a1a1a; --ev-a-bg:#f0f0f0; --ev-b:#1a1a1a; --ev-b-bg:#eaeaea;
+      --ev-c:#1a1a1a; --ev-c-bg:#eeeeee; --ev-d:#1a1a1a; --ev-d-bg:#e9e9e9;
+      --ev-e:#1a1a1a; --ev-e-bg:#e4e4e4;
+      --shadow:none;
+    }
+    body{background:#fff; color:#000}
+    a{color:#000; text-decoration:underline}
+    svg.dia, .stackbar, .tile, .bar .bt, .qbox, .seg, .nav .ncta, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .chip, .ev, .sev, .pill, .dcode, .pid, .xid, .rid, .sid, .fid, .iid, .dnum, .tag, .path, code{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .note, .find, .rule, .card, .viz, .diawrap, .pop, .scr, .pg, .item, .lvl{
+      border-color:#bdbdbd !important;
+    }
+    .stackbar > span{color:#fff !important}
+    .dock, .docnav, .chkbar button{display:none !important}
+  }
+
+  /* ---- plain print: no panels, cards or chips. charts and diagrams stay ---- */
+  @media print{
+    /* every decorative container becomes plain typography */
+    .dochead, .hero, .doc, .card, .note, .find, .rule, .item, .pgroup, .qbox,
+    .scr, .pg, .pg > header, .pg .pbody, .pop, .pop > header, .lvl, .viz, .viz.plain,
+    .diawrap, .tw, .chk, .chk label, .tree, .forwho, .forwho.design, .forwho.dev,
+    .tile, .facts, .facts > div, .toc a, .pmeta, .ppath, .chkbar, .dmeta, .seg{
+      background:transparent !important;
+      border:0 !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      overflow:visible !important;
+      filter:none !important;
+      padding-left:0 !important;
+      padding-right:0 !important;
+    }
+    .note, .find, .rule, .item, .pgroup, .qbox, .scr, .pg, .pop, .lvl, .card, .viz, .diawrap{
+      margin:15pt 0 !important;
+      padding-top:0 !important;
+      padding-bottom:0 !important;
+    }
+    .dochead, .hero{padding:0 !important; margin:0 0 16pt !important}
+    .forwho{padding:0 !important; margin-top:10pt !important}
+    .tree{padding:0 !important; font-size:9pt !important}
+    .tile{padding:0 !important}
+    .doc{padding:0 !important; margin:0 0 12pt !important}
+
+    /* headings and ids carry the structure now that the boxes are gone */
+    .note h3, .find .ft, .rule .rt, .viz > h4, .diawrap h4, .card h4, .item .itxt strong,
+    .pop .xt, .scr .st2, .scr h4, .pg .ptitle, .lvl .lvname, .qbox .qt, .doc .dt,
+    .forwho h5, .shead h2{ color:#000 !important }
+    .qbox header, .pg > header, .pop > header, .lvl > header, .scr header{
+      border-bottom:0.5pt solid #b4b4b4 !important; padding-bottom:5pt !important;
+      margin-bottom:8pt !important;
+    }
+    .forwho h5{border-bottom:0.5pt solid #d4d4d4 !important; padding-bottom:3pt !important}
+
+    /* badges, pills and code chips become plain text */
+    .chip, .ev, .sev, .pill, .tag, .dcode, .dnum, .pid, .xid, .rid, .sid, .fid, .iid,
+    .lvtag, .qk, .qn, .sz, .cnt, .path, code, .fscr, .bk, .tv{
+      background:transparent !important; border:0 !important; padding:0 !important;
+      border-radius:0 !important; color:#000 !important; filter:none !important;
+      box-shadow:none !important; width:auto !important; height:auto !important;
+    }
+    .chip, .ev, .sev, .pill, .tag, .lvtag, .qk, .bk{font-weight:600 !important; margin-right:6pt}
+    .tile .tv{font-size:19pt !important; color:#000 !important}
+    .swatch i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+
+    /* hairlines where a list needs separating, instead of panels */
+    .facts > div{border-bottom:0.5pt solid #d2d2d2 !important; padding:5pt 0 !important}
+    .chk label{border-bottom:0.5pt solid #dcdcdc !important; padding:4pt 0 !important}
+    .pop .say{border-left:1pt solid #8a8a8a !important; padding:2pt 0 2pt 9pt !important;
+              background:transparent !important; border-radius:0 !important}
+    .cprog{display:none !important}
+
+    /* tables: horizontal rules only */
+    table{width:100% !important; min-width:0 !important}
+    thead th{background:transparent !important; color:#000 !important;
+             border-bottom:1pt solid #000 !important; padding:0 9pt 5pt 0 !important}
+    th, td{border-top:0 !important; border-bottom:0.5pt solid #cfcfcf !important;
+           padding:5pt 9pt 5pt 0 !important; background:transparent !important}
+    tr.tot td, tr.tot th{border-top:1pt solid #000 !important; font-weight:600 !important}
+
+    /* the charts stay */
+    .bar .bt{background:#ededed !important; border:0.5pt solid #c4c4c4 !important;
+             border-radius:0 !important; filter:grayscale(100%) !important;
+             -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .bar .bt i{border-radius:0 !important; filter:grayscale(100%) !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+              filter:grayscale(100%) !important;
+              -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .stackbar > span{color:#fff !important}
+    .stackkey i{filter:grayscale(100%) !important; border:0.5pt solid #8a8a8a !important;
+                -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep2 .fbar{border-radius:0 !important; filter:grayscale(100%) !important;
+                  -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    svg.dia{filter:grayscale(100%) !important; max-width:100% !important; height:auto !important}
+
+    /* the user-flow diagram stays: numbered nodes, rails, decision points */
+    .fstep .fn{filter:grayscale(100%) !important; width:26px !important; height:26px !important;
+               border-radius:50% !important; padding:0 !important;
+               -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .fstep.exit .fn{color:#fff !important}
+    .frail .fline i{background:#6a6a6a !important}
+    .fdec{border:0.5pt dashed #8a8a8a !important; background:transparent !important;
+          border-radius:0 !important}
+    .fbr{border-top:0.5pt solid #e0e0e0 !important}
+
+    /* the navigation mock-ups are wireframes, not decoration */
+    .nav{border:0.5pt solid #8a8a8a !important; border-radius:0 !important;
+         background:transparent !important; overflow:hidden !important}
+    .nav .nbar, .nav .ncta, .nav .nghost, .nav.tabs .ntab i{
+      filter:grayscale(100%) !important;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    }
+    .nav .ncap{border-top:0.5pt dashed #8a8a8a !important}
+
+    .dock, .docnav, .chkbar button{display:none !important}
+    .g2, .g3, .tiles, .docs, .quad, .split{gap:10pt !important}
+  }
+
+  /* ---- plain print corrections ---- */
+  @media print{
+    /* an id that is a table cell still needs its column gap */
+    td.fid, td.pid, td.iid, td.xid, td.rid, td.sid, td.dcode, td.cnt, td.sz{
+      padding:5pt 12pt 5pt 0 !important; white-space:nowrap !important;
+    }
+    /* an inline tag needs a delimiter once the chip is gone */
+    .ev::before, .sev::before{content:"["}
+    .ev::after, .sev::after{content:"] "}
+    td .ev::before, td .sev::before, th .ev::before, th .sev::before{content:""}
+    td .ev::after, td .sev::after, th .ev::after, th .sev::after{content:""}
+    .ev, .sev{white-space:nowrap !important; margin-left:3pt !important}
+  }
+</style>
+
+<div class="dock">
+  <button class="dockbtn" id="pdfBtn" type="button"><span aria-hidden="true">⇩</span> Download PDF</button>
+</div>
+
+<nav class="docnav">
+  <div class="dn">
+    <a class="dnbrand" href="index.html">LINK <b>UX</b></a>
+    <div class="dnlinks">
+      <a href="LINK-UX-Research.html" class="on" aria-current="page">Research</a>
+      <a href="LINK-SWOT.html">SWOT</a>
+      <a href="LINK-Revenue-Policy.html">Revenue &amp; Policy</a>
+      <a href="LINK-UI-Design-Brief.html">Design Brief</a>
+      <a href="LINK-Navigation-Pages.html">Navigation</a>
+      <a href="LINK-Page-Features.html">Features</a>
+      <a href="LINK-Popups-Forms.html">Popups &amp; Forms</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="dochead">
+    <span class="kicker">LINK · Phase 1 pilot · Week 3 research deliverable</span>
+    <h1>UX Research Report: <em>what we know, what we assume, and what we must test</em></h1>
+    <p class="sub">A desk-research and document-analysis study of the LINK creator-calls marketplace, conducted to close the Week 3 scope-and-cost milestone. It establishes the business and market context, evaluates the known state of the existing prototype, maps the three user journeys Phase 1 must deliver, and converts that into a prioritised set of design decisions. It contains no primary user research, because none has been conducted, and it says so wherever that matters.</p>
+    <div class="facts">
+      <div><span class="lab">Prepared by</span><div class="v">Oyolloo</div></div>
+      <div><span class="lab">Prepared for</span><div class="v">WorkDev Solutions</div></div>
+      <div><span class="lab">Issued</span><div class="v">1 October 2026</div></div>
+      <div><span class="lab">Project stage</span><div class="v accent">Week 3 of 13 · day 15</div></div>
+      <div><span class="lab">Primary user data</span><div class="v">None yet collected</div></div>
+      <div><span class="lab">Status</span><div class="v">Draft for client review</div></div>
+    </div>
+  </div>
+
+  <section id="toc">
+    <div class="shead"><span class="snum">00</span><h2>Contents</h2></div>
+    <div class="toc">
+      <a href="#s01"><span>01</span>Executive summary</a>
+      <a href="#s02"><span>02</span>Project context</a>
+      <a href="#s03"><span>03</span>Research objectives</a>
+      <a href="#s04"><span>04</span>Methodology and evidence system</a>
+      <a href="#s05"><span>05</span>Business analysis</a>
+      <a href="#s06"><span>06</span>Market and industry research</a>
+      <a href="#s07"><span>07</span>Competitive UX research</a>
+      <a href="#s08"><span>08</span>User segments</a>
+      <a href="#s09"><span>09</span>Personas</a>
+      <a href="#s10"><span>10</span>Customer journeys and user flows</a>
+      <a href="#s11"><span>11</span>Task analysis</a>
+      <a href="#s12"><span>12</span>Information architecture</a>
+      <a href="#s13"><span>13</span>Heuristic evaluation</a>
+      <a href="#s14"><span>14</span>Conversion analysis</a>
+      <a href="#s15"><span>15</span>Content and UX copy</a>
+      <a href="#s16"><span>16</span>Trust and credibility</a>
+      <a href="#s17"><span>17</span>Mobile UX</a>
+      <a href="#s18"><span>18</span>Accessibility</a>
+      <a href="#s19"><span>19</span>Behavioural analysis</a>
+      <a href="#s20"><span>20</span>Gap analysis</a>
+      <a href="#s21"><span>21</span>Key research findings</a>
+      <a href="#s22"><span>22</span>Recommendations</a>
+      <a href="#s23"><span>23</span>Prioritisation</a>
+      <a href="#s24"><span>24</span>UX roadmap</a>
+      <a href="#s25"><span>25</span>Validation research plan</a>
+      <a href="#s26"><span>26</span>Analytics and data requirements</a>
+      <a href="#s27"><span>27</span>Measurement framework</a>
+      <a href="#s28"><span>28</span>Research limitations</a>
+      <a href="#s29"><span>29</span>Decisions blocking design</a>
+      <a href="#s30"><span>30</span>Sources</a>
+      <a href="#s31"><span>31</span>Appendix: evidence summary</a>
+    </div>
+  </section>
+
+  <section id="s01">
+    <div class="shead"><span class="snum">01</span><h2>Executive summary</h2></div>
+
+    <p>LINK is a two-sided marketplace where any creator sells paid one-to-one video calls to the audience that already follows them. A working prototype exists. Phase 1 hardens it into a revenue-generating pilot. This report is the research that should determine what gets designed in Weeks 4 to 6 and built in Weeks 7 to 13.</p>
+
+    <h3>What we learned</h3>
+    <p><strong>The product's hardest problem is not the product.</strong> Research on two-sided marketplaces is consistent and unambiguous: marketplaces fail at the cold start, and the companies that survived it all constrained their initial market to reach density faster. Uber, Airbnb and DoorDash all launched city by city. <span class="ev b">EXTERNAL</span> For LINK this means the single highest-risk decision in the project is not a screen, a flow or a feature. It is how narrowly the first thirty creators are recruited, and that decision is currently unresolved and in disagreement between the parties.</p>
+
+    <p><strong>Three of the four gate metrics are decided before a customer ever sees a screen.</strong> Creator activation depends on onboarding friction. Call completion depends on reminders. Average rating depends on whether the first cohort is hand-held. Only completed paid calls per week depends meaningfully on the marketplace itself working.</p>
+
+    <p><strong>The reminder channel is a measurable risk to a gate metric.</strong> Phase 1 ships email-only reminders. Published studies across 29 trials put the no-show reduction from automated reminders at roughly 29 percent on average, with text messages materially outperforming email: email response rates in healthcare settings run 5 to 10 percent against 45 percent for SMS. <span class="ev b">EXTERNAL</span> Call completion above 80 percent is a Phase 2 gate criterion. Measuring it on the weaker channel puts the gate at risk for reasons unrelated to whether the product is good.</p>
+
+    <p><strong>The checkout carries two known, quantified abandonment risks.</strong> Baymard's synthesis of 50 studies puts average cart abandonment at 70.2 percent, with 48 percent of abandoners citing unexpected extra costs and 26 percent citing a forced account creation. <span class="ev b">EXTERNAL</span> LINK's proposed customer service fee is exactly the kind of extra cost that triggers the first, and the decision on guest checkout is still open. Both are design decisions, not engineering ones, and both are cheap to get right now.</p>
+
+    <div class="viz plain">
+      <h4>The four numbers that decide Phase 2</h4>
+      <p class="vcap">Agreed at scope lock, instrumented during build, read at the gate review four weeks after launch.</p>
+      <div class="tiles">
+        <div class="tile nu"><div class="tv">&#8599;</div><div class="tk"><strong>Completed paid calls per week</strong><br>must be trending up</div></div>
+        <div class="tile at"><div class="tv">55%</div><div class="tk"><strong>Creator activation</strong><br>sign-ups that become bookable</div></div>
+        <div class="tile no"><div class="tv">80%</div><div class="tk"><strong>Call completion</strong><br>booked calls that actually happen</div></div>
+        <div class="tile ok"><div class="tv">4.6&#9733;</div><div class="tk"><strong>Average rating</strong><br>across all reviewed calls</div></div>
+      </div>
+      <p class="vnote">Two of these four carry risk this report could not resolve. <strong>Call completion</strong> is measured on the weaker reminder channel, and <strong>creator activation</strong> depends on an onboarding flow the prototype does not have yet.</p>
+    </div>
+
+    <h3>The biggest user problems</h3>
+    <ol>
+      <li><strong>The visitor cannot tell whether the creator is real.</strong> The prototype has no social sign-in and no verified follower count, which is the core concept of the product. <span class="ev a">PRIOR AUDIT</span></li>
+      <li><strong>The creator cannot get to a shareable link unaided.</strong> There is no onboarding flow and no dashboard in the prototype. Creator activation above 55 percent is a gate metric with no mechanism behind it yet. <span class="ev a">PRIOR AUDIT</span></li>
+      <li><strong>The product displays invented numbers.</strong> Fabricated statistics on a page that asks for a card is a trust problem and a legal exposure. <span class="ev a">PRIOR AUDIT</span></li>
+      <li><strong>Creator and fan experiences are mixed together</strong>, so neither audience sees a coherent product. <span class="ev a">PRIOR AUDIT</span></li>
+    </ol>
+
+    <h3>The biggest business implications</h3>
+    <p>The niche decision governs the recruiting list, the intake forms, the price band, the verification requirements and the comparability of early reviews. Leaving it open past Week 3 does not delay one task, it delays five. <span class="ev d">INFERENCE</span></p>
+    <p>Scope is capped at $8,000 to $10,000 by contract, and a bottom-up reading of what remains to be built exceeds the 156 hours the range was priced against. The Week 3 scope-fix is the contractual moment to resolve that, either by cutting depth or by reopening the range if the universal-platform reading is confirmed. <span class="ev d">INFERENCE</span></p>
+
+    <h3>Immediate actions</h3>
+    <ol>
+      <li>Settle the launch niche with the ten-names test in the questionnaire, not with further argument. This week.</li>
+      <li>Decide guest checkout and service-fee disclosure before any checkout screen is drawn.</li>
+      <li>Add a text-message channel for the one-hour reminder only, or formally restate the call-completion gate.</li>
+      <li>Confirm prototype access. Every estimate in this report assumes the existing build is available and usable, and that remains unverified.</li>
+    </ol>
+  </section>
+
+  <section id="s02">
+    <div class="shead"><span class="snum">02</span><h2>Project context</h2></div>
+    <p class="lede">What exists, what is agreed, and what is still open on 1 October 2026.</p>
+
+    <div class="g2">
+      <div class="card">
+        <h4 style="margin-top:0">The product</h4>
+        <p class="tiny">An open marketplace where any creator sells live one-to-one calls through a single shareable link, with booking, payment, video and payout built in. Positioned against curated expert networks, shout-out platforms, scheduling tools and membership platforms, none of which combine self-serve access for small creators with an end-to-end booking and payment flow.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">The engagement</h4>
+        <p class="tiny">Phase 1 hardens the existing prototype into a live pilot across thirteen weeks, 91 working days, launching 16 December 2026. Baseline $9,000 inside an $8,000 to $10,000 range, half paid. Phase 2, the full platform, is quoted separately at a gate review four weeks after launch and carries no obligation.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Commercial model</h4>
+        <p class="tiny">Fifteen percent commission on completed bookings, creators keep eighty-five. A customer-side service fee covering card processing is proposed so the eighty-five is literally true. Funds are held on payment and released after the call completes and the review window passes.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Settled since scope lock</h4>
+        <p class="tiny">Cancellation policy approved: full refund 24 hours or more ahead, 50 percent inside 24 hours, none inside 2 hours. Three months of post-launch support. Start date, launch date and payment schedule. AI features and call recording confirmed as Phase 2.</p>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <h3>Six decisions are still open on day 15 of 91</h3>
+      <p>The launch niche, the social platform connection, call durations and the price band, the service fee approval, the Stripe entity, and the creator cohort. The first of these blocks the other five in whole or in part. The UX questionnaire issued in Week 2 was designed to close them, and at the time of writing the responses are outstanding. <span class="ev a">PROJECT RECORD</span></p>
+    </div>
+
+    <h3>What this report is not</h3>
+    <p>It is not a usability audit of a live product, because the product is not live. It is not a synthesis of user interviews, because none have been conducted. It is not an analytics review, because there is no traffic. Those are real gaps and Section 28 treats them as such. What this report does is establish the strongest defensible position available before design begins, and name precisely what must be tested to move each hypothesis onto firmer ground.</p>
+  </section>
+
+  <section id="s03">
+    <div class="shead"><span class="snum">03</span><h2>Research objectives</h2></div>
+    <p class="lede">Seven questions, derived from the specific risks this project carries rather than from a generic UX checklist. Each maps to findings and recommendations later in the report.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Research question</th><th>Why it matters here</th><th>Answered in</th></tr></thead>
+        <tbody>
+          <tr><td class="w">RQ1</td><td><strong>What makes a visitor believe a creator is real and worth paying?</strong></td><td>Verified following is the product's core concept and the prototype does not have it. Without it LINK is a scheduling link with a card form attached.</td><td class="w">§13, §16</td></tr>
+          <tr><td class="w">RQ2</td><td><strong>What stops a creator reaching a shareable link in one sitting?</strong></td><td>Creator activation above 55 percent is a gate metric. The supply side is the hard side of this marketplace.</td><td class="w">§11, §14</td></tr>
+          <tr><td class="w">RQ3</td><td><strong>Where does a customer hesitate between a creator's link and a completed payment?</strong></td><td>Every point of hesitation is measurable abandonment, and two of the known causes are live design decisions right now.</td><td class="w">§14, §19</td></tr>
+          <tr><td class="w">RQ4</td><td><strong>What makes a booked call actually happen?</strong></td><td>Call completion above 80 percent is a gate metric and the chosen reminder channel is the weaker of the two available.</td><td class="w">§11, §21</td></tr>
+          <tr><td class="w">RQ5</td><td><strong>How narrow must the first cohort be for the marketplace to feel alive?</strong></td><td>The single largest risk to all four gate metrics, and the one decision currently in disagreement.</td><td class="w">§06, §08</td></tr>
+          <tr><td class="w">RQ6</td><td><strong>What can one administrator realistically hold together at pilot scale?</strong></td><td>Phase 1 deliberately substitutes a human for trust and safety tooling. That trade has a breaking point.</td><td class="w">§11, §20</td></tr>
+          <tr><td class="w">RQ7</td><td><strong>Which assumptions in this plan would be most expensive to discover are wrong?</strong></td><td>A pilot's purpose is to buy information cheaply. It should be instrumented to answer the questions that matter.</td><td class="w">§25, §28</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s04">
+    <div class="shead"><span class="snum">04</span><h2>Methodology and evidence system</h2></div>
+
+    <h3>What was done</h3>
+    <ul>
+      <li><strong>Document analysis.</strong> The full discovery and proposal set, the Milestone 1 scope document and its version 1.1, the delivery schedule, the Service Level Agreement, the scope-lock meeting transcripts of 27 August and 14 and 16 September, and the client correspondence thread from 30 July to 25 September.</li>
+      <li><strong>Secondary research.</strong> Marketplace liquidity and cold-start literature, checkout abandonment benchmarks, appointment no-show and reminder-effectiveness studies, creator economy sizing, and the take-rate structures of five comparable platforms.</li>
+      <li><strong>Prior audit review.</strong> The structured findings of the earlier screen-by-screen review of the prototype, covering roughly twenty-one screens.</li>
+      <li><strong>Competitive analysis.</strong> Positioning and commercial model comparison across direct and adjacent platforms.</li>
+    </ul>
+
+    <h3>What was not done, and why</h3>
+    <p>No user interviews, no usability testing, no survey, no card sorting, no analytics review, and no fresh first-hand inspection of the prototype by the author of this report. The first four were not in Phase 1 scope and are deliberately deferred: the pilot itself is the test. The analytics gap is structural, there is no live product. The last one matters and is stated plainly: <strong>the prototype findings in this report are inherited from the earlier project audit, not observed first-hand during this study.</strong> They are recorded as prior research, and should be re-verified against the current build before design work depends on them.</p>
+
+    <div class="note">
+      <h3>Evidence classification used throughout</h3>
+      <p style="margin-bottom:8px">Every substantive claim carries one of these tags. Where a claim carries none, it is structural description rather than a finding.</p>
+      <ul class="tiny" style="margin-bottom:0">
+        <li><span class="ev a">PRIOR AUDIT</span> and <span class="ev a">PROJECT RECORD</span> &mdash; direct evidence from project files, transcripts, correspondence or the earlier prototype audit.</li>
+        <li><span class="ev b">EXTERNAL</span> &mdash; supported by published research, industry benchmarks or competitor documentation. Sources in Section 30.</li>
+        <li><span class="ev c">OBSERVED</span> &mdash; directly verified during this study. Used sparingly, because almost nothing could be.</li>
+        <li><span class="ev d">INFERENCE</span> &mdash; a reasoned conclusion from the above. Defensible, but not itself measured.</li>
+        <li><span class="ev e">HYPOTHESIS</span> &mdash; requires validation before it should drive an irreversible decision. Section 25 says how.</li>
+      </ul>
+    </div>
+
+    <h3>Known bias in this study</h3>
+    <p>The author is the delivery party, not an independent assessor. Two specific biases follow. First, an incentive to find that the existing prototype is salvageable, since the commercial model depends on it. Second, an incentive to recommend a narrow launch, since it reduces delivery risk. Both are flagged at the point they arise. The ten-names test proposed for the niche decision is specifically designed to settle that question with the client's own data rather than our argument.</p>
+  </section>
+
+  <section id="s05">
+    <div class="shead"><span class="snum">05</span><h2>Business analysis</h2></div>
+
+    <h3>The revenue model, examined</h3>
+    <p>Fifteen percent of completed bookings, with processing passed to the customer. On a $40 thirty-minute call the creator nets $34, the platform takes $6 and the customer pays roughly $41.90. <span class="ev d">INFERENCE</span></p>
+    <p>That arithmetic exposes the real business constraint. At $6 per call, the platform needs a large number of completed calls before the revenue is material. The pilot's purpose is therefore not to generate revenue but to establish whether completed calls recur, because recurrence is the only thing that makes the take rate worth anything. <span class="ev d">INFERENCE</span> This is why "completed paid calls per week, trending up" is the right primary gate metric and why a one-off spike from a marketing blast would be a misleading success signal.</p>
+
+    <div class="note warn">
+      <h3>A structural tension worth naming</h3>
+      <p>The client's stated ambition is a universal platform with global expansion, and a sustainable business earning around three million dollars a year in profit. At a fifteen percent take rate on calls of this size, that implies a volume of completed calls in the low tens of millions annually. <span class="ev d">INFERENCE</span> Nothing about that is impossible, but it is a volume business, and volume businesses are won on repeat usage and distribution rather than on feature breadth. That argues for spending Phase 1 on making one loop work repeatedly, not on making many loops work once.</p>
+    </div>
+
+    <h3>Where the business is genuinely differentiated</h3>
+    <p>The comparison set splits cleanly. Curated expert networks solve trust by gatekeeping, which excludes the long tail. Shout-out platforms solve payment but sell an asynchronous product, not access. Scheduling and link-in-bio tools serve everyone but handle neither payment custody nor the trust problem. Membership platforms monetise an audience without selling time. <span class="ev b">EXTERNAL</span></p>
+    <p>LINK's position is the intersection nobody occupies: self-serve for small creators <em>and</em> end-to-end for the transaction. That is a real gap. It is also the hardest of the four to execute, because it means solving trust without gatekeeping, which is what verified follower counts are for. <span class="ev d">INFERENCE</span></p>
+
+    <h3>Business risks visible from the UX side</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Risk</th><th>Mechanism</th><th>UX lever</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Disintermediation</strong></td><td>Creator and customer meet on LINK, then move to a direct payment to avoid the fee. Severe for a platform whose only asset is the transaction.</td><td>Gated messaging after payment, protected payments framed as the customer's benefit, reviews that only exist on-platform.</td><td class="w"><span class="ev d">INFERENCE</span></td></tr>
+          <tr><td><strong>Supply-side churn</strong></td><td>A creator who sets up and gets no bookings leaves and does not return. The first cohort is finite and cannot be re-recruited.</td><td>Do not open supply faster than demand. Guide the first creators to a first paid call rather than letting them sit empty.</td><td class="w"><span class="ev b">EXTERNAL</span></td></tr>
+          <tr><td><strong>Category mismatch</strong></td><td>Pricing, intake, call length and verification norms differ sharply by category. One generic flow fits none of them well.</td><td>Narrow the launch cohort. Treat category-specific intake as Phase 2.</td><td class="w"><span class="ev d">INFERENCE</span></td></tr>
+          <tr><td><strong>Regulated advice</strong></td><td>Financial, legal, medical and therapeutic categories carry credential and disclaimer obligations that a general marketplace does not.</td><td>Screen for it at onboarding. Exclude from the pilot cohort unless deliberately scoped.</td><td class="w"><span class="ev d">INFERENCE</span></td></tr>
+          <tr><td><strong>Deliverability collapse</strong></td><td>A large cold send from the transactional sending domain damages its reputation, and reminders start landing in spam.</td><td>Separate marketing and transactional domains. Non-negotiable before any list send.</td><td class="w"><span class="ev b">EXTERNAL</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s06">
+    <div class="shead"><span class="snum">06</span><h2>Market and industry research</h2></div>
+
+    <h3>Market size, and the honest caveat</h3>
+    <p>The creator economy is variously sized between roughly $205 billion and $387 billion for 2026 depending on methodology, with one widely cited projection putting it at $323 billion growing at about 26 percent annually. Over 207 million people participate, of whom roughly 50 million are professional or semi-professional. <span class="ev b">EXTERNAL</span></p>
+    <p><strong>What the data does not contain is a figure for paid one-to-one video consultations as a distinct category.</strong> It is not broken out by any of the major sizing reports. <span class="ev b">EXTERNAL</span> Two readings are possible and we cannot distinguish between them from desk research: either the category is too nascent to measure, or it is too small to separate. <span class="ev e">HYPOTHESIS</span></p>
+    <p>This is itself an argument for the pilot structure. A category without reliable sizing data is exactly the case where spending $9,000 to observe real behaviour beats spending $75,000 on a projection. <span class="ev d">INFERENCE</span></p>
+
+    <div class="note crit">
+      <h3>The most important external finding in this report</h3>
+      <p>The marketplace literature converges on one point with unusual consistency: the cold start, not the product, is what kills two-sided marketplaces, and <strong>every major marketplace that survived it constrained its initial market to reach density faster</strong>. Uber, Airbnb and DoorDash all launched city by city. Density beats breadth for achieving liquidity. <span class="ev b">EXTERNAL</span></p>
+      <p>The same literature finds that most successful marketplaces end up supply-constrained rather than demand-constrained. For LINK the hard side is creators. That reframes the project: the pilot's job is to prove that creators can be recruited, activated and kept busy enough to stay, and the customer-side experience exists to serve that. <span class="ev d">INFERENCE</span></p>
+      <p><strong>This bears directly on the open niche decision.</strong> The client's concern, that a narrow launch pigeonholes the platform, is about positioning. The research finding is about distribution. They are not the same decision and need not conflict: the product can be universal while the recruiting list is concentrated.</p>
+    </div>
+
+    <h3>Expectations the market has already set</h3>
+    <p>Users arrive at LINK with mental models formed elsewhere, and those models are now conventions rather than preferences. <span class="ev d">INFERENCE</span></p>
+    <div class="g3">
+      <div class="card"><h4 style="margin-top:0">From booking tools</h4><p class="tiny soft">Availability shown in my own time zone without being asked. A confirmation that arrives immediately. A calendar invitation. A one-tap join link. Rescheduling without contacting anyone.</p></div>
+      <div class="card"><h4 style="margin-top:0">From marketplaces</h4><p class="tiny soft">Ratings with enough volume to mean something. A visible refund policy before paying. Someone to contact when it goes wrong. Payment held until delivery.</p></div>
+      <div class="card"><h4 style="margin-top:0">From social platforms</h4><p class="tiny soft">A verified badge that means verified. Follower counts that are current. Profiles that look like the creator rather than like a directory listing.</p></div>
+    </div>
+    <p class="tiny soft" style="margin-top:12px">Phase 1 meets most of these. The notable exceptions are self-serve rescheduling and calendar sync, both deferred to Phase 2, and both likely to generate support contacts during the pilot. That is an acceptable trade at thirty creators and an unacceptable one at three hundred. <span class="ev d">INFERENCE</span></p>
+  </section>
+
+  <section id="s07">
+    <div class="shead"><span class="snum">07</span><h2>Competitive UX research</h2></div>
+    <p class="lede">Five comparators, chosen because each solves one part of LINK's problem and fails at another. The useful output is not a ranking but a map of which conventions users already expect and which gaps remain unoccupied.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Platform</th><th>Model</th><th>Take rate</th><th>Trust mechanism</th><th>What LINK should learn</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Intro</strong><div class="tiny soft">Paid expert calls, closest direct comparator</div></td>
+            <td>Curated marketplace for booked expert calls</td>
+            <td class="w">~10% via expert's own link<br>~30% via marketplace<br>up to 50% via paid ad</td>
+            <td>Editorial curation. Experts are vetted in, which solves trust by exclusion.</td>
+            <td>The tiered take rate is the most instructive mechanic in the set. The rate tracks who did the work of finding the customer. LINK's pilot bookings all arrive via creator links, which under Intro's logic is the cheapest tier.</td>
+          </tr>
+          <tr>
+            <td><strong>Cameo</strong><div class="tiny soft">Personalised video messages</div></td>
+            <td>Asynchronous, not live access</td>
+            <td class="w">~25&ndash;30%</td>
+            <td>Celebrity identity is self-evident. Reviews reinforce.</td>
+            <td>A high take rate has been a documented source of creator dissatisfaction. Treat 25 percent as the ceiling to stay well under, not a target.</td>
+          </tr>
+          <tr>
+            <td><strong>Fiverr</strong><div class="tiny soft">Services marketplace</div></td>
+            <td>Scoped deliverables, not time</td>
+            <td class="w">20% flat</td>
+            <td>Review volume, levels, order protection, funds held until delivery.</td>
+            <td>Holding funds until delivery is the convention customers already expect in a services marketplace. LINK's held-funds model will read as normal rather than unusual.</td>
+          </tr>
+          <tr>
+            <td><strong>Upwork</strong><div class="tiny soft">Freelance marketplace</div></td>
+            <td>Contracts and hourly work</td>
+            <td class="w">10% flat</td>
+            <td>Work history, verified payment method, escrow.</td>
+            <td>The low end of the credible range for a marketplace that also supplies demand. Sets the floor for what feels fair.</td>
+          </tr>
+          <tr>
+            <td><strong>Patreon</strong><div class="tiny soft">Memberships</div></td>
+            <td>Recurring support, not transactions</td>
+            <td class="w">10% plus processing charged separately</td>
+            <td>Pre-existing creator-audience relationship. Trust is inherited, not built.</td>
+            <td>Separating the platform fee from processing is standard practice and is what makes a headline rate honest. Directly validates LINK's proposed structure.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">Figures gathered September 2026 from public reporting and platform documentation. <span class="ev b">EXTERNAL</span> They move without announcement and should be re-verified before appearing in any public-facing marketing claim.</p>
+
+    <h3>What the comparison establishes</h3>
+    <p><strong>LINK's proposed 15 percent sits defensibly mid-pack</strong>, above Upwork and Patreon, below Fiverr, and well below Cameo and Intro's marketplace tier. Combined with a customer-side processing fee, "creators keep 85 percent" is both literally true and competitively strong. <span class="ev d">INFERENCE</span></p>
+    <p><strong>Every comparator solves trust, and three of the five solve it by exclusion.</strong> Intro curates, Cameo trades on fame, Upwork and Fiverr use accumulated work history. LINK can use none of these at launch: it is open by design, its creators are not famous, and it has no history. <span class="ev d">INFERENCE</span> That leaves verified follower count as effectively the only trust mechanism available on day one, which is why its absence from the prototype is the most consequential gap in the product.</p>
+
+    <div class="note">
+      <h3>Opportunity: the attribution-aware take rate</h3>
+      <p>Intro charges less when the expert brought the customer and more when the platform did. That is the fairest logic available for a take rate and it maps precisely onto how LINK grows. Phase 1 should stay flat at 15 percent, because tiered attribution requires booking-source tracking that is not worth building yet, but <strong>the attribution data should be captured from day one</strong>. It costs very little during build and it is expensive to reconstruct later. It also gives Phase 2 a revenue lever that grows with the platform instead of taxing creators for their own audience. <span class="ev d">INFERENCE</span></p>
+    </div>
+  </section>
+
+  <section id="s08">
+    <div class="shead"><span class="snum">08</span><h2>User segments</h2></div>
+    <p class="lede">Three roles, with sharply different stakes. The segmentation below separates what is supported by project evidence from what is currently assumption.</p>
+
+    <h3>Segment A &mdash; Creators, the supply side</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Dimension</th><th>What we hold</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr><td>Profile</td><td>Everyday creators with real but modest followings, roughly 20,000 to 80,000, for whom an extra $200 to $500 a month is meaningful. Explicitly not celebrities, a decision the client made deliberately to avoid the platform reading as celebrity-only.</td><td class="w"><span class="ev a">PROJECT RECORD</span></td></tr>
+          <tr><td>Current behaviour</td><td>Stitching together a scheduling link, a payment app and a video tool, or not monetising access at all.</td><td class="w"><span class="ev d">INFERENCE</span></td></tr>
+          <tr><td>Primary motivation</td><td>Income, and credibility. The second matters more than it appears: charging for access is a status claim as much as a transaction.</td><td class="w"><span class="ev e">HYPOTHESIS</span></td></tr>
+          <tr><td>Primary friction</td><td>Looking unprofessional or "sketchy" while asking for money. Chasing payments. No-shows.</td><td class="w"><span class="ev a">PROJECT RECORD</span></td></tr>
+          <tr><td>Decision criteria</td><td>Setup time, how the profile looks when shared, how much they keep, how fast they are paid.</td><td class="w"><span class="ev e">HYPOTHESIS</span></td></tr>
+          <tr><td>Churn trigger</td><td>Setting up and receiving no bookings. The marketplace literature is clear that an empty supply side leaves and does not come back.</td><td class="w"><span class="ev b">EXTERNAL</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">Unresolved: which platform these creators lead with, and which category they cluster in. Both are questionnaire items and both block design. <span class="ev a">PROJECT RECORD</span></p>
+
+    <h3>Segment B &mdash; Customers, the demand side</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Dimension</th><th>What we hold</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr><td>Profile</td><td>Existing followers of a specific creator. In the pilot they arrive through that creator's own link, not through browse or search.</td><td class="w"><span class="ev a">PROJECT RECORD</span></td></tr>
+          <tr><td>Mental model</td><td>Not "I am shopping a marketplace" but "I am booking time with someone I already follow". This is the single most important distinction in the report for design purposes.</td><td class="w"><span class="ev d">INFERENCE</span></td></tr>
+          <tr><td>Primary motivation</td><td>Access to a specific person, and a specific outcome from twenty to sixty minutes of their attention.</td><td class="w"><span class="ev e">HYPOTHESIS</span></td></tr>
+          <tr><td>Primary fear</td><td>Paying and being ghosted. Secondarily, that the call will not be worth the money.</td><td class="w"><span class="ev a">PROJECT RECORD</span></td></tr>
+          <tr><td>Known abandonment causes</td><td>Unexpected extra costs cited by 48 percent of abandoners, forced account creation by 26 percent, long or complicated checkout by 21 percent, card distrust by 18 percent.</td><td class="w"><span class="ev b">EXTERNAL</span></td></tr>
+          <tr><td>Device</td><td>Majority mobile, since the traffic arrives from a social link. Mobile cart abandonment runs 80 percent against 66 percent on desktop.</td><td class="w"><span class="ev b">EXTERNAL</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>The segmentation insight that should drive the design</h3>
+      <p>Because the pilot customer arrives from a creator's own link, <strong>they are not comparing creators</strong>. They have already chosen. This changes the design problem fundamentally: the profile page is not a listing competing for attention in a marketplace, it is a conversion page for a decision mostly already made. <span class="ev d">INFERENCE</span></p>
+      <p>The implications are concrete. Browse and search matter far less than the proposal implies for Phase 1. The profile's job is to remove doubt and get to checkout fast, not to persuade from a standing start. Social proof matters less than proof of identity, because the visitor already believes in the person and needs to believe in the platform. That is a different trust problem and it is solved with payment protection and a clear refund policy, not with review counts the pilot cannot yet have.</p>
+    </div>
+
+    <h3>Segment C &mdash; The administrator</h3>
+    <p>One person, internal, operating the marketplace by hand. In Phase 1 this role is explicitly the substitute for trust and safety tooling, moderation queues, audit logs, dispute tooling and fraud screening, all of which are deferred. <span class="ev a">PROJECT RECORD</span></p>
+    <p>The capacity question has not been modelled anywhere in the project. At thirty creators and an unknown call volume, manual verification, manual refunds and manual suspension are plausible. <span class="ev d">INFERENCE</span> The breaking point is unknown and should be watched rather than assumed. Section 27 proposes an operational load metric for exactly this. <span class="ev e">HYPOTHESIS</span></p>
+  </section>
+
+  <section id="s09">
+    <div class="shead"><span class="snum">09</span><h2>Personas</h2></div>
+    <p class="lede">Three personas carried forward from the project's discovery work. They are <strong>design tools built on inference, not research artefacts built on interviews</strong>, and are labelled as such. Demographic filler has been removed; what remains is only what changes a design decision.</p>
+
+    <div class="stack">
+      <div class="find">
+        <div class="fh"><span class="fid">P1</span><span class="ft">Maya &mdash; the creator</span><span class="ev e">HYPOTHESIS</span></div>
+        <p class="tiny" style="font-style:italic; color:var(--ink-soft)">"I just want to charge for a call without looking sketchy."</p>
+        <dl>
+          <dt>Context</dt><dd>Fitness and wellness coach with a real but modest following. Monetises through sponsorship and occasional one-off coaching arranged over direct messages.</dd>
+          <dt>Goal</dt><dd>A single link she can put in her bio that handles the awkward parts: asking for money, agreeing a time, and getting paid.</dd>
+          <dt>Decision criteria</dt><dd>How long setup takes, how the profile looks when a follower opens it, what percentage she keeps, how quickly money arrives.</dd>
+          <dt>Objections</dt><dd>"Will my followers think this is greedy?" "What if someone pays and I have to cancel?" "What if nobody books?"</dd>
+          <dt>Trust needs</dt><dd>That payouts are real and prompt. That the platform will not embarrass her in front of her own audience.</dd>
+          <dt>UX implication</dt><dd>Payout setup must be skippable at signup, because demanding bank details at minute three is where onboarding dies. The profile preview matters more than the dashboard. A visible cancellation policy protects her as much as the customer.</dd>
+        </dl>
+      </div>
+
+      <div class="find">
+        <div class="fh"><span class="fid">P2</span><span class="ft">Devon &mdash; the customer</span><span class="ev e">HYPOTHESIS</span></div>
+        <p class="tiny" style="font-style:italic; color:var(--ink-soft)">"I would pay for twenty minutes with someone who actually knows."</p>
+        <dl>
+          <dt>Context</dt><dd>Follows the creator already. Arrives on mobile from a link in a story or bio. Has never heard of LINK.</dd>
+          <dt>Goal</dt><dd>Get a specific question answered by a specific person, at a time that works, without a drawn-out process.</dd>
+          <dt>Decision criteria</dt><dd>Is this really them. Is the time right for me. What happens if it goes wrong. How much, all in.</dd>
+          <dt>Objections</dt><dd>"Is this platform legitimate?" "What if they do not show up?" "Can I get my money back?"</dd>
+          <dt>Trust needs</dt><dd>A verified marker that is credible. The total price before the card form. A refund policy stated before payment, not after.</dd>
+          <dt>UX implication</dt><dd>He does not need persuading about the creator, only about the platform. Guest checkout, total price shown early, and the refund policy visible at the point of payment are worth more than any amount of marketing copy.</dd>
+        </dl>
+      </div>
+
+      <div class="find">
+        <div class="fh"><span class="fid">P3</span><span class="ft">Alex &mdash; the administrator</span><span class="ev d">INFERENCE</span></div>
+        <p class="tiny" style="font-style:italic; color:var(--ink-soft)">"I need to see problems before creators complain about them."</p>
+        <dl>
+          <dt>Context</dt><dd>Internal operator. In the pilot this is one person covering by hand what tooling will cover at scale.</dd>
+          <dt>Goal</dt><dd>Keep money moving correctly and catch failures before either side notices.</dd>
+          <dt>Decision criteria</dt><dd>Can I find the record. Can I fix it in two clicks. Will I know it broke before I am told.</dd>
+          <dt>Trust needs</dt><dd>Monitoring that actually alerts. A runbook that matches reality.</dd>
+          <dt>UX implication</dt><dd>Admin essentials are not a nice-to-have in Phase 1, they are the mechanism that makes the exclusions list safe. Five levers, each reachable in two clicks: verify, find, refund, suspend, and see failures.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <h3>Treat these as provisional</h3>
+      <p>These personas are composites derived from the client's own description of the market and from general marketplace patterns. <strong>No creator and no customer has been interviewed.</strong> The riskiest assumption in the set is Maya's: that modest-following creators want to charge for access at all, and that their audiences will pay. The pilot is the test of exactly that, which is why creator activation and completed calls are gate metrics rather than vanity numbers.</p>
+    </div>
+  </section>
+
+  <section id="s10">
+    <div class="shead"><span class="snum">10</span><h2>Customer journeys and user flows</h2></div>
+    <p class="lede">Two journeys matter commercially and a third keeps them honest. For each stage: what the user is trying to do, what they are asking themselves, where the friction sits, and what Phase 1 actually does about it.</p>
+
+    <h3>Journey A &mdash; Creator, from invitation to first payout</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Stage</th><th>Goal and question</th><th>Friction</th><th>Phase 1 response</th><th>Risk</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1. Invited</strong></td><td>"Is this worth my time?" Hand-recruited by the founder, not discovered.</td><td>No brand recognition. Nothing to evaluate except the person asking.</td><td>Founder-led outreach with a ready-made pitch and sample profile.</td><td class="w"><span class="sev m1">Medium</span></td></tr>
+          <tr><td><strong>2. Connects account</strong></td><td>"Will this post anything or access my DMs?" Grants OAuth to import profile and follower count.</td><td>Permission anxiety at the first step, before any value has been shown.</td><td>One platform automated, manual verification fallback for the others.</td><td class="w"><span class="sev h1">High</span></td></tr>
+          <tr><td><strong>3. Sets the offer</strong></td><td>"What do I charge?" Picks duration and price from bounded options.</td><td>Pricing doubt is the emotional low point of this journey. Too high feels arrogant, too low feels worthless.</td><td>Bounded durations and a guidance slider rather than a free-text field.</td><td class="w"><span class="sev h1">High</span></td></tr>
+          <tr><td><strong>4. Adds availability</strong></td><td>"When am I free?" Enters slots in her own time zone.</td><td>Flat slots only. No recurring rules, buffers or blackout dates in Phase 1.</td><td>Simple time entry, rendered to viewers in their zone.</td><td class="w"><span class="sev m1">Medium</span></td></tr>
+          <tr><td><strong>5. Payouts</strong></td><td>"Why do you need my bank details?" Stripe Connect identity and bank setup.</td><td>The heaviest step in the flow, and the one most likely to end the session.</td><td>Deliberately deferrable. Required before first payout, not before going live.</td><td class="w"><span class="sev c1">Critical</span></td></tr>
+          <tr><td><strong>6. Shares the link</strong></td><td>"Will this look good on my profile?" Posts to her audience.</td><td>If the shared preview looks poor, she will not post it again.</td><td>Profile live immediately, ready-made social posts supplied.</td><td class="w"><span class="sev h1">High</span></td></tr>
+          <tr><td><strong>7. First booking</strong></td><td>"Someone actually paid." The moment the product becomes real.</td><td>If this does not arrive within days, she disengages.</td><td>Not a product feature. Depends entirely on cohort density and founder-led demand seeding.</td><td class="w"><span class="sev c1">Critical</span></td></tr>
+          <tr><td><strong>8. First payout</strong></td><td>"Is the money real?" Funds land in her bank.</td><td>Any delay or failure here is unrecoverable for that relationship.</td><td>Stripe Connect payout after call completion and review window.</td><td class="w"><span class="sev h1">High</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">Stages 5 and 7 are the two that end the journey. Phase 1 has a good answer for 5, deferring payout setup, and <strong>no product answer at all for 7</strong>, which is a go-to-market problem rather than a design one. <span class="ev d">INFERENCE</span></p>
+
+    <h3>Journey B &mdash; Customer, from link to review</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Stage</th><th>Goal and question</th><th>Friction</th><th>Phase 1 response</th><th>Risk</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1. Sees the link</strong></td><td>"What is this?" In a story, bio or post from a creator they follow.</td><td>No context. LINK is an unknown brand in a trusted person's feed.</td><td>Creator-supplied post templates that frame the offer.</td><td class="w"><span class="sev m1">Medium</span></td></tr>
+          <tr><td><strong>2. Lands on profile</strong></td><td>"Is this really them, and is this legitimate?" First contact with the platform, on mobile.</td><td>Must establish platform credibility in seconds, with no reviews and no brand.</td><td>Verified follower marker, real sourced values only, invented statistics removed.</td><td class="w"><span class="sev c1">Critical</span></td></tr>
+          <tr><td><strong>3. Picks a time</strong></td><td>"Does any of this work for me?" Scans availability.</td><td>Thin availability reads as an inactive product. Time zone confusion kills trust instantly.</td><td>Rendered in the viewer's own time zone.</td><td class="w"><span class="sev h1">High</span></td></tr>
+          <tr><td><strong>4. Checkout</strong></td><td>"How much, all in, and what if it goes wrong?" Card payment.</td><td>The service fee appearing late triggers the single largest documented abandonment cause. Forced account creation is the third largest.</td><td>Stripe Connect, US and USD only. Guest checkout decision still open.</td><td class="w"><span class="sev c1">Critical</span></td></tr>
+          <tr><td><strong>5. Waits</strong></td><td>"Did that work? Will they show?" Between payment and call.</td><td>The emotional low point of this journey. Anxiety grows with the gap.</td><td>Confirmation within 60 seconds, reminders at 24 hours and 1 hour, each with the join link.</td><td class="w"><span class="sev h1">High</span></td></tr>
+          <tr><td><strong>6. Joins</strong></td><td>"Will this work on my phone?" Opens the join link.</td><td>No device check, no lobby, no dial-in fallback in Phase 1. A technical failure here costs the booking and the review.</td><td>Managed provider's prebuilt interface, browser only, no download, no account.</td><td class="w"><span class="sev h1">High</span></td></tr>
+          <tr><td><strong>7. Reviews</strong></td><td>"Was that worth it?" Rates and optionally writes.</td><td>Review prompts are not built in Phase 1, so submission depends on the customer choosing to return.</td><td>Star rating plus written review, shown on the profile.</td><td class="w"><span class="sev m1">Medium</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note crit">
+      <h3>Stage 4 carries the most quantified risk in the product</h3>
+      <p>Baymard's synthesis across 50 studies: 70.2 percent average cart abandonment, with <strong>48 percent of abandoners citing unexpected extra costs</strong> and <strong>26 percent citing forced account creation</strong>. Mobile abandonment runs 80 percent against 66 percent on desktop, and LINK's pilot traffic is predominantly mobile by construction. <span class="ev b">EXTERNAL</span></p>
+      <p>Both of the top two causes are live, open decisions on this project right now. The service fee is proposed but not approved, and guest checkout is questionnaire item Q13. <strong>These are the two cheapest conversion wins available and both are free if decided before the checkout screen is drawn in Week 6.</strong> They become expensive afterwards.</p>
+    </div>
+
+    <h3>Journey C &mdash; Administrator</h3>
+    <p>Not a journey so much as five levers used a few times a week: verify a creator by hand, find a member or payment, issue a refund against policy, suspend an account, and see a failure before a creator reports it. <span class="ev a">PROJECT RECORD</span> Each must be reachable in two clicks, because the value of manual tooling collapses if using it is slow. <span class="ev d">INFERENCE</span></p>
+
+    <h3 id="flows">User flows by user level</h3>
+    <p>The journeys above describe what a person experiences. The flows below describe what the product must do, step by step, including the branches. They are organised by user level because each level has a different entry point, a different set of decisions and a different definition of success. <strong>These are the flows Week 4 should turn into wireframes.</strong></p>
+
+    <div class="lvl">
+      <header>
+        <span class="lvtag">Level 1</span>
+        <span class="lvname">Creator</span>
+        <span class="lvgoal">Entry: a personal invitation. Success: a live profile link that takes bookings. Gate metric: creator activation above 55 percent.</span>
+      </header>
+      <div class="fmap">
+        <div class="fstep entry"><span class="fn">1</span><div class="fb"><div class="ft2">Opens the invitation link</div><div class="fd">Arrives from a founder-sent message, not from search. No account, no context, on a phone.</div><span class="fscr">Landing, creator variant</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div><div></div></div>
+
+        <div class="fstep"><span class="fn">2</span><div class="fb"><div class="ft2">Starts sign-up</div><div class="fd">Minimum viable account. Email or social identity only, nothing else asked yet.</div><span class="fscr">Sign-up</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div>
+          <div class="fdec"><span class="fq">Does the social account connect?</span>
+            <div class="fbr"><span class="bk y">Yes</span><span>Profile, avatar and follower count import. Verified marker set with a dated claim. Continue to step 3.</span></div>
+            <div class="fbr"><span class="bk n">No</span><span>Fall back to manual verification. Creator continues with a lighter <em>linked</em> badge; an administrator confirms later. Flow is never blocked here.</span></div>
+            <div class="fbr"><span class="bk alt">Other platform</span><span>Same manual path. The creator is not told their platform is unsupported, only that verification will follow.</span></div>
+          </div>
+        </div>
+
+        <div class="fstep"><span class="fn">3</span><div class="fb"><div class="ft2">Sets the offer</div><div class="fd">Picks duration from bounded options and a price. <strong>Shows a suggested price with its basis, and the net amount received.</strong> This is the step most likely to end the session.</div><span class="fscr">Onboarding, step 1 of 3</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div><div></div></div>
+
+        <div class="fstep"><span class="fn">4</span><div class="fb"><div class="ft2">Adds availability</div><div class="fd">Flat time slots in the creator's own time zone. Same-day and next-hour presets so first availability is one tap.</div><span class="fscr">Onboarding, step 2 of 3</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div>
+          <div class="fdec"><span class="fq">Connect payouts now?</span>
+            <div class="fbr"><span class="bk y">Yes</span><span>Stripe Connect identity and bank setup. Heaviest step in the flow.</span></div>
+            <div class="fbr"><span class="bk alt">Later</span><span><strong>Default and recommended.</strong> Required before first payout, not before going live. Copy must make the deferral obviously safe.</span></div>
+          </div>
+        </div>
+
+        <div class="fstep exit"><span class="fn">5</span><div class="fb"><div class="ft2">Reaches bookable, shares the link</div><div class="fd">Profile goes live immediately. Ready-made social posts supplied. <strong>The bookable flag is set on the creator record here</strong>, which is what the activation metric counts.</div><span class="fscr">Dashboard, first-run state</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div><div></div></div>
+
+        <div class="fstep"><span class="fn">6</span><div class="fb"><div class="ft2">Receives a booking</div><div class="fd">Email notification. Appears on the dashboard as a pending earning and an upcoming call.</div><span class="fscr">Dashboard</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div><div></div></div>
+
+        <div class="fstep"><span class="fn">7</span><div class="fb"><div class="ft2">Joins the call</div><div class="fd">Browser link from the reminder. Same join surface as the customer.</div><span class="fscr">Call join</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div>
+          <div class="fdec"><span class="fq">Did the call complete?</span>
+            <div class="fbr"><span class="bk y">Yes</span><span>Payout releases after the review window. Earning moves from pending to paid.</span></div>
+            <div class="fbr"><span class="bk n">Creator no-show</span><span>Customer refunded in full including the service fee. Administrator notified.</span></div>
+            <div class="fbr"><span class="bk alt">Customer no-show</span><span>After the grace period, the creator is paid in full. Platform fee retained.</span></div>
+          </div>
+        </div>
+
+        <div class="fstep exit"><span class="fn">8</span><div class="fb"><div class="ft2">Receives payout</div><div class="fd">Funds land in the connected bank account. <strong>The moment the product becomes real.</strong> Any failure here is unrecoverable for that relationship.</div><span class="fscr">Dashboard, earnings</span></div></div>
+
+      </div>
+    </div>
+
+    <div class="lvl">
+      <header>
+        <span class="lvtag">Level 2</span>
+        <span class="lvname">Customer</span>
+        <span class="lvgoal">Entry: a creator's shared link. Success: a completed, reviewed call. Gate metrics: completed paid calls, call completion above 80 percent, average rating above 4.6.</span>
+      </header>
+      <div class="fmap">
+        <div class="fstep entry"><span class="fn">1</span><div class="fb"><div class="ft2">Opens the creator's link</div><div class="fd">From a story, bio or post. On mobile. Has never heard of LINK and is not comparing anyone.</div><span class="fscr">Creator profile</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div>
+          <div class="fdec"><span class="fq">Does the page establish credibility in the first seconds?</span>
+            <div class="fbr"><span class="bk y">Yes</span><span>Verified count with a dated claim, real sourced values only, a recognisable payment brand. Continue.</span></div>
+            <div class="fbr"><span class="bk n">No</span><span>Exit. This is the largest single loss point in the flow and it happens before any interaction.</span></div>
+          </div>
+        </div>
+
+        <div class="fstep"><span class="fn">2</span><div class="fb"><div class="ft2">Scans availability</div><div class="fd">Rendered in the viewer's own time zone, never the creator's. Leads with the nearest slot rather than a month view.</div><span class="fscr">Profile, booking panel</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div>
+          <div class="fdec"><span class="fq">Is there a slot that works?</span>
+            <div class="fbr"><span class="bk y">Yes</span><span>Select and continue.</span></div>
+            <div class="fbr"><span class="bk n">No</span><span>Exit. Thin availability reads as an inactive product. Mitigated by prompting creators to add same-day slots, not by design.</span></div>
+          </div>
+        </div>
+
+        <div class="fstep"><span class="fn">3</span><div class="fb"><div class="ft2">Sees the all-in total</div><div class="fd"><strong>Service fee disclosed here, not at the card form.</strong> Refund policy stated in one line adjacent. Addresses the causes cited by 48 percent and 18 percent of abandoners.</div><span class="fscr">Booking summary</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div>
+          <div class="fdec"><span class="fq">Account required?</span>
+            <div class="fbr"><span class="bk y">Guest checkout</span><span><strong>Recommended.</strong> Collect only what the booking needs. Removes the cause cited by 26 percent of abandoners.</span></div>
+            <div class="fbr"><span class="bk n">Forced registration</span><span>Not recommended. A registration wall in front of a single purchase.</span></div>
+          </div>
+        </div>
+
+        <div class="fstep"><span class="fn">4</span><div class="fb"><div class="ft2">Pays by card</div><div class="fd">Stripe Connect. US and USD only in Phase 1. <strong>Funds held, not forwarded.</strong> One line at the pay button says so.</div><span class="fscr">Checkout</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div><div></div></div>
+
+        <div class="fstep"><span class="fn">5</span><div class="fb"><div class="ft2">Receives confirmation</div><div class="fd">Email to both parties within sixty seconds. Join link is the primary element, above any detail.</div><span class="fscr">Confirmation email</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div><div></div></div>
+
+        <div class="fstep"><span class="fn">6</span><div class="fb"><div class="ft2">Receives reminders</div><div class="fd">Twenty-four hours and one hour before, each carrying the join link. <strong>The one-hour reminder is the highest-leverage message in the product</strong> and is the case for adding SMS.</div><span class="fscr">Reminder emails</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div>
+          <div class="fdec"><span class="fq">Did both parties join?</span>
+            <div class="fbr"><span class="bk y">Yes</span><span>Call runs. Counts toward the completion gate metric.</span></div>
+            <div class="fbr"><span class="bk n">Creator absent</span><span>Full refund including service fee after the grace period.</span></div>
+            <div class="fbr"><span class="bk alt">Customer absent</span><span>Creator paid in full. No refund.</span></div>
+          </div>
+        </div>
+
+        <div class="fstep"><span class="fn">7</span><div class="fb"><div class="ft2">Rates and reviews</div><div class="fd">One to five stars plus optional text. Appears on the creator profile. Feeds the rating gate metric.</div><span class="fscr">Post-call</span></div></div>
+
+        <div class="fstep exit"><span class="fn">8</span><div class="fb"><div class="ft2">Books again</div><div class="fd"><strong>Currently absent from Phase 1 scope.</strong> A single <em>book again</em> affordance here directly serves the primary gate metric, which is defined as trending up.</div><span class="fscr">Post-call, recommended addition</span></div></div>
+
+      </div>
+    </div>
+
+    <div class="lvl">
+      <header>
+        <span class="lvtag">Level 3</span>
+        <span class="lvname">Administrator</span>
+        <span class="lvgoal">Entry: an alert, a report, or a routine check. Success: the problem is resolved before either party escalates. At pilot scale this role <em>is</em> the trust and safety tooling.</span>
+      </header>
+      <div class="fmap">
+        <div class="fstep entry"><span class="fn">1</span><div class="fb"><div class="ft2">Enters by one of three routes</div><div class="fd">A monitoring alert, a customer or creator report, or a routine review of members and payments. There is no queue in Phase 1, so the route determines priority by hand.</div><span class="fscr">Admin, members or payments</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div>
+          <div class="fdec"><span class="fq">What kind of problem is it?</span>
+            <div class="fbr"><span class="bk alt">Verification</span><span>A creator could not connect an account. Confirm the account manually and set the lighter linked badge.</span></div>
+            <div class="fbr"><span class="bk alt">Money</span><span>A payment failed, a payout did not land, or a refund did not reach the customer. Locate the record and act.</span></div>
+            <div class="fbr"><span class="bk alt">Conduct</span><span>A report about a person. Suspend immediately if warranted. <strong>No audit log exists in Phase 1</strong>, so the decision basis must be recorded outside the product.</span></div>
+          </div>
+        </div>
+
+        <div class="fstep"><span class="fn">2</span><div class="fb"><div class="ft2">Finds the record</div><div class="fd">Member list or payment list, searchable enough to locate one record without a database query. That is the entire bar in Phase 1.</div><span class="fscr">Admin, list view</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div><div></div></div>
+
+        <div class="fstep"><span class="fn">3</span><div class="fb"><div class="ft2">Takes one of five actions</div><div class="fd">Verify a creator, find a member or payment, issue a refund against policy, suspend an account, or respond to a monitoring alert. <strong>Each must be reachable in two clicks</strong>, because manual tooling that is slow to use stops being used.</div><span class="fscr">Admin, record view</span></div></div>
+
+        <div class="frail"><div class="fline"><i></i></div>
+          <div class="fdec"><span class="fq">Is the action covered by an agreed rule?</span>
+            <div class="fbr"><span class="bk y">Yes</span><span>Apply the cancellation and no-show policy. Consistent and defensible.</span></div>
+            <div class="fbr"><span class="bk n">No</span><span>Arbitrate case by case. <strong>This is the Phase 1 weak point</strong> and it is why the grace period and no-show outcomes must be specified before checkout is built.</span></div>
+          </div>
+        </div>
+
+        <div class="fstep exit"><span class="fn">4</span><div class="fb"><div class="ft2">Closes the loop</div><div class="fd">Inform the affected party. In Phase 1 there is no automated notification for administrator actions, so this is a manual message. Worth tracking as an operational load signal.</div><span class="fscr">Manual, outside the product</span></div></div>
+
+      </div>
+    </div>
+
+    <div class="note warn">
+      <h3>What these flows reveal that the journeys did not</h3>
+      <p><strong>Every flow has exactly one branch that silently ends it.</strong> For the creator it is the payout step, which is why deferring it is the single most important decision in that flow. For the customer it is the credibility assessment in the first seconds, which happens before any interaction and therefore cannot be measured as a drop-off, only inferred from a low profile-to-slot rate. For the administrator it is an action with no agreed rule behind it.</p>
+      <p>Two of those three are fixed by decisions rather than by design work, and both decisions are open right now. See Section 29.</p>
+    </div>
+  </section>
+
+  <section id="s11">
+    <div class="shead"><span class="snum">11</span><h2>Task analysis</h2></div>
+    <p class="lede">The four tasks that decide whether Phase 1 succeeds, analysed against their acceptance criteria.</p>
+
+    <div class="stack">
+      <div class="find">
+        <div class="fh"><span class="fid">T1</span><span class="ft">Creator reaches bookable state</span><span class="sev c1">Critical</span></div>
+        <dl>
+          <dt>Target</dt><dd>Under five minutes, on a phone, without instructions. Gate metric: over 55 percent of signups. <span class="ev a">PROJECT RECORD</span></dd>
+          <dt>Steps</dt><dd>Connect account, set offer, add availability, save. Payout deferred.</dd>
+          <dt>Cognitive load</dt><dd>Concentrated almost entirely in one step: choosing a price. Every other step has an obvious correct answer; pricing does not. <span class="ev d">INFERENCE</span></dd>
+          <dt>Failure modes</dt><dd>OAuth permission refusal at step one. Abandonment at pricing. Availability entry too fiddly on a small screen. Mistakenly believing payout setup is required to finish.</dd>
+          <dt>Simplification</dt><dd>Show a suggested price derived from the category and follower count rather than an empty field. Make the deferred payout step visibly optional with a clear "you can do this later" rather than a skippable-looking blocker. Offer same-day and next-hour slot presets so first availability is one tap.</dd>
+          <dt>Open</dt><dd>Durations and price band are undecided <span class="ev a">PROJECT RECORD</span>, and this task cannot be designed until they are.</dd>
+        </dl>
+      </div>
+
+      <div class="find">
+        <div class="fh"><span class="fid">T2</span><span class="ft">Customer reaches checkout</span><span class="sev c1">Critical</span></div>
+        <dl>
+          <dt>Target</dt><dd>Under ninety seconds from landing. <span class="ev a">PROJECT RECORD</span></dd>
+          <dt>Steps</dt><dd>Land on profile, assess credibility, scan availability, select slot, reach payment.</dd>
+          <dt>Cognitive load</dt><dd>Front-loaded. The credibility assessment happens in the first few seconds and everything downstream depends on passing it.</dd>
+          <dt>Failure modes</dt><dd>Platform reads as untrustworthy. No convenient slot visible. Time zone ambiguity. Total price not knowable before committing.</dd>
+          <dt>Simplification</dt><dd>Show the all-in total, including the service fee, at slot selection rather than at the card form. State the refund policy in one line adjacent to the pay button. Lead availability with the nearest slot rather than a month view.</dd>
+          <dt>Measurement</dt><dd>Instrument profile view, slot selected, checkout started, payment succeeded as four distinct events, so the drop-off is attributable. This is the single most valuable piece of instrumentation in the pilot. <span class="ev d">INFERENCE</span></dd>
+        </dl>
+      </div>
+
+      <div class="find">
+        <div class="fh"><span class="fid">T3</span><span class="ft">Both parties join the call</span><span class="sev c1">Critical</span></div>
+        <dl>
+          <dt>Target</dt><dd>Over 80 percent of booked calls. Gate metric. <span class="ev a">PROJECT RECORD</span></dd>
+          <dt>Mechanism</dt><dd>Email confirmation within 60 seconds, reminders at 24 hours and 1 hour, each carrying the join link.</dd>
+          <dt>External evidence</dt><dd>Automated reminders cut non-attendance by a weighted mean of roughly 29 percent across 29 studies. Text reminders raise attendance odds by about 62 percent against no reminder. Email response rates in healthcare run 5 to 10 percent against 45 percent for SMS. <span class="ev b">EXTERNAL</span></dd>
+          <dt>Risk</dt><dd>Phase 1 ships the weaker channel and measures a gate metric on it. A shortfall would be read as product failure when it may be channel selection. <span class="ev d">INFERENCE</span></dd>
+          <dt>Recommendation</dt><dd>Add SMS for the one-hour reminder only. It is the highest-leverage hour and the smallest possible scope addition. If declined, restate the gate threshold in writing before launch rather than after.</dd>
+        </dl>
+      </div>
+
+      <div class="find">
+        <div class="fh"><span class="fid">T4</span><span class="ft">Administrator resolves a failed payment or no-show</span><span class="sev h1">High</span></div>
+        <dl>
+          <dt>Target</dt><dd>Two clicks per action, five actions total. <span class="ev a">PROJECT RECORD</span></dd>
+          <dt>Cognitive load</dt><dd>Low per incident, but it accumulates. The risk is volume, not complexity.</dd>
+          <dt>Failure modes</dt><dd>Cannot locate a record quickly. Refund issued but does not reach the customer. No-show disputed with no evidence trail, because Phase 1 has no audit log.</dd>
+          <dt>Gap</dt><dd>The no-show grace period and the countdown buffer are specified nowhere. Without them, no-show disputes have no agreed rule to resolve against, and the administrator is arbitrating case by case. <span class="ev a">PROJECT RECORD</span> This is questionnaire item Q16 and it is on the critical path for the payment state machine.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="s12">
+    <div class="shead"><span class="snum">12</span><h2>Information architecture</h2></div>
+
+    <div class="note crit">
+      <h3>The structural problem is role mixing, not navigation depth</h3>
+      <p>The prior audit records that creator and fan experiences are mixed together in the prototype, and that there are two competing landing pages. <span class="ev a">PRIOR AUDIT</span> This is the IA problem that matters, because a visitor arriving from a creator's link and a creator arriving to set up their offer want almost nothing in common, and a single undifferentiated structure serves neither.</p>
+    </div>
+
+    <h3>Recommended structure</h3>
+    <p>Three distinct surfaces with one shared shell, rather than one surface attempting to serve three audiences. <span class="ev d">INFERENCE</span></p>
+    <div class="g3">
+      <div class="card">
+        <h4 style="margin-top:0">Public surface</h4>
+        <p class="tiny soft">One landing page explaining the product to both sides with a clear split. Creator profiles as the primary entry point, since that is how pilot traffic arrives. Browse and categories retained but demoted, because they are not the pilot's route to a booking. Checkout and confirmation. Policy pages: refunds, conduct, terms, privacy.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Creator surface</h4>
+        <p class="tiny soft">Dashboard as the home, earnings first. Onboarding as a linear flow, not a settings area. Offer and availability editing. Payout setup, reachable from a prompt rather than buried. Bookings list. Messages, gated to confirmed bookings.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Admin surface</h4>
+        <p class="tiny soft">Members, payments, and the five levers. Deliberately plain. No navigation sophistication required at this scale, but every action reachable in two clicks from the list view.</p>
+      </div>
+    </div>
+
+    <h3>Naming and labelling issues to resolve in design</h3>
+    <ul>
+      <li><strong>"Creator" versus "influencer" versus "expert"</strong> changes who self-identifies with the product. The project documents use all three. One term must be chosen and used consistently, and it should be the one the launch cohort uses about themselves. <span class="ev d">INFERENCE</span> Unresolved pending the niche decision.</li>
+      <li><strong>The service fee label at checkout</strong> is a conversion-critical string, not a copy detail. Section 15 treats it directly.</li>
+      <li><strong>"Bookable"</strong> is an internal state name that currently has no user-facing equivalent. The creator needs to know when their profile is live and what is still missing, in their words.</li>
+      <li><strong>Category taxonomy</strong> cannot be finalised until the launch niche is settled, because the first category's depth determines whether a flat list or a grouped list is appropriate. <span class="ev a">PROJECT RECORD</span></li>
+    </ul>
+  </section>
+
+  <section id="s13">
+    <div class="shead"><span class="snum">13</span><h2>Heuristic evaluation</h2></div>
+    <p class="lede">Evaluated against Nielsen's usability heuristics. <strong>Important caveat:</strong> these findings derive from the earlier project audit of roughly twenty-one prototype screens, not from fresh inspection during this study. They should be re-verified against the current build before design work depends on them.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Issue</th><th>Heuristic violated</th><th>User impact</th><th>Business impact</th><th>Sev.</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="w">H1</td>
+            <td><strong>No social sign-in and no verified follower count</strong><div class="tiny soft">The core product concept is absent from the build. <span class="ev a">PRIOR AUDIT</span></div></td>
+            <td>Match between system and real world; trust and credibility</td>
+            <td>A visitor cannot distinguish a real creator from an impostor. The only trust mechanism available at launch is missing.</td>
+            <td>Removes LINK's differentiation against a scheduling link plus a payment form. Directly threatens conversion at Journey B stage 2.</td>
+            <td class="w"><span class="sev c1">Critical</span></td>
+          </tr>
+          <tr>
+            <td class="w">H2</td>
+            <td><strong>Invented, inconsistent numbers displayed</strong><div class="tiny soft">Fabricated statistics present across the product. <span class="ev a">PRIOR AUDIT</span></div></td>
+            <td>Visibility of system status; error prevention; honesty</td>
+            <td>A user who spots one fabricated figure discounts everything else on the page, including the price and the refund policy.</td>
+            <td>Legal exposure on a page that takes card payments. Unrecoverable trust damage if noticed by a creator's own audience.</td>
+            <td class="w"><span class="sev c1">Critical</span></td>
+          </tr>
+          <tr>
+            <td class="w">H3</td>
+            <td><strong>No creator onboarding flow and no dashboard</strong><div class="tiny soft">Settings exist; a guided path to bookable does not. <span class="ev a">PRIOR AUDIT</span></div></td>
+            <td>Recognition rather than recall; user control; flexibility</td>
+            <td>The creator must work out the correct order of operations from a settings area. Most will not finish.</td>
+            <td>Creator activation above 55 percent is a gate metric with no mechanism behind it. The supply side is the hard side.</td>
+            <td class="w"><span class="sev c1">Critical</span></td>
+          </tr>
+          <tr>
+            <td class="w">H4</td>
+            <td><strong>Creator and fan experiences mixed together</strong><div class="tiny soft">Two competing landing pages, undifferentiated navigation. <span class="ev a">PRIOR AUDIT</span></div></td>
+            <td>Consistency and standards; aesthetic and minimalist design</td>
+            <td>Both audiences see controls and content irrelevant to them, raising cognitive load at the exact moment they are deciding whether to engage.</td>
+            <td>Dilutes both value propositions. Makes the shared creator link look like a directory rather than a personal page.</td>
+            <td class="w"><span class="sev h1">High</span></td>
+          </tr>
+          <tr>
+            <td class="w">H5</td>
+            <td><strong>Payments presentation reads as unfinished</strong><div class="tiny soft">Stripe-ready settings exist but the customer-facing payment path looked incomplete. <span class="ev a">PRIOR AUDIT</span></div></td>
+            <td>Trust; error prevention; visibility of system status</td>
+            <td>18 percent of abandoners cite not trusting a site with card details. An unfinished-looking payment step is the trigger. <span class="ev b">EXTERNAL</span></td>
+            <td>Direct revenue loss at the single most important step in the funnel.</td>
+            <td class="w"><span class="sev h1">High</span></td>
+          </tr>
+          <tr>
+            <td class="w">H6</td>
+            <td><strong>No stated refund or cancellation policy at the point of payment</strong><div class="tiny soft">Policy agreed on 16 September but not yet surfaced in the product. <span class="ev d">INFERENCE</span></div></td>
+            <td>Help and documentation; user control and freedom</td>
+            <td>Devon's primary fear is paying and being ghosted. Nothing in the flow currently addresses it at the moment it peaks.</td>
+            <td>Avoidable abandonment at checkout, and avoidable support contacts afterwards.</td>
+            <td class="w"><span class="sev h1">High</span></td>
+          </tr>
+          <tr>
+            <td class="w">H7</td>
+            <td><strong>No-show and grace period rules undefined</strong><div class="tiny soft">Raised on the 16 September call, still unspecified. <span class="ev a">PROJECT RECORD</span></div></td>
+            <td>Error recovery; help users recognise and recover from errors</td>
+            <td>When a call fails, neither party knows what happens, and there is no in-product answer.</td>
+            <td>Every instance becomes a manual administrator decision with no rule to appeal to, and no audit log to justify it.</td>
+            <td class="w"><span class="sev h1">High</span></td>
+          </tr>
+          <tr>
+            <td class="w">H8</td>
+            <td><strong>No pre-call device or connection check</strong><div class="tiny soft">Deferred to Phase 2 by design. <span class="ev a">PROJECT RECORD</span></div></td>
+            <td>Error prevention</td>
+            <td>A customer discovers their microphone does not work at the moment the paid call starts.</td>
+            <td>Counts against the call-completion gate metric for reasons unrelated to the marketplace working.</td>
+            <td class="w"><span class="sev m1">Medium</span></td>
+          </tr>
+          <tr>
+            <td class="w">H9</td>
+            <td><strong>No self-serve rescheduling</strong><div class="tiny soft">Deferred to Phase 2. <span class="ev a">PROJECT RECORD</span></div></td>
+            <td>User control and freedom</td>
+            <td>The only options are keep the slot or cancel for a partial refund. A reasonable third option is missing.</td>
+            <td>Converts recoverable bookings into refunds. Generates support contacts during the pilot.</td>
+            <td class="w"><span class="sev m1">Medium</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="tiny soft"><strong>Severity basis.</strong> Critical means it blocks a gate metric or creates legal exposure. High means it causes measurable loss at a known funnel step. Medium means it degrades the experience and generates operational load without blocking the transaction. Severity here is assigned against the four agreed success measures, not against general best practice.</p>
+
+    <div class="note good">
+      <h3>What the prototype already does well</h3>
+      <p>The prior audit also recorded genuine strengths, and they are the reason the hardening approach is credible rather than optimistic: a working booking surface with tiered offers, availability and a trust footer; thorough settings including Stripe payout configuration; functional browse, categories and content pages; and a coherent coral visual identity. <span class="ev a">PRIOR AUDIT</span> The audit characterised it as stronger than a typical throwaway prototype. The four critical issues above are structural gaps, not evidence of poor work.</p>
+    </div>
+  </section>
+
+  <section id="s14">
+    <div class="shead"><span class="snum">14</span><h2>Conversion analysis</h2></div>
+    <p class="lede">Where users will hesitate, why, and what each hesitation is worth. Benchmarks are from ecommerce checkout research and transfer imperfectly to a booking product, so they indicate direction rather than predicting LINK's numbers.</p>
+
+    <h3>The funnel, with the known loss points</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Step</th><th>Hesitation</th><th>Root cause</th><th>Benchmark</th><th>Fix</th><th>Cost</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Profile view</strong></td>
+            <td>"Is this legitimate?"</td>
+            <td>Unknown brand, no reviews at launch, verification missing from the build</td>
+            <td class="w">&mdash;</td>
+            <td>Verified follower marker, real values only, platform credibility signals near the price</td>
+            <td class="w">In scope</td>
+          </tr>
+          <tr>
+            <td><strong>Slot selection</strong></td>
+            <td>"Nothing works for me"</td>
+            <td>Thin availability from a cohort still learning the product</td>
+            <td class="w">&mdash;</td>
+            <td>Lead with the nearest slot. Prompt creators to add same-day availability.</td>
+            <td class="w">Small</td>
+          </tr>
+          <tr>
+            <td><strong>Price reveal</strong></td>
+            <td>"That is more than it said"</td>
+            <td>Service fee added after the headline price</td>
+            <td class="w">48% of abandons</td>
+            <td><strong>Show the all-in total at slot selection, before the card form</strong></td>
+            <td class="w">Free if decided now</td>
+          </tr>
+          <tr>
+            <td><strong>Account step</strong></td>
+            <td>"Why do I need an account to buy one call?"</td>
+            <td>Forced registration before purchase</td>
+            <td class="w">26% of abandons</td>
+            <td><strong>Guest checkout. Collect only what the booking requires.</strong></td>
+            <td class="w">Free if decided now</td>
+          </tr>
+          <tr>
+            <td><strong>Card form</strong></td>
+            <td>"Do I trust them with my card?"</td>
+            <td>Unknown platform, no visible payment assurance</td>
+            <td class="w">18% of abandons</td>
+            <td>Stripe branding visible, held-funds explained in one line, refund policy adjacent to the pay button</td>
+            <td class="w">Small</td>
+          </tr>
+          <tr>
+            <td><strong>Form length</strong></td>
+            <td>"This is taking too long"</td>
+            <td>Too many fields on a phone</td>
+            <td class="w">21% of abandons</td>
+            <td>Every field must justify itself. Intake questions deferred to post-booking where possible.</td>
+            <td class="w">Design discipline</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tiny soft">Abandonment figures: Baymard synthesis of 50 studies, average cart abandonment 70.2 percent. <span class="ev b">EXTERNAL</span></p>
+
+    <div class="viz">
+      <h4>Why people abandon a checkout</h4>
+      <p class="vcap">Share of abandoners citing each reason. Baymard synthesis of 50 studies, average overall abandonment 70.2 percent.</p>
+      <div class="bars">
+        <div class="bar"><span class="bl">Extra costs too high <small>open decision for LINK</small></span><span class="bt"><i class="crit" style="width:100%"></i></span><span class="bv">48%</span></div>
+        <div class="bar"><span class="bl">Just browsing <small>not addressable</small></span><span class="bt"><i class="mute" style="width:89.6%"></i></span><span class="bv">43%</span></div>
+        <div class="bar"><span class="bl">Had to create an account <small>open decision for LINK</small></span><span class="bt"><i class="crit" style="width:54.2%"></i></span><span class="bv">26%</span></div>
+        <div class="bar"><span class="bl">Checkout too long <small>design discipline</small></span><span class="bt"><i class="warn" style="width:43.8%"></i></span><span class="bv">21%</span></div>
+        <div class="bar"><span class="bl">Did not trust the site with a card <small>trust signals</small></span><span class="bt"><i class="warn" style="width:37.5%"></i></span><span class="bv">18%</span></div>
+      </div>
+      <p class="vnote">Two of the top three are live, open decisions on this project, and both are free to settle before the checkout screen is drawn. The second largest cause, people who were only browsing, is the one nothing can fix.</p>
+    </div>
+
+    <div class="viz">
+      <h4>Mobile against desktop</h4>
+      <p class="vcap">Cart abandonment by device. LINK&#8217;s pilot traffic arrives from social links, so it is predominantly the first bar.</p>
+      <div class="bars">
+        <div class="bar"><span class="bl">Mobile</span><span class="bt"><i class="crit" style="width:100%"></i></span><span class="bv">80.0%</span></div>
+        <div class="bar"><span class="bl">Desktop</span><span class="bt"><i class="warn" style="width:83%"></i></span><span class="bv">66.4%</span></div>
+      </div>
+      <p class="vnote">A fourteen point gap. This is the whole argument for designing every screen at phone width first and expanding, rather than the reverse.</p>
+    </div>
+
+    <div class="note crit">
+      <h3>Two decisions, zero cost, large effect</h3>
+      <p>The top two documented abandonment causes map exactly onto two decisions that are open right now and cost nothing to resolve before Week 6 design: <strong>disclose the all-in price early</strong>, and <strong>allow guest checkout</strong>. Together they address causes cited by 48 percent and 26 percent of abandoners respectively. <span class="ev b">EXTERNAL</span></p>
+      <p>After the checkout screens are drawn and built they become change requests under Section 14 of the agreement. This is the clearest example in the report of research paying for itself, and it is why the Week 3 scope-fix exists.</p>
+    </div>
+
+    <h3>Conversion levers specific to this product</h3>
+    <ul>
+      <li><strong>The creator is the conversion asset, not the platform.</strong> Pilot traffic arrives pre-sold on the person. The page's job is removing doubt about LINK, not selling the creator. Design effort spent on persuasion copy is misallocated; effort spent on payment assurance is not. <span class="ev d">INFERENCE</span></li>
+      <li><strong>Time-zone correctness is a conversion feature.</strong> A visitor who has to do mental arithmetic to work out whether a slot suits them is a visitor who leaves. It is in scope and should be treated as conversion-critical rather than as a formatting detail. <span class="ev d">INFERENCE</span></li>
+      <li><strong>Held funds are a selling point, not an implementation detail.</strong> "Your payment is held until the call is complete" directly answers Devon's primary fear. It belongs in the checkout as a visible line, not buried in terms. <span class="ev d">INFERENCE</span></li>
+      <li><strong>Repeat booking is untouched in Phase 1.</strong> No rebooking prompt exists in scope. Given that the business model needs recurrence to be worth anything, a single "book again" affordance on the post-call screen is disproportionately valuable for its cost. <span class="ev d">INFERENCE</span></li>
+    </ul>
+  </section>
+
+  <section id="s15">
+    <div class="shead"><span class="snum">15</span><h2>Content and UX copy</h2></div>
+    <p class="lede">Copy decisions that change behaviour rather than tone. Each of these is a string that should be settled in design, not written during build.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Element</th><th>Problem</th><th>Recommendation</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Service fee label</strong></td>
+            <td>An unexplained line item is the single largest abandonment trigger.</td>
+            <td>Name what it covers, not what it is. "Service fee (card processing)" rather than "Service fee". Show it in the total at slot selection.</td>
+            <td>Unexpected cost is cited by 48 percent of abandoners; an explained cost is a different object from a surprise one. <span class="ev b">EXTERNAL</span></td>
+          </tr>
+          <tr>
+            <td><strong>Verified badge</strong></td>
+            <td>"Verified" alone overclaims. It implies identity verification when it means a connected account.</td>
+            <td>State the claim precisely: "18.2k on Instagram, verified Oct 2026". Use a lighter "linked" state for manually verified creators.</td>
+            <td>A precise smaller claim is more credible than a vague larger one, and it is defensible if challenged. <span class="ev d">INFERENCE</span></td>
+          </tr>
+          <tr>
+            <td><strong>Payment assurance</strong></td>
+            <td>Held funds are the strongest trust asset and are currently invisible.</td>
+            <td>One line at the pay button: "Your payment is held until the call is complete."</td>
+            <td>Answers the primary customer fear at the exact moment it peaks. <span class="ev d">INFERENCE</span></td>
+          </tr>
+          <tr>
+            <td><strong>Refund policy</strong></td>
+            <td>Agreed but not surfaced. Policy pages are not read before payment.</td>
+            <td>One line adjacent to the pay button with a link to detail: "Free cancellation up to 24 hours before."</td>
+            <td>Risk reduction at the decision point rather than in a footer. <span class="ev d">INFERENCE</span></td>
+          </tr>
+          <tr>
+            <td><strong>Creator pricing prompt</strong></td>
+            <td>An empty price field in a flow whose hardest moment is pricing doubt.</td>
+            <td>Suggested price with a one-line rationale, and a visible net figure: "You receive $34 of $40."</td>
+            <td>Removes the cognitive load from the step most likely to end onboarding. <span class="ev d">INFERENCE</span></td>
+          </tr>
+          <tr>
+            <td><strong>Payout deferral</strong></td>
+            <td>A skippable step that looks mandatory will be treated as mandatory.</td>
+            <td>"Add your bank details later. You will need them before your first payout, not before going live."</td>
+            <td>The bank-details step is the heaviest in the creator flow and deferring it is already the design intent. The copy must make the deferral obvious. <span class="ev d">INFERENCE</span></td>
+          </tr>
+          <tr>
+            <td><strong>Reminder emails</strong></td>
+            <td>Transactional mail is usually written as a receipt. These exist to cause an action.</td>
+            <td>Subject line names the person and the time. The join link is the primary element, above any detail.</td>
+            <td>These emails carry a gate metric. They are conversion surfaces, not confirmations. <span class="ev d">INFERENCE</span></td>
+          </tr>
+          <tr>
+            <td><strong>Empty states</strong></td>
+            <td>A new creator's dashboard and an empty category both say "nothing here" by default.</td>
+            <td>Creator dashboard: the next action. Empty category: do not expose it at all in the pilot.</td>
+            <td>Emptiness is the dominant visual condition of a launching marketplace and it reads as abandonment. <span class="ev d">INFERENCE</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>One claim needs an owner before launch</h3>
+      <p>"Creators keep 85 percent" is only literally true if the customer-side service fee is approved. If it is declined, creators net roughly 82 percent and <strong>every instance of the claim must be reworded</strong>, including marketing copy, the profile page, the creator onboarding and the proposal documents themselves. <span class="ev a">PROJECT RECORD</span> This is cheap to settle now and expensive to unwind after design.</p>
+    </div>
+  </section>
+
+  <section id="s16">
+    <div class="shead"><span class="snum">16</span><h2>Trust and credibility</h2></div>
+    <p class="lede">LINK launches with none of the trust mechanisms its competitors rely on. This section sets out what it has instead.</p>
+
+    <div class="note crit">
+      <h3>The structural trust problem</h3>
+      <p>Every comparator solves trust by a route unavailable to LINK at launch. Intro curates. Cameo trades on fame. Fiverr and Upwork use accumulated work history and review volume. Patreon inherits an existing creator-audience relationship. <span class="ev b">EXTERNAL</span></p>
+      <p>LINK is open by design, its creators are not famous, it has no history, and at launch it has no reviews. <span class="ev d">INFERENCE</span> The trust burden therefore falls almost entirely on two things: <strong>the verified follower count</strong>, which is missing from the current build, and <strong>payment protection</strong>, which exists but is invisible in the flow.</p>
+    </div>
+
+    <h3>Trust inventory</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Signal</th><th>Status in Phase 1</th><th>Strength</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Verified follower count</td><td>To be built</td><td class="w">Primary</td><td>The core concept. Absent from the prototype. <span class="ev a">PRIOR AUDIT</span></td></tr>
+          <tr><td>Funds held until completion</td><td>In scope, not surfaced</td><td class="w">Primary</td><td>Strongest available answer to the ghosting fear. Needs to be visible at checkout.</td></tr>
+          <tr><td>Stated refund policy</td><td>Agreed, not surfaced</td><td class="w">Primary</td><td>Approved 16 September. Must appear at the pay button, not only in terms.</td></tr>
+          <tr><td>Stripe as processor</td><td>In scope</td><td class="w">Secondary</td><td>A recognised payment brand carries borrowed credibility for an unknown platform.</td></tr>
+          <tr><td>Ratings and reviews</td><td>In scope</td><td class="w">Weak at launch</td><td>Zero volume on day one. Becomes primary only after the flywheel turns.</td></tr>
+          <tr><td>Real, sourced values only</td><td>Remediation required</td><td class="w">Hygiene</td><td>Invented statistics currently present. Removal is a precondition, not an improvement. <span class="ev a">PRIOR AUDIT</span></td></tr>
+          <tr><td>Contactable support</td><td>Not specified</td><td class="w">Gap</td><td>No customer-facing support route is defined in Phase 1 scope. <span class="ev d">INFERENCE</span></td></tr>
+          <tr><td>Policy pages</td><td>Client responsibility</td><td class="w">Hygiene</td><td>Terms, privacy and conduct are the client's legal responsibility per the agreement. Absence is visible and damaging.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>An unscoped gap: who does the customer contact?</h3>
+      <p>Phase 1 defines administrator tooling for internal use but no customer-facing support route. <span class="ev d">INFERENCE</span> A customer whose creator did not show has no path except the creator who did not show. At pilot volume a monitored email address is sufficient, but it has to exist, be published, and be watched. This should be confirmed as in or out of scope before launch rather than discovered in week one of the pilot.</p>
+    </div>
+  </section>
+
+  <section id="s17">
+    <div class="shead"><span class="snum">17</span><h2>Mobile UX</h2></div>
+    <p class="lede">Mobile is the primary case for this product, not the secondary one. Traffic arrives from social links.</p>
+
+    <p>Two figures frame the priority. Mobile cart abandonment runs <strong>80.0 percent against 66.4 percent on desktop</strong>, and creator onboarding has an explicit acceptance criterion of under five minutes <strong>on a phone, without instructions</strong>. <span class="ev b">EXTERNAL</span> <span class="ev a">PROJECT RECORD</span> Both the supply and demand sides are therefore mobile-first by construction, which is unusual and should shape design sequencing: screens should be designed at phone width first and expanded, not the reverse.</p>
+
+    <div class="g2">
+      <div class="card">
+        <h4 style="margin-top:0">Mobile-critical surfaces</h4>
+        <ul class="tiny">
+          <li><strong>Creator onboarding.</strong> Availability entry is the hardest thing to do well on a small screen and is a required step to reach bookable.</li>
+          <li><strong>Profile and booking panel.</strong> The credibility assessment and slot selection both happen here, in the first seconds, on a phone.</li>
+          <li><strong>Checkout.</strong> Where the 80 percent abandonment figure applies most directly.</li>
+          <li><strong>Call join.</strong> Browser-based, no download, no account. Must work on iOS Safari and Android Chrome without a device check to fall back on.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Specific risks</h4>
+        <ul class="tiny soft">
+          <li>Date and time pickers are the most common mobile usability failure in booking products. Native controls where possible.</li>
+          <li>Any fixed-position element competing with the browser chrome on iOS reduces the usable viewport at checkout.</li>
+          <li>Touch targets on availability grids tend to fall below minimum size when a week view is compressed.</li>
+          <li>Video permission prompts behave differently across mobile browsers and there is no lobby step to recover from a refusal. <span class="ev e">HYPOTHESIS</span></li>
+          <li>Form field count is felt far more acutely on mobile; 21 percent of abandoners cite checkout length. <span class="ev b">EXTERNAL</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="tiny soft" style="margin-top:12px">Phase 1 commits to testing on iOS Safari, Android Chrome, and desktop Chrome and Safari. <span class="ev a">PROJECT RECORD</span> That is an appropriate matrix for the pilot. The gap is that testing happens in Week 12, by which time mobile-hostile design decisions are already built. Mobile review should happen at design approval in Week 6 instead.</p>
+  </section>
+
+  <section id="s18">
+    <div class="shead"><span class="snum">18</span><h2>Accessibility</h2></div>
+    <p class="lede">Phase 1 commits to an accessibility pass with keyboard-navigable booking and checkout and visible focus states. Full WCAG 2.2 AA conformance is Phase 2. <span class="ev a">PROJECT RECORD</span> This section separates what can be designed for now from what requires technical testing.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Area</th><th>Phase 1 commitment</th><th>Status</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Keyboard navigation</td><td>Booking and checkout fully navigable</td><td class="w">In scope</td><td>Explicit acceptance criterion. The riskiest components are the date picker and the availability grid.</td></tr>
+          <tr><td>Visible focus</td><td>Required on booking and checkout</td><td class="w">In scope</td><td>Should be a token-level decision in Week 5 so it is consistent rather than retrofitted.</td></tr>
+          <tr><td>Colour contrast</td><td>Not explicitly committed</td><td class="w">Gap</td><td>The coral identity carries contrast risk on light backgrounds, particularly for secondary text and disabled states. Requires measurement, not assumption. <span class="ev e">HYPOTHESIS</span></td></tr>
+          <tr><td>Form labels</td><td>Not explicitly committed</td><td class="w">Gap</td><td>Cheap to get right during design, expensive to retrofit. Should be a design-system rule in Week 5.</td></tr>
+          <tr><td>Error messages</td><td>Not explicitly committed</td><td class="w">Gap</td><td>Payment errors especially. Must be programmatically associated with the field, not only visually adjacent.</td></tr>
+          <tr><td>Video call interface</td><td>Provider's prebuilt UI</td><td class="w">Inherited</td><td>Accessibility is the provider's, not ours. Worth checking the provider's conformance statement before the D7 decision is final. <span class="ev d">INFERENCE</span></td></tr>
+          <tr><td>Screen reader testing</td><td>Not in scope</td><td class="w">Phase 2</td><td>Requires technical testing. Cannot be assessed from documents.</td></tr>
+          <tr><td>Alternative text</td><td>Not explicitly committed</td><td class="w">Gap</td><td>Creator profile images carry meaning in this product and need meaningful alternatives, not filenames.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <h3>Two accessibility items are also conversion items</h3>
+      <p>Visible focus states and properly associated error messages are usually argued on compliance grounds. In a checkout they are conversion mechanics: a user who cannot tell which field is active, or why a payment was rejected, abandons. <span class="ev d">INFERENCE</span> Framing them this way is more likely to keep them in scope under pressure than framing them as a standards obligation.</p>
+    </div>
+  </section>
+
+  <section id="s19">
+    <div class="shead"><span class="snum">19</span><h2>Behavioural analysis</h2></div>
+    <p class="lede">Four behavioural dynamics that have direct design consequences in this product. Included only where they change a decision.</p>
+
+    <div class="stack">
+      <div class="find">
+        <div class="fh"><span class="ft">Borrowed trust transfers to the creator, not to the platform</span><span class="ev d">INFERENCE</span></div>
+        <p class="tiny" style="margin:0">The customer arrives trusting the creator completely and the platform not at all. These are separable and the design should treat them separately. Effort spent proving the creator is credible is largely wasted; effort spent proving LINK will not take the money and disappear is not. <strong>Design consequence:</strong> payment assurance, refund policy and processor branding earn their place near the pay button; creator testimonials and marketing copy do not.</p>
+      </div>
+
+      <div class="find">
+        <div class="fh"><span class="ft">Pricing doubt is the creator's emotional low point</span><span class="ev e">HYPOTHESIS</span></div>
+        <p class="tiny" style="margin:0">Setting a price on your own time is a self-valuation, not a calculation, and it is the one onboarding step with no obviously correct answer. An empty field invites deliberation; deliberation invites abandonment. <strong>Design consequence:</strong> a suggested price with a stated basis converts an identity question into an acceptance-or-adjustment question, which is far easier. Showing the net figure alongside turns an abstract percentage into a concrete amount.</p>
+      </div>
+
+      <div class="find">
+        <div class="fh"><span class="ft">Loss aversion runs in opposite directions on each side</span><span class="ev d">INFERENCE</span></div>
+        <p class="tiny" style="margin:0">The customer fears losing money to a no-show. The creator fears losing time to a cancellation. The approved cancellation policy addresses both, asymmetrically and deliberately: the customer is protected by held funds and refund windows, the creator by the two-hour no-refund cutoff. <strong>Design consequence:</strong> show each side the half of the policy that protects them, at the moment they feel the risk. The same policy text serves two different reassurance jobs.</p>
+      </div>
+
+      <div class="find">
+        <div class="fh"><span class="ft">Emptiness is read as failure, not as newness</span><span class="ev b">EXTERNAL</span></div>
+        <p class="tiny" style="margin:0">A launching marketplace is structurally empty, and the cold-start literature identifies perceived density as the thing that makes a marketplace worth joining. A customer landing on a category with three creators and no reviews concludes the platform is dead, and does not return to check later. <strong>Design consequence:</strong> do not expose surfaces whose emptiness is visible. In the pilot, browse and categories should be demoted rather than featured, because the creator link is the route that works and the category page is the one that advertises how small the marketplace is.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s20">
+    <div class="shead"><span class="snum">20</span><h2>Gap analysis</h2></div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Current state</th><th>Desired state</th><th>Gap</th><th>User impact</th><th>Business impact</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>No social sign-in or verified following</td>
+            <td>Verified count with a precise, dated claim</td>
+            <td>Core concept unbuilt</td>
+            <td>Cannot establish the creator is real</td>
+            <td>Removes the differentiator; threatens conversion at the first step</td>
+            <td class="w"><span class="ev a">PRIOR AUDIT</span></td>
+          </tr>
+          <tr>
+            <td>No guided creator onboarding</td>
+            <td>Bookable in under five minutes on a phone</td>
+            <td>No flow, no dashboard</td>
+            <td>Creator cannot finish unaided</td>
+            <td>Activation gate metric has no mechanism behind it</td>
+            <td class="w"><span class="ev a">PRIOR AUDIT</span></td>
+          </tr>
+          <tr>
+            <td>Invented statistics displayed</td>
+            <td>Only real, sourced values</td>
+            <td>Remediation required</td>
+            <td>Discredits everything else on the page</td>
+            <td>Legal exposure on a payment page</td>
+            <td class="w"><span class="ev a">PRIOR AUDIT</span></td>
+          </tr>
+          <tr>
+            <td>Roles mixed in one structure</td>
+            <td>Three surfaces, one shell</td>
+            <td>IA separation</td>
+            <td>Both audiences see irrelevant controls</td>
+            <td>Dilutes both propositions; weakens the shared link</td>
+            <td class="w"><span class="ev a">PRIOR AUDIT</span></td>
+          </tr>
+          <tr>
+            <td>Email-only reminders</td>
+            <td>Reminders on the channel that performs</td>
+            <td>Channel selection</td>
+            <td>More missed calls than necessary</td>
+            <td>Puts the 80 percent completion gate at risk for non-product reasons</td>
+            <td class="w"><span class="ev b">EXTERNAL</span></td>
+          </tr>
+          <tr>
+            <td>Total price revealed late</td>
+            <td>All-in total at slot selection</td>
+            <td>Disclosure timing</td>
+            <td>Surprise at the card form</td>
+            <td>Addresses the cause cited by 48 percent of abandoners</td>
+            <td class="w"><span class="ev b">EXTERNAL</span></td>
+          </tr>
+          <tr>
+            <td>Guest checkout undecided</td>
+            <td>Guest checkout for customers</td>
+            <td>Open decision</td>
+            <td>Registration demanded to buy one call</td>
+            <td>Addresses the cause cited by 26 percent of abandoners</td>
+            <td class="w"><span class="ev b">EXTERNAL</span></td>
+          </tr>
+          <tr>
+            <td>No-show rules undefined</td>
+            <td>Grace period and outcomes specified</td>
+            <td>Policy gap</td>
+            <td>Nobody knows what happens when a call fails</td>
+            <td>Blocks the payment state machine; forces case-by-case arbitration</td>
+            <td class="w"><span class="ev a">PROJECT RECORD</span></td>
+          </tr>
+          <tr>
+            <td>Launch niche unresolved</td>
+            <td>First cohort concentrated</td>
+            <td>Open decision, in disagreement</td>
+            <td>Thin coverage reads as an empty platform</td>
+            <td>Largest single risk to all four gate metrics</td>
+            <td class="w"><span class="ev b">EXTERNAL</span></td>
+          </tr>
+          <tr>
+            <td>No customer support route</td>
+            <td>A published, monitored contact</td>
+            <td>Unscoped</td>
+            <td>No recourse when a call fails</td>
+            <td>Avoidable disputes and refund escalations</td>
+            <td class="w"><span class="ev d">INFERENCE</span></td>
+          </tr>
+          <tr>
+            <td>No rebooking affordance</td>
+            <td>One-tap book again after a call</td>
+            <td>Not in scope</td>
+            <td>Repeat booking requires starting over</td>
+            <td>Recurrence is what makes a 15 percent take rate viable</td>
+            <td class="w"><span class="ev d">INFERENCE</span></td>
+          </tr>
+          <tr>
+            <td>Booking source not captured</td>
+            <td>Attribution recorded from day one</td>
+            <td>Instrumentation</td>
+            <td>None directly</td>
+            <td>Forecloses the tiered take rate option in Phase 2</td>
+            <td class="w"><span class="ev d">INFERENCE</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s21">
+    <div class="shead"><span class="snum">21</span><h2>Key research findings</h2></div>
+    <p class="lede">Seven findings, ordered by how much they change what should be done. Each states what was found, the evidence behind it, who it affects, and what follows.</p>
+
+    <div class="stack">
+      <div class="find crit">
+        <div class="fh"><span class="fid">F1</span><span class="ft">Launch concentration is the highest-leverage decision in the project</span><span class="sev c1">Critical</span></div>
+        <dl>
+          <dt>Found</dt><dd>Marketplace research converges: the cold start kills two-sided marketplaces, and every major survivor constrained its initial market to reach density faster. Uber, Airbnb and DoorDash launched city by city. Density beats breadth for liquidity. Most successful marketplaces end up supply-constrained, which for LINK means creators are the hard side.</dd>
+          <dt>Evidence</dt><dd><span class="ev b">EXTERNAL</span> Multiple independent marketplace sources, consistent findings.</dd>
+          <dt>Affects</dt><dd>Both sides, and all four gate metrics.</dd>
+          <dt>Why</dt><dd>Thirty creators in one category looks like a functioning marketplace. The same thirty across ten categories looks like three people in each, ten times over. A customer who concludes the platform is empty does not return to check.</dd>
+          <dt>Implication</dt><dd>The product can stay universal while the recruiting list is concentrated. These are separate decisions and the disagreement treats them as one. Resolve with the ten-names test, not with further argument.</dd>
+        </dl>
+      </div>
+
+      <div class="find crit">
+        <div class="fh"><span class="fid">F2</span><span class="ft">The two largest abandonment causes are both open decisions costing nothing to fix</span><span class="sev c1">Critical</span></div>
+        <dl>
+          <dt>Found</dt><dd>Average cart abandonment 70.2 percent. Unexpected extra costs cited by 48 percent of abandoners; forced account creation by 26 percent. Mobile abandonment 80 percent against 66 percent desktop, and LINK's pilot traffic is predominantly mobile.</dd>
+          <dt>Evidence</dt><dd><span class="ev b">EXTERNAL</span> Baymard synthesis of 50 studies.</dd>
+          <dt>Affects</dt><dd>Every customer, at the single most valuable step in the funnel.</dd>
+          <dt>Why</dt><dd>The service fee is exactly the kind of late cost that triggers the first cause. Guest checkout is undecided, which leaves the second live.</dd>
+          <dt>Implication</dt><dd>Show the all-in total at slot selection. Allow guest checkout. Both are free if settled before Week 6 design and become change requests afterwards.</dd>
+        </dl>
+      </div>
+
+      <div class="find crit">
+        <div class="fh"><span class="fid">F3</span><span class="ft">A gate metric is being measured on the weaker reminder channel</span><span class="sev c1">Critical</span></div>
+        <dl>
+          <dt>Found</dt><dd>Automated reminders cut non-attendance by a weighted mean of about 29 percent across 29 studies. Text reminders raise attendance odds by roughly 62 percent against none. Email response rates in healthcare run 5 to 10 percent against 45 percent for SMS. Phase 1 ships email only.</dd>
+          <dt>Evidence</dt><dd><span class="ev b">EXTERNAL</span> Appointment-reminder literature. <span class="ev a">PROJECT RECORD</span> for the Phase 1 channel decision.</dd>
+          <dt>Affects</dt><dd>Call completion, a Phase 2 gate criterion set at over 80 percent.</dd>
+          <dt>Why</dt><dd>If completion falls short, it will be read as the product failing to deliver, when the cause may be channel selection. The pilot would then have bought the wrong information.</dd>
+          <dt>Implication</dt><dd>Add SMS for the one-hour reminder only, the smallest possible addition at the highest-leverage moment. If declined, restate the gate threshold in writing before launch.</dd>
+        </dl>
+      </div>
+
+      <div class="viz">
+        <h4>Why the reminder channel is a gate-metric risk</h4>
+        <p class="vcap">Published engagement rates for appointment reminders by channel, healthcare settings.</p>
+        <div class="bars">
+          <div class="bar"><span class="bl">Text message</span><span class="bt"><i class="good" style="width:100%"></i></span><span class="bv">~45%</span></div>
+          <div class="bar"><span class="bl">Email <small>what Phase 1 ships</small></span><span class="bt"><i class="crit" style="width:22%"></i></span><span class="bv">5&ndash;10%</span></div>
+        </div>
+        <p class="vcap" style="margin:18px 0 10px">And what reminders do to attendance at all:</p>
+        <div class="bars">
+          <div class="bar"><span class="bl">Automated reminders</span><span class="bt"><i class="deep" style="width:47%"></i></span><span class="bv">&minus;29%</span></div>
+          <div class="bar"><span class="bl">Live phone reminders</span><span class="bt"><i class="deep" style="width:63%"></i></span><span class="bv">&minus;39%</span></div>
+          <div class="bar"><span class="bl">Text reminders <small>odds of attending</small></span><span class="bt"><i class="good" style="width:100%"></i></span><span class="bv">&times;1.62</span></div>
+        </div>
+        <p class="vnote">The top chart is the problem. Call completion above 80 percent is a Phase 2 gate criterion, and Phase 1 measures it on the channel with roughly a fifth of the engagement. A shortfall would read as the product failing when the cause is channel selection.</p>
+      </div>
+
+      <div class="find crit">
+        <div class="fh"><span class="fid">F4</span><span class="ft">The product's only available trust mechanism is the one not built</span><span class="sev c1">Critical</span></div>
+        <dl>
+          <dt>Found</dt><dd>All five comparators solve trust through curation, fame, or accumulated history. LINK has none of these at launch and no reviews on day one. The verified follower count is the sole remaining mechanism, and the prototype does not have it.</dd>
+          <dt>Evidence</dt><dd><span class="ev b">EXTERNAL</span> competitor analysis. <span class="ev a">PRIOR AUDIT</span> for the gap.</dd>
+          <dt>Affects</dt><dd>Every customer at Journey B stage 2, the moment credibility is assessed.</dd>
+          <dt>Why</dt><dd>Without it the product is a scheduling link with a card form attached, which is precisely the stitched-together alternative it exists to replace.</dd>
+          <dt>Implication</dt><dd>Social sign-in is correctly prioritised in Week 7. Its copy must make a precise, dated claim rather than an unqualified "verified", and the manual fallback needs a visibly lighter badge so the two are not conflated.</dd>
+        </dl>
+      </div>
+
+      <div class="find high">
+        <div class="fh"><span class="fid">F5</span><span class="ft">The pilot customer is not shopping, which changes what the profile is for</span><span class="sev h1">High</span></div>
+        <dl>
+          <dt>Found</dt><dd>Pilot bookings arrive through creator-shared links, not browse or search. The customer has already chosen the person before they see the platform.</dd>
+          <dt>Evidence</dt><dd><span class="ev a">PROJECT RECORD</span> go-to-market plan. <span class="ev d">INFERENCE</span> for the behavioural consequence.</dd>
+          <dt>Affects</dt><dd>Profile design, search priority, and where trust effort is spent.</dd>
+          <dt>Why</dt><dd>The profile is a conversion page for a decision mostly made, not a listing competing for attention. Search and browse matter far less in Phase 1 than their presence in the scope implies.</dd>
+          <dt>Implication</dt><dd>Spend design effort on payment assurance and speed to checkout. Demote browse and categories, whose emptiness advertises how small the marketplace is.</dd>
+        </dl>
+      </div>
+
+      <div class="find high">
+        <div class="fh"><span class="fid">F6</span><span class="ft">Creator onboarding has one hard step, and it is not a technical one</span><span class="sev h1">High</span></div>
+        <dl>
+          <dt>Found</dt><dd>Of the four steps to bookable, three have an obviously correct answer. Setting a price does not; it is a self-valuation under uncertainty.</dd>
+          <dt>Evidence</dt><dd><span class="ev e">HYPOTHESIS</span>, consistent with the client's own description of creator hesitancy. <span class="ev a">PROJECT RECORD</span></dd>
+          <dt>Affects</dt><dd>Creator activation, gate metric set above 55 percent.</dd>
+          <dt>Why</dt><dd>An empty price field invites deliberation at the one step where deliberation causes abandonment.</dd>
+          <dt>Implication</dt><dd>Offer a suggested price with a stated basis and show the net amount received. This converts an identity question into a simple accept-or-adjust. Directly testable in the pilot.</dd>
+        </dl>
+      </div>
+
+      <div class="find high">
+        <div class="fh"><span class="fid">F7</span><span class="ft">The business model needs recurrence that nothing in Phase 1 encourages</span><span class="sev h1">High</span></div>
+        <dl>
+          <dt>Found</dt><dd>At roughly $6 per completed call, the model only works at volume, and volume at this price point comes from repeat bookings. Phase 1 contains no rebooking affordance and no post-call prompt.</dd>
+          <dt>Evidence</dt><dd><span class="ev d">INFERENCE</span> from the stated commercial model and scope.</dd>
+          <dt>Affects</dt><dd>Completed paid calls per week, the primary gate metric, which is specified as trending up.</dd>
+          <dt>Why</dt><dd>A metric defined as trending up implicitly requires either continuous new-customer acquisition or repeat usage. The pilot has a fixed cohort, so repeat usage is the only available source.</dd>
+          <dt>Implication</dt><dd>A single "book again" affordance on the post-call screen, beside the review prompt. Very small build cost, directly serves the primary gate metric.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="s22">
+    <div class="shead"><span class="snum">22</span><h2>Recommendations</h2></div>
+    <p class="lede">Twelve recommendations, each tied to a finding and a measurement. Effort is relative within Phase 1, where the whole build is roughly 156 hours.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Recommendation</th><th>Problem it solves</th><th>Expected benefit</th><th>Measure by</th><th>Effort</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="w">R1</td>
+            <td><strong>Concentrate the first 30 creators in one or two adjacent categories while keeping the product universal</strong></td>
+            <td>F1 cold start</td>
+            <td>At least one category reaches visible density; the client keeps the everyman positioning</td>
+            <td>Creators per category; completed calls per week trend</td>
+            <td class="w">Zero build</td>
+          </tr>
+          <tr>
+            <td class="w">R2</td>
+            <td><strong>Show the all-in total, including the service fee, at slot selection rather than at the card form</strong></td>
+            <td>F2, cause cited by 48% of abandoners</td>
+            <td>Removes the largest single documented abandonment trigger</td>
+            <td>Checkout-started to payment-succeeded rate</td>
+            <td class="w">Design only</td>
+          </tr>
+          <tr>
+            <td class="w">R3</td>
+            <td><strong>Allow guest checkout; collect only what the booking requires</strong></td>
+            <td>F2, cause cited by 26% of abandoners</td>
+            <td>Removes a registration wall in front of a single purchase</td>
+            <td>Checkout-started to payment-succeeded rate</td>
+            <td class="w">Design only</td>
+          </tr>
+          <tr>
+            <td class="w">R4</td>
+            <td><strong>Add SMS for the one-hour reminder only, or formally restate the completion gate</strong></td>
+            <td>F3 channel risk to a gate metric</td>
+            <td>Protects the 80% completion threshold against a non-product cause</td>
+            <td>Call completion rate; reminder delivery and open rates</td>
+            <td class="w">Small</td>
+          </tr>
+          <tr>
+            <td class="w">R5</td>
+            <td><strong>Make the verified claim precise and dated; give manual verification a visibly lighter badge</strong></td>
+            <td>F4 trust, and overclaiming risk</td>
+            <td>A smaller credible claim beats a larger vague one and is defensible if challenged</td>
+            <td>Profile-view to slot-selected rate</td>
+            <td class="w">Design only</td>
+          </tr>
+          <tr>
+            <td class="w">R6</td>
+            <td><strong>Surface held funds and the refund policy as one line each beside the pay button</strong></td>
+            <td>F4, and Devon's primary fear</td>
+            <td>Answers the ghosting objection where it peaks instead of in a footer</td>
+            <td>Checkout completion; refund-related support contacts</td>
+            <td class="w">Design only</td>
+          </tr>
+          <tr>
+            <td class="w">R7</td>
+            <td><strong>Replace the empty price field with a suggested price plus the net amount received</strong></td>
+            <td>F6 pricing doubt</td>
+            <td>Removes load from the step most likely to end onboarding</td>
+            <td>Step-level drop-off within onboarding</td>
+            <td class="w">Small</td>
+          </tr>
+          <tr>
+            <td class="w">R8</td>
+            <td><strong>Add a "book again" affordance on the post-call screen</strong></td>
+            <td>F7 recurrence</td>
+            <td>Serves the primary gate metric directly</td>
+            <td>Repeat bookings as a share of completed calls</td>
+            <td class="w">Small</td>
+          </tr>
+          <tr>
+            <td class="w">R9</td>
+            <td><strong>Capture booking source from day one even though the take rate stays flat</strong></td>
+            <td>Forecloses a Phase 2 revenue lever</td>
+            <td>Enables attribution-tiered pricing later without reconstruction</td>
+            <td>Share of bookings by source</td>
+            <td class="w">Very small</td>
+          </tr>
+          <tr>
+            <td class="w">R10</td>
+            <td><strong>Separate the three surfaces: public, creator, admin, with one shared shell</strong></td>
+            <td>H4 role mixing</td>
+            <td>Both audiences see a coherent product; the shared link reads as personal</td>
+            <td>Creator activation; profile-view conversion</td>
+            <td class="w">Design only</td>
+          </tr>
+          <tr>
+            <td class="w">R11</td>
+            <td><strong>Specify the no-show grace period and outcomes before checkout is built</strong></td>
+            <td>H7 undefined rules</td>
+            <td>Unblocks the payment state machine; removes case-by-case arbitration</td>
+            <td>Disputed no-shows per completed call</td>
+            <td class="w">Decision only</td>
+          </tr>
+          <tr>
+            <td class="w">R12</td>
+            <td><strong>Publish and monitor a customer support contact before launch</strong></td>
+            <td>Unscoped gap in trust inventory</td>
+            <td>Gives a failed call a route other than the creator who failed</td>
+            <td>Time to first response; contacts per 100 calls</td>
+            <td class="w">Very small</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note good">
+      <h3>Seven of twelve cost no build time</h3>
+      <p>R1, R2, R3, R5, R6, R10 and R11 are decisions and design choices, not engineering. They are free until the relevant screen is drawn, and they become change requests under Section 14 of the agreement afterwards. <strong>That is the entire argument for doing this research in Week 3 rather than Week 8.</strong></p>
+    </div>
+  </section>
+
+  <section id="s23">
+    <div class="shead"><span class="snum">23</span><h2>Prioritisation</h2></div>
+    <p class="lede">The method, stated so it can be argued with.</p>
+
+    <h3>How these were ranked</h3>
+    <p>No numeric scoring, because weighting invented numbers produces false precision. Instead each recommendation was tested against four questions, in order, and the first that applies sets the tier. <span class="ev d">INFERENCE</span></p>
+    <ol>
+      <li><strong>Does it protect a gate metric?</strong> The four success measures decide whether Phase 2 is funded. Anything threatening one of them outranks everything else.</li>
+      <li><strong>Does its cost rise sharply with time?</strong> Decisions that are free now and change requests later are worth taking early, even at lower impact.</li>
+      <li><strong>Does it unblock other work?</strong> Items that gate multiple downstream tasks outrank items of similar impact that gate nothing.</li>
+      <li><strong>Is the evidence strong enough to act without validation?</strong> External benchmarks and project records can drive decisions now; hypotheses should be tested first.</li>
+    </ol>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Tier</th><th>Items</th><th>Rationale</th><th>Deadline</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Do now</strong><div class="tiny soft">Week 3</div></td>
+            <td class="w">R1, R2, R3, R11</td>
+            <td>Each protects a gate metric or unblocks design, and each is free until Week 6. R1 additionally gates five other decisions.</td>
+            <td class="w">7 Oct, scope fix</td>
+          </tr>
+          <tr>
+            <td><strong>Settle in design</strong><div class="tiny soft">Weeks 4&ndash;6</div></td>
+            <td class="w">R5, R6, R7, R10</td>
+            <td>Design decisions with no engineering dependency. Cheap while screens are being drawn, expensive afterwards.</td>
+            <td class="w">28 Oct, design approval</td>
+          </tr>
+          <tr>
+            <td><strong>Build-time additions</strong><div class="tiny soft">Weeks 7&ndash;11</div></td>
+            <td class="w">R4, R8, R9, R12</td>
+            <td>Small engineering items. R4 and R9 should be confirmed at the scope fix so they are inside the agreed figure rather than added later.</td>
+            <td class="w">Within build</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>Honest note on R4 and the scope cap</h3>
+      <p>R4, R8, R9 and R12 are small individually but they are additions to a fixed scope under a fee capped at $10,000. Section 14 of the agreement requires additions to displace something of equal size or move to Phase 2. <span class="ev a">PROJECT RECORD</span> The right moment to resolve this is the Week 3 scope fix, where the final figure is confirmed in writing. Raising them later means raising them as change requests, which is a worse conversation for both sides.</p>
+    </div>
+  </section>
+
+  <section id="s24">
+    <div class="shead"><span class="snum">24</span><h2>UX roadmap</h2></div>
+    <p class="lede">Mapped onto the agreed thirteen-week schedule rather than invented as a parallel plan.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Phase</th><th>Weeks</th><th>UX objective</th><th>Deliverables</th><th>Gate</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Close the decisions</strong></td>
+            <td class="w">3<div class="tiny soft">1&ndash;7 Oct</div></td>
+            <td>Convert open questions into settled inputs so design is not drawn against assumptions</td>
+            <td>This report; questionnaire responses; niche settled; R1, R2, R3, R11 decided; scope and final cost fixed in writing</td>
+            <td class="w">Scope fix, 7 Oct</td>
+          </tr>
+          <tr>
+            <td><strong>Structure</strong></td>
+            <td class="w">4<div class="tiny soft">8&ndash;14 Oct</div></td>
+            <td>Separate the three surfaces and map the flows end to end</td>
+            <td>Information architecture; creator, customer and admin flows; wireframes for onboarding and booking, drawn at phone width first</td>
+            <td class="w">&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>System and supply side</strong></td>
+            <td class="w">5<div class="tiny soft">15&ndash;21 Oct</div></td>
+            <td>Establish the token set and design the creator path, the hard side of the marketplace</td>
+            <td>Tokens including focus states and contrast decisions; creator onboarding with suggested pricing; earnings-first dashboard</td>
+            <td class="w">&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>Demand side and conversion</strong></td>
+            <td class="w">6<div class="tiny soft">22&ndash;28 Oct</div></td>
+            <td>Design the surfaces where money and trust are decided</td>
+            <td>Profile and booking panel; checkout carrying R2, R3, R6; call join and review with R8; admin essentials; mobile review before sign-off</td>
+            <td class="w">Design approval, 28 Oct</td>
+          </tr>
+          <tr>
+            <td><strong>Identity and trust</strong></td>
+            <td class="w">7&ndash;8<div class="tiny soft">29 Oct &ndash; 11 Nov</div></td>
+            <td>Build the single trust mechanism available at launch</td>
+            <td>Social sign-in with precise dated claims; manual verification with a lighter badge; onboarding to bookable; dashboard</td>
+            <td class="w">&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>Money and reliability</strong></td>
+            <td class="w">9&ndash;10<div class="tiny soft">12&ndash;25 Nov</div></td>
+            <td>Make the transaction work and instrument it</td>
+            <td>Checkout, held funds, payouts, refunds against policy; booking and reminders with R4; four-event funnel instrumentation; R9 attribution capture</td>
+            <td class="w">Core built, 25 Nov</td>
+          </tr>
+          <tr>
+            <td><strong>Trust loop and operations</strong></td>
+            <td class="w">11<div class="tiny soft">26 Nov &ndash; 2 Dec</div></td>
+            <td>Close the review flywheel and make the manual model workable</td>
+            <td>Reviews and ratings; gated messaging; five admin levers; monitoring; R12 support route</td>
+            <td class="w">&mdash;</td>
+          </tr>
+          <tr>
+            <td><strong>Quality and launch</strong></td>
+            <td class="w">12&ndash;13<div class="tiny soft">3&ndash;16 Dec</div></td>
+            <td>Verify on the devices that matter and go live</td>
+            <td>Cross-device matrix; payment edge cases; keyboard navigation and focus; acceptance testing; deployment and runbook</td>
+            <td class="w">Live, 16 Dec</td>
+          </tr>
+          <tr>
+            <td><strong>Learn</strong></td>
+            <td class="w">Post-launch<div class="tiny soft">to 13 Jan</div></td>
+            <td>Read real behaviour against the four measures</td>
+            <td>Weekly metric reporting; funnel drop-off analysis; creator and customer interviews per Section 25; Phase 2 scope informed by evidence</td>
+            <td class="w">Gate, 13 Jan</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s25">
+    <div class="shead"><span class="snum">25</span><h2>Validation research plan</h2></div>
+    <p class="lede">This report contains eleven items labelled hypothesis. Here is how each class of them gets tested, and when. None of these studies has been conducted.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Method</th><th>Research question</th><th>Participants</th><th>n</th><th>When</th><th>Success criterion</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="w">V1</td>
+            <td><strong>Unmoderated first-click test</strong></td>
+            <td>Does a visitor understand what LINK is and that the creator is real, within five seconds?</td>
+            <td>People unfamiliar with the brand, recruited from the launch category's audience</td>
+            <td class="w">15&ndash;20</td>
+            <td class="w">Week 6, on designs</td>
+            <td>Over 80% correctly describe the offer unprompted</td>
+          </tr>
+          <tr>
+            <td class="w">V2</td>
+            <td><strong>Moderated usability test, creator onboarding</strong></td>
+            <td>Can a creator reach bookable in under five minutes on a phone without help, and where do they stall?</td>
+            <td>Creators matching the launch cohort profile</td>
+            <td class="w">5&ndash;8</td>
+            <td class="w">Week 8, on build</td>
+            <td>Over 70% complete unaided; pricing is not the dominant stall point</td>
+          </tr>
+          <tr>
+            <td class="w">V3</td>
+            <td><strong>Moderated usability test, booking and checkout</strong></td>
+            <td>Where do customers hesitate between a creator link and a completed payment?</td>
+            <td>Followers of a pilot creator, mobile only</td>
+            <td class="w">5&ndash;8</td>
+            <td class="w">Week 10, on build</td>
+            <td>No participant surprised by the total; none blocked by account creation</td>
+          </tr>
+          <tr>
+            <td class="w">V4</td>
+            <td><strong>Concierge pricing interviews</strong></td>
+            <td>How do creators actually decide what to charge, and does a suggested price help or offend?</td>
+            <td>First ten recruited creators</td>
+            <td class="w">8&ndash;10</td>
+            <td class="w">Weeks 4&ndash;6</td>
+            <td>A defensible basis for the suggested price and the band ends</td>
+          </tr>
+          <tr>
+            <td class="w">V5</td>
+            <td><strong>Funnel analysis</strong></td>
+            <td>Where does the customer funnel actually leak?</td>
+            <td>All pilot traffic</td>
+            <td class="w">All</td>
+            <td class="w">Weekly from launch</td>
+            <td>Drop-off attributable to a specific step rather than inferred</td>
+          </tr>
+          <tr>
+            <td class="w">V6</td>
+            <td><strong>Post-call micro-survey</strong></td>
+            <td>Was the call worth the money, and would they book again?</td>
+            <td>Every completed call, one question</td>
+            <td class="w">All</td>
+            <td class="w">From launch</td>
+            <td>Response rate over 30%; repeat intent measurable</td>
+          </tr>
+          <tr>
+            <td class="w">V7</td>
+            <td><strong>Creator exit interviews</strong></td>
+            <td>Why did creators who reached bookable stop, and what would have kept them?</td>
+            <td>Creators inactive 14 days after activation</td>
+            <td class="w">5&ndash;8</td>
+            <td class="w">Weeks 2&ndash;4 post-launch</td>
+            <td>Churn causes separated into supply-side and demand-side</td>
+          </tr>
+          <tr>
+            <td class="w">V8</td>
+            <td><strong>Reminder channel comparison</strong></td>
+            <td>Does adding SMS at one hour measurably change completion?</td>
+            <td>Bookings, split by channel</td>
+            <td class="w">All</td>
+            <td class="w">From launch, if R4 accepted</td>
+            <td>A measurable difference, or confirmation that email suffices at this scale</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>A caution on sample sizes</h3>
+      <p>Five to eight participants is standard for qualitative usability work and is sufficient to find most severe issues. It is <strong>not</strong> sufficient to quantify anything. Findings from V2, V3, V4 and V7 should be reported as "participants struggled with X", never as a percentage. The quantitative claims in this project should come only from V5, V6 and V8, which observe the whole population. <span class="ev b">EXTERNAL</span></p>
+    </div>
+  </section>
+
+  <section id="s26">
+    <div class="shead"><span class="snum">26</span><h2>Analytics and data requirements</h2></div>
+
+    <div class="g3">
+      <div class="card">
+        <h4 style="margin-top:0">Data we have</h4>
+        <ul class="tiny soft">
+          <li>The client's qualitative description of the market and the target creator</li>
+          <li>The earlier prototype audit across roughly 21 screens</li>
+          <li>Competitor commercial models from public sources</li>
+          <li>Published behavioural benchmarks for checkout and reminders</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Data we do not have</h4>
+        <ul class="tiny soft">
+          <li>Any product analytics, because there is no live product</li>
+          <li>Any interview, survey or usability data</li>
+          <li>The creator list, and therefore the real category distribution</li>
+          <li>Provenance and consent status of the 500,000-contact marketing list</li>
+          <li>Any Phase 1 questionnaire responses at time of writing</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Data we must capture at build</h4>
+        <ul class="tiny soft">
+          <li>Four-event customer funnel: profile view, slot selected, checkout started, payment succeeded</li>
+          <li>Step-level creator onboarding events through to the bookable flag</li>
+          <li>Booking source attribution, per R9</li>
+          <li>Reminder sent, delivered and opened, per channel</li>
+          <li>Call joined events from the video provider, both parties</li>
+          <li>Refund issued, with reason code</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <h3>The instrumentation that matters most</h3>
+      <p>The four-event customer funnel is the single highest-value piece of instrumentation in the pilot. Without it, a disappointing conversion rate is a mystery; with it, it is a diagnosis. <span class="ev d">INFERENCE</span> It must be built during Weeks 9 and 10 alongside checkout, not added afterwards, because retrofitting event tracking onto a shipped funnel is both more expensive and less reliable.</p>
+      <p>The same logic applies to the bookable-state flag. It is specified as a field on the creator record rather than a report assembled later, which is the correct decision and worth protecting if scope comes under pressure. <span class="ev a">PROJECT RECORD</span></p>
+    </div>
+  </section>
+
+  <section id="s27">
+    <div class="shead"><span class="snum">27</span><h2>Measurement framework</h2></div>
+
+    <h3>The four agreed gate metrics</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Metric</th><th>Threshold</th><th>Owner journey</th><th>Primary UX lever</th><th>Risk</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Completed paid calls per week</strong></td><td class="w">Trending up</td><td>A + B</td><td>Cohort density; rebooking affordance</td><td class="w"><span class="sev c1">Niche unresolved</span></td></tr>
+          <tr><td><strong>Creator activation rate</strong></td><td class="w">Over 55%</td><td>A</td><td>Onboarding flow; deferred payout; suggested pricing</td><td class="w"><span class="sev h1">No flow yet</span></td></tr>
+          <tr><td><strong>Call completion rate</strong></td><td class="w">Over 80%</td><td>B</td><td>Reminder channel and timing</td><td class="w"><span class="sev c1">Email only</span></td></tr>
+          <tr><td><strong>Average rating</strong></td><td class="w">Over 4.6&#9733;</td><td>B</td><td>Review prompt; call reliability</td><td class="w"><span class="sev m1">No prompt</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Supporting UX metrics to report weekly</h3>
+    <div class="g2">
+      <div class="card">
+        <h4 style="margin-top:0">Funnel and task</h4>
+        <ul class="tiny soft">
+          <li>Profile view to slot selected</li>
+          <li>Slot selected to checkout started</li>
+          <li>Checkout started to payment succeeded</li>
+          <li>Onboarding step-level completion to bookable</li>
+          <li>Time to bookable, median</li>
+          <li>Mobile against desktop for each of the above</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Health and operations</h4>
+        <ul class="tiny soft">
+          <li>Repeat bookings as a share of completed calls</li>
+          <li>Creators active in the last 14 days</li>
+          <li>Reminder delivery and open rate by channel</li>
+          <li>Refunds per 100 bookings, by reason</li>
+          <li>Administrator actions per week, as a load proxy</li>
+          <li>Support contacts per 100 completed calls</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <h3>One measurement caution</h3>
+      <p>"Completed paid calls per week, trending up" is the right primary metric but it is vulnerable to a single marketing event. A staged send to a large contact list would produce a spike that looks like growth and is not. <span class="ev d">INFERENCE</span> The gate review should read the trend excluding any week containing a bulk send, or at minimum annotate it. Otherwise the pilot can pass the gate while having proved nothing about recurrence, which is the thing the business model actually depends on.</p>
+    </div>
+  </section>
+
+  <section id="s28">
+    <div class="shead"><span class="snum">28</span><h2>Research limitations</h2></div>
+    <p class="lede">Stated plainly, because a report that hides its own weaknesses is worse than no report.</p>
+
+    <div class="note crit">
+      <h3>No primary user research underpins any finding in this document</h3>
+      <p>Zero interviews, zero usability tests, zero surveys, zero analytics. Every statement about what creators or customers want, fear or will do is inference from the client's description, from general marketplace behaviour, or from benchmarks in adjacent industries. <strong>This is a desk study.</strong> Section 25 exists because of this, and nothing labelled hypothesis should drive an irreversible decision before it is tested.</p>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Limitation</th><th>Effect on confidence</th><th>How to close it</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Prototype findings are inherited, not observed</strong></td>
+            <td>The four structural gaps come from the earlier project audit. The author did not inspect the current build. The prototype may have changed.</td>
+            <td>Re-verify against the live build at the start of Week 4, before design depends on them.</td>
+          </tr>
+          <tr>
+            <td><strong>Questionnaire responses outstanding</strong></td>
+            <td>Six decisions remain open. The niche, the platform, durations and the price band all materially change the design, and this report reasons around them rather than from them.</td>
+            <td>Responses this week. Q5 alone settles two decisions.</td>
+          </tr>
+          <tr>
+            <td><strong>Benchmarks transfer imperfectly</strong></td>
+            <td>Checkout abandonment data is from ecommerce, no-show data largely from healthcare. Direction is reliable; magnitude is not. LINK's own numbers will differ.</td>
+            <td>Treat as directional. Replace with pilot data from week one of launch.</td>
+          </tr>
+          <tr>
+            <td><strong>No category sizing exists</strong></td>
+            <td>Paid one-to-one video consultation is not broken out in any major creator economy report. We cannot size the opportunity, only observe it.</td>
+            <td>The pilot is the measurement. This is a reason for the pilot, not a flaw in it.</td>
+          </tr>
+          <tr>
+            <td><strong>Personas are unvalidated composites</strong></td>
+            <td>Useful as design tools, not as evidence. The riskiest assumption is that modest-following creators want to charge for access and that their audiences will pay.</td>
+            <td>V4 and V7 in Section 25. The pilot tests the core assumption directly.</td>
+          </tr>
+          <tr>
+            <td><strong>Author is the delivery party</strong></td>
+            <td>Two structural biases: toward finding the prototype salvageable, and toward recommending a narrow launch. Both reduce our delivery risk.</td>
+            <td>The ten-names test settles the niche with the client's data rather than our argument. The prototype finding should be re-verified by someone other than us if the client wants independence.</td>
+          </tr>
+          <tr>
+            <td><strong>Administrator capacity unmodelled</strong></td>
+            <td>Phase 1 substitutes one person for trust and safety tooling. Where that breaks is unknown.</td>
+            <td>Track administrator actions per week as a load proxy from launch.</td>
+          </tr>
+          <tr>
+            <td><strong>Marketing list unverified</strong></td>
+            <td>The 500,000-contact list's provenance, consent status and sending history are unknown. This affects deliverability, which affects the completion gate metric.</td>
+            <td>Questionnaire item. Must be answered before any send, not after.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s29">
+    <div class="shead"><span class="snum">29</span><h2>Decisions blocking design</h2></div>
+    <p class="lede">The practical output of this report. Design begins in Week 4 and cannot be drawn against open questions.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Decision</th><th>Blocks</th><th>Our recommendation</th><th>Needed by</th><th>Owner</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Launch niche</strong></td>
+            <td>Creator recruiting, category taxonomy, intake forms, price band, verification requirements, review comparability</td>
+            <td>Universal product, concentrated first cohort. Settle with the ten names, not with argument.</td>
+            <td class="w">7 Oct</td>
+            <td class="w">Both</td>
+          </tr>
+          <tr>
+            <td><strong>Guest checkout</strong></td>
+            <td>Checkout design, data model, the account concept itself</td>
+            <td>Allow it. Addresses a cause cited by 26% of abandoners.</td>
+            <td class="w">7 Oct</td>
+            <td class="w">Client</td>
+          </tr>
+          <tr>
+            <td><strong>Service fee and disclosure point</strong></td>
+            <td>Checkout design, the "keep 85%" claim everywhere it appears</td>
+            <td>3.5% + $0.50, shown in the all-in total at slot selection.</td>
+            <td class="w">7 Oct</td>
+            <td class="w">Client</td>
+          </tr>
+          <tr>
+            <td><strong>Grace period and no-show outcomes</strong></td>
+            <td>Payment state machine, refund logic, admin tooling</td>
+            <td>Ten-minute grace. Creator no-show refunds in full; customer no-show pays the creator.</td>
+            <td class="w">7 Oct</td>
+            <td class="w">Client</td>
+          </tr>
+          <tr>
+            <td><strong>Durations and price band</strong></td>
+            <td>Offer editor, profile, suggested pricing, payment minimums</td>
+            <td>15, 30, 60 minutes. Band ends informed by V4 interviews.</td>
+            <td class="w">14 Oct</td>
+            <td class="w">Both</td>
+          </tr>
+          <tr>
+            <td><strong>Social platform connection</strong></td>
+            <td>Onboarding step one, verification badge, app review submissions</td>
+            <td>Determined by Q5. Whichever platform the first ten creators lead with, with manual fallback for the rest.</td>
+            <td class="w">14 Oct</td>
+            <td class="w">Client</td>
+          </tr>
+          <tr>
+            <td><strong>Review window length</strong></td>
+            <td>Payout release timing, refund window, admin workflow</td>
+            <td>24 hours after call completion.</td>
+            <td class="w">14 Oct</td>
+            <td class="w">Client</td>
+          </tr>
+          <tr>
+            <td><strong>Prototype access</strong></td>
+            <td>Everything after design</td>
+            <td>Replit access with transferable admin. Every estimate here assumes the build is available and usable.</td>
+            <td class="w">Immediately</td>
+            <td class="w">Client</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note warn">
+      <h3>The cost of leaving these open</h3>
+      <p>Four of the eight are needed by 7 October, which is the contractual scope-fix date. Design starts 8 October. A decision that arrives after the screen it affects has been drawn is not a decision, it is a change request, and Section 14 of the agreement requires change requests to displace something of equal size or move to Phase 2. <span class="ev a">PROJECT RECORD</span> That is the whole mechanism by which a fixed fee against a fixed duration stays honest, and it works in both directions.</p>
+    </div>
+  </section>
+
+  <section id="s30">
+    <div class="shead"><span class="snum">30</span><h2>Sources</h2></div>
+
+    <h3>External sources</h3>
+    <ol class="tiny">
+      <li>Baymard Institute, cart and checkout abandonment statistics, synthesis of 50 studies. Average abandonment 70.2%; extra costs 48%; account creation 26%; checkout length 21%; card distrust 18%; mobile 80.0% against desktop 66.4%. <a href="https://baymard.com/lists/cart-abandonment-rate">baymard.com/lists/cart-abandonment-rate</a></li>
+      <li>Baymard Institute, reducing cart abandonment, data-backed UX strategies. <a href="https://baymard.com/blog/reduce-cart-abandonment">baymard.com/blog/reduce-cart-abandonment</a></li>
+      <li>Stripe Atlas, Andrew Chen on marketplaces, cold start and liquidity. <a href="https://stripe.com/guides/atlas/andrew-chen-marketplaces">stripe.com/guides/atlas/andrew-chen-marketplaces</a></li>
+      <li>Jobtech Alliance, from cold start to liquidity, two-sided marketplace research. <a href="https://jobtechalliance.com/wp-content/uploads/2026/03/Chicken-and-Egg-Dilemma-SOlving-for-two-sided-marketplaces-Jobtech-Alliance.pdf">jobtechalliance.com</a></li>
+      <li>Strategic AI Leader, measuring the liquidity threshold in a marketplace. <a href="https://www.strategicaileader.com/how-to-measure-the-liquidity-threshold-in-a-marketplace/">strategicaileader.com</a></li>
+      <li>RaftLabs, why two-sided marketplaces fail after launch. <a href="https://www.raftlabs.com/blog/two-sided-marketplace-failure-rate">raftlabs.com</a></li>
+      <li>The American Journal of Medicine, effectiveness of outpatient appointment reminder systems in reducing no-show rates, 29 studies. <a href="https://www.amjmed.com/article/S0002-9343(10)00108-7/fulltext">amjmed.com</a></li>
+      <li>National Library of Medicine, impact of online appointment scheduling on no-show rate. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12081397/">ncbi.nlm.nih.gov</a></li>
+      <li>Notifyre, SMS appointment reminder effectiveness against email and phone. <a href="https://notifyre.com/us/blog/appointment-reminders-statistiscs">notifyre.com</a></li>
+      <li>GrowthMentor, Intro.co review and tiered commission structure. <a href="https://www.growthmentor.com/blog/intro-co-alternatives">growthmentor.com</a></li>
+      <li>SF Standard, reporting on Intro's booking model and fees. <a href="https://sfstandard.com/2024/07/12/intro-cameo-techie-meeting-call/">sfstandard.com</a></li>
+      <li>Talkspresso, Cameo commission analysis. <a href="https://talkspresso.com/blog/why-cameo-is-dying">talkspresso.com</a></li>
+      <li>Behind the Scenes, creator platform fee comparison 2026. <a href="https://behindthescenes.com/blogs/platform-fee-comparison-2026-trends-stats-what-s-next">behindthescenes.com</a></li>
+      <li>Ruzuku, Patreon pricing and fee structure. <a href="https://www.ruzuku.com/learn/articles/patreon-pricing">ruzuku.com</a></li>
+      <li>The Business Research Company, content creator economy market report 2026. <a href="https://www.thebusinessresearchcompany.com/report/content-creator-economy-global-market-report">thebusinessresearchcompany.com</a></li>
+      <li>Fungies.io, creator economy statistics 2026, participation and earnings data. <a href="https://fungies.io/creator-economy-statistics-2026-5/">fungies.io</a></li>
+    </ol>
+    <p class="tiny soft">All external figures gathered September and October 2026. Commercial terms of third-party platforms change without announcement and should be re-verified before use in any public-facing claim.</p>
+
+    <h3>Project sources</h3>
+    <ul class="tiny">
+      <li>LINK Product Discovery and Proposal, including the prototype audit across approximately 21 screens and the social platform API feasibility matrix</li>
+      <li>LINK Pilot MVP Proposal, Phase 1 of 2</li>
+      <li>LINK Milestone 1 Scope Locked, version 1.0, and the Milestone 1 Agreement version 1.1</li>
+      <li>LINK Phase 1 delivery schedule, revised 25 September 2026</li>
+      <li>LINK Support and Service Level Agreement</li>
+      <li>Meeting records and transcripts, 27 August, 14 September and 16 September 2026</li>
+      <li>Client correspondence, 30 July to 25 September 2026</li>
+      <li>LINK UX Research Questionnaire, issued Week 2, responses outstanding at time of writing</li>
+    </ul>
+  </section>
+
+  <section id="s31">
+    <div class="shead"><span class="snum">31</span><h2>Appendix: evidence summary</h2></div>
+    <p class="lede">How the claims in this report are distributed across evidence types. Included so the balance is visible rather than implied.</p>
+
+    <div class="viz">
+      <h4>What this report is actually built on</h4>
+      <p class="vcap">Count of tagged claims by evidence type across all 31 sections.</p>
+      <div class="bars">
+        <div class="bar"><span class="bl">Inference <small>reasoned, not measured</small></span><span class="bt"><i class="warn" style="width:100%"></i></span><span class="bv">57</span></div>
+        <div class="bar"><span class="bl">Project record <small>files, transcripts, prior audit</small></span><span class="bt"><i class="good" style="width:89%"></i></span><span class="bv">51</span></div>
+        <div class="bar"><span class="bl">External <small>published research</small></span><span class="bt"><i class="deep" style="width:60%"></i></span><span class="bv">34</span></div>
+        <div class="bar"><span class="bl">Hypothesis <small>needs validation</small></span><span class="bt"><i class="crit" style="width:23%"></i></span><span class="bv">13</span></div>
+        <div class="bar"><span class="bl">Observed <small>verified in this study</small></span><span class="bt"><i class="mute" style="width:4%"></i></span><span class="bv">2</span></div>
+      </div>
+      <p class="vnote">The shortest bar is the important one. Almost nothing in this report was observed first-hand, because there is no live product to observe. That is the honest shape of a pre-launch desk study and it is why Section 25 exists.</p>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Type</th><th>What it means here</th><th>Where it is strongest</th><th>Where it is thin</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="ev a">PRIOR AUDIT</span> <span class="ev a">PROJECT RECORD</span></td>
+            <td>Project files, transcripts, correspondence, and the earlier prototype audit</td>
+            <td>Scope, commercial terms, agreed policies, the four structural prototype gaps</td>
+            <td>Prototype findings are inherited rather than freshly observed</td>
+          </tr>
+          <tr>
+            <td><span class="ev b">EXTERNAL</span></td>
+            <td>Published research, benchmarks, competitor documentation</td>
+            <td>Marketplace cold start, checkout abandonment, reminder effectiveness, take rates</td>
+            <td>No sizing data for this specific category; benchmarks are from adjacent industries</td>
+          </tr>
+          <tr>
+            <td><span class="ev c">OBSERVED</span></td>
+            <td>Directly verified during this study</td>
+            <td>Almost nothing. Used only where genuinely applicable.</td>
+            <td>The entire category. There is no live product to observe.</td>
+          </tr>
+          <tr>
+            <td><span class="ev d">INFERENCE</span></td>
+            <td>Reasoned conclusions from the above</td>
+            <td>Design consequences of the link-arrival behaviour; trust mechanism analysis; funnel logic</td>
+            <td>Defensible but unmeasured. Should be revisited against pilot data.</td>
+          </tr>
+          <tr>
+            <td><span class="ev e">HYPOTHESIS</span></td>
+            <td>Requires validation before driving an irreversible decision</td>
+            <td>Clearly marked throughout; all personas carry this tag</td>
+            <td>Eleven items. Section 25 says how each gets tested.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <h3>How to read this report in one line</h3>
+      <p>The external evidence is strong and should be acted on now. The project evidence is solid but one step removed from the current build and should be re-verified. Everything about what users will actually do is inference or hypothesis, and the pilot exists to replace it with observation. <strong>Act on the first, check the second, and test the third.</strong></p>
+    </div>
+  </section>
+
+  <p class="foot">LINK UX Research Report, issued 1 October 2026 as the Week 3 research deliverable for the Phase 1 pilot. Prepared by Oyolloo for WorkDev Solutions. This is a desk study: it contains no primary user research, and Section 28 sets out the consequences of that. Findings labelled hypothesis require validation before they drive irreversible decisions. External figures were gathered September and October 2026 and should be re-verified before use in public-facing claims.</p>
+
+</div>
+
+<script>
+  document.getElementById("pdfBtn").addEventListener("click", function(){
+    window.print();
+  });
+</script>
